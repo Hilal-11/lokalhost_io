@@ -17,7 +17,9 @@ import FeaturesBento from "./LandingComponents/FeaturesBento";
 import ComponentsBento from "./LandingComponents/ComponentsBento"
 import DesignsBento from "./LandingComponents/DesignsBento"
 import nProgress from "nprogress";
-
+import ComponentsShowcase, { TemplatesBlockList } from "./LandingComponents/ComponentsShowcase";
+import LandingPagesShowcase from "./LandingComponents/LandingPagesShowcase";
+import MobileAppsAndUIBlocks from "./LandingComponents/MobileAppaAndUIBlocks"; 
 interface IServiceType {
     button_name: string,
     button_link: string
@@ -136,6 +138,18 @@ export function HeroSection(
         
         <div className="w-full h-auto mt-10 mb-10">
           <MarqueeTemplates/>
+        </div>
+        <div className="w-full container max-w-[1580px]">
+          <ComponentsShowcase/>
+        </div>
+        <div className="w-full container max-w-[1580px]">
+          <TemplatesBlockList/>
+        </div>
+        <div>
+          <LandingPagesShowcase />
+        </div>
+        <div>
+          <MobileAppsAndUIBlocks />
         </div>
         <div className="mt-16 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
           <FeaturesBento />
