@@ -51,12 +51,6 @@ export default async function Home() {
                 <HeroSection heroServiceContent={heroSectionData}/>
             </div>
             <div className="w-full container max-w-[1580px]">
-                <ComponentsShowcase/>
-            </div>
-            <div className="w-full container max-w-[1580px]">
-                <TemplatesBlockList/>
-            </div>
-            <div className="w-full container max-w-[1580px]">
                 <FinalMainFAQ />
             </div>
             <div className="pt-10 pb-5">
