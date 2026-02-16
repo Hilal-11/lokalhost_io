@@ -254,7 +254,7 @@ function ComponentsShowcase() {
         </div>
 
         {/* ── Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 lg:px-10 px-5 py-10 gap-5 mask-b-from-20% to-95%">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 lg:px-10 py-10 gap-5 mask-b-from-20% to-95%">
           {SKELETONS.map(({ component: Skeleton, label }, index) => (
             <div
               key={index}
@@ -710,7 +710,7 @@ export const TemplatesBlockList = () => {
         </div>
 
         {/* ── Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 lg:px-10 px-5 py-10 gap-5 mask-b-from-20% to-95%">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 lg:px-10 py-10 gap-5 mask-b-from-20% to-95%">
           {TEMPLATES.map(({ component: Skeleton, label, tag }, index) => (
             <div
               key={index}
