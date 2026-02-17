@@ -222,14 +222,14 @@ function Templates(){
                                 <div className="flex w-full justify-start items-center pt-4">
                                     <button onClick={(e) => {
   e.stopPropagation();
-  router.push(`/templatesView/${templete._id}`);
+  router.push(`/templates/template/${templete._id}`);
 }} className="px-8 py-[6px] cursor-pointer border-t border-l border-r border-neutral-800 rounded-lg whitespace-nowrap font-sans font-medium text-sm text-neutral-200 dark:text-neutral-200 bg-gradient-to-t from-[#262626] to-[#525252] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex gap-2 items-center">View Template <span className="text-lg"><HiArrowNarrowRight /></span> </button>
                                 </div>
                                 
                             </div>
                             <div onClick={(e) => {
   e.stopPropagation();
-  router.push(`/templatesView/${templete._id}`);
+  router.push(`/templates/template/${templete._id}`);
 }} className="cursor-pointer xl:w-[70%] lg:w-[60%] md:w-[50%] px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 mask-l-from-80% to-100% p-14 relative group transition duration-300">
                                 <div className="z-40 hidden absolute top-1 right-1 group-hover:block transition duration-300">
                                     <HoverExternalIcon />
