@@ -5,6 +5,9 @@ import { TbBrandAuth0 } from "react-icons/tb";
 import { LuFigma } from "react-icons/lu";
 import { PiCubeDuotone } from "react-icons/pi";
 import { RiTeamLine } from "react-icons/ri";
+import { BsPersonWorkspace } from "react-icons/bs";
+import { LuMessageCircleWarning } from "react-icons/lu";
+import { LiaBlogSolid } from "react-icons/lia";
 interface IMAIN_PAGE_SERCHING {
     suggesstion: string,
     suggesstion_to: string,
@@ -55,17 +58,17 @@ export const MAIN_PAGE_SEARCHING_CONFIG:IMAIN_PAGE_SERCHING[] = [
      {
         suggesstion: "Custom Work",
         suggesstion_to: "/custom-work",
-        Icon: RiTeamLine
+        Icon: BsPersonWorkspace
     },
     {
         suggesstion: "Blogs",
         suggesstion_to: "/blogs",
-        Icon: RiTeamLine
+        Icon: LiaBlogSolid
     },
      {
         suggesstion: "About Product",
         suggesstion_to: "/about",
-        Icon: RiTeamLine
+        Icon: LuMessageCircleWarning
     },
     {
         suggesstion: "Team",
