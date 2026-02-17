@@ -56,13 +56,19 @@ function ComponentsBento() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, }}
             style={{ translateZ: 100 }}
-             className='text-center font-sans font-bold text-2xl lg:text-4xl text-neutral-800 dark:text-neutral-200 pb-3'>Explore 10+ Premium Lokalhost.io Components</motion.h1>
+             className='text-center font-sans font-bold text-2xl lg:text-4xl text-neutral-800 dark:text-neutral-200 pb-3 tracking-tight'>
+              Explore 10+ Premium{" "}
+              <span className="font-mono text-neutral-500 dark:text-neutral-500">Lokalhost.io</span>{" "}
+              Components
+             </motion.h1>
             <motion.p
              initial={{ opacity: 0, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, }}
             style={{ translateZ: 100 }}
-             className='text-center text-sm lg:text-[17px] font-sans font-medium text-neutral-700 dark:text-neutral-300 mx-auto lg:w-1/2 px-5'>Quickly build stunning web interfaces - from landing pages and marketing sites to e-commerce and dashboards with unlimited theme options.</motion.p>
+             className='text-center text-sm lg:text-[17px] font-sans font-medium text-neutral-500 dark:text-neutral-400 mx-auto lg:w-1/2 px-5 leading-relaxed'>
+              Quickly build stunning web interfaces - from landing pages and marketing sites to e-commerce and dashboards with unlimited theme options.
+             </motion.p>
         </div>
         <div className="mt-10 border-l relative h-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-0 lg:gap-0 border-b border-r   border-dashed px-px">
           
