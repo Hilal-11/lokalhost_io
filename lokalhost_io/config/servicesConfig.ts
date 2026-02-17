@@ -36,7 +36,7 @@ export const services: Services[]  = [
     service: "Application Templates",
     about: "Full-scale app starters built with industry best practices.",
     icon: IoPhonePortraitOutline,
-    link: "/mobile-apps"
+    link: "/mobile"
   },
   {
     id: 7,
@@ -57,7 +57,7 @@ export const services: Services[]  = [
     service: "Mobile UI Elements",
     about: "Beautiful, reusable UI components for mobile apps.",
     icon: PiCubeDuotone,
-    link: "/mobile-apps"
+    link: "/mobile"
   },
   {
     id: 5,

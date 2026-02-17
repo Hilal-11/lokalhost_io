@@ -239,7 +239,7 @@ const SKELETONS = [
 // ─── Main component ───────────────────────────────────────────────────────────
 function ComponentsShowcase() {
   return (
-    <div className="w-full pt-20 max-h-[1024px] lg:max-h-[870px] overflow-hidden relative pb-16">
+    <div className="w-full container max-w-[1580px] pt-20 max-h-[1024px] lg:max-h-[870px] overflow-hidden relative pb-16">
       <div className="w-full">
 
         {/* ── Header ── */}
@@ -689,7 +689,7 @@ const TEMPLATES = [
 // ─── Main export ──────────────────────────────────────────────────────────────
 export const TemplatesBlockList = () => {
   return (
-    <div className="w-full pt-20 max-h-[1024px] lg:max-h-[870px] overflow-hidden relative pb-16">
+    <div className="w-full container max-w-[1580px] pt-20 max-h-[1024px] lg:max-h-[870px] overflow-hidden relative pb-16">
       <div className="w-full">
 
         {/* ── Header ── */}
