@@ -7,17 +7,22 @@ import { LuFigma } from 'react-icons/lu';
 export default function FeaturesBento() {
   return (
     <div className='w-full h-full'>
-        <div className='w-full mx-auto pt-8 lg:pt-16 relative pb-10'>
+    <div className='w-full mx-auto pt-8 lg:pt-16 relative pb-10'>
             <motion.h1
             initial={{ opacity: 0, y: 110 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, }}
-            className='z-20  text-center font-sans font-bold text-3xl lg:text-4xl text-neutral-800 dark:text-neutral-200 pb-3 lg:w-2/3 mx-auto'>The Ultimate Figma UI Design kits for Websites and Mobile Apps by lokalhost.io</motion.h1>
+            className='z-20 text-center font-sans font-bold text-3xl lg:text-4xl text-neutral-800 dark:text-neutral-200 pb-3 lg:w-2/3 mx-auto tracking-tight'>
+              The Ultimate Figma UI Design kits for Websites and Mobile Apps by{" "}
+              <span className="font-mono text-neutral-500 dark:text-neutral-500">lokalhost.io</span>
+            </motion.h1>
             <motion.p
             initial={{ opacity: 0, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, }}
-            className='pt-6 pb-6 px-8 lg:px-2 z-20 text-center text-sm lg:text-[17px] font-sans font-medium text-neutral-700 dark:text-neutral-300 lg:w-1/2 mx-auto'>Lokalhost.io Figma offers 100+ component variants, 70+ blocks, 20+ templates, 9+ dashboard and 4 themes and more with an intuitive drag-and-drop page builder.</motion.p>
+            className='pt-6 pb-6 px-8 lg:px-2 z-20 text-center text-sm lg:text-[17px] font-sans font-medium text-neutral-500 dark:text-neutral-400 lg:w-1/2 mx-auto leading-relaxed'>
+              Lokalhost.io Figma offers 100+ component variants, 70+ blocks, 20+ templates, 9+ dashboard and 4 themes and more with an intuitive drag-and-drop page builder.
+            </motion.p>
             <div className="flex flex-wrap justify-center items-center pt-3 pb-5 gap-3 lg:gap-6">
               <button className="border-1 border-orange-400 cursor-pointer px-8 py-[9px] rounded-lg text-sm font-sans font-medium text-neutral-800 bg-gradient-to-r from-[#F6D5F7] to-[#FBE9D7] shadow-sm flex items-center justify-center gap-2"><span><LuFigma /></span> Get Full Design Access</button>
               <button className="px-8 py-[10px] cursor-pointer border-t border-l border-r border-neutral-800 rounded-lg whitespace-nowrap font-sans font-medium text-sm text-neutral-200 dark:text-neutral-200 bg-gradient-to-t from-[#262626] to-[#525252] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]">Get All Premium Templates</button>
