@@ -7,7 +7,6 @@
     "pages": [
         "index",
         "cli",
-        "components",
         "---Components---",
         "components/buttons",
         "components/bentos",
