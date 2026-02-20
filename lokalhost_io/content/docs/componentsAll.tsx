@@ -24,9 +24,6 @@
 
 "use client"
 import React from 'react'
-import { BgLightGrid1, BgLightGrid2 , BgDarkGradient1 , BgLightGradient1 , BgLightGradient2 , BgLightGradient3, BgLightGradient4, BgLightGradient6, BgLightGradient5, BgDarkGradient2, BgDarkGradient3 } from '@/components/BackgroundPatterns/backgrounds';
-import Link from "next/link";
-import { HiOutlineExternalLink } from "react-icons/hi";
 import { cn } from "@/lib/utils";
 
 // ─── Individual skeleton placeholders — each hints at a different component ───
