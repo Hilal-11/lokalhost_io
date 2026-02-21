@@ -1,0 +1,90 @@
+{
+    "title": "Lokallhost AI",
+    "description": "AI-native component library",
+    "icon": "BrainCircuit",
+    "root": true,
+    "defaultOpen": true,
+    "pages": [
+        "index",
+        "cli",
+         "---Templates---",
+        "/components/templates/templates",
+        
+        "---AI Landing---",
+        "/components/landing/ai-hero-section",
+        "/components/landing/demo-chat-window",
+        "/components/landing/feature-bento-grid",
+        "/components/landing/benchmark-comparison-table",
+        "/components/landing/integration-logos-strip",
+        "/components/landing/pricing-comparison",
+        "/components/landing/testimonial-chat-bubble",
+        "/components/landing/waitlist-form",
+        "/components/landing/enterprise-cta",
+
+        "---Chat & Messaging---",
+        "/components/chat/chat-window",
+        "/components/chat/message-bubble-user",      
+        "/components/chat/message-bubble-ai",        
+        "/components/chat/streaming-text",           
+        "/components/chat/typing-indicator",         
+        "/components/chat/chat-input-bar",           
+        "/components/chat/empty-chat-state",         
+        "/components/chat/conversation-starters",    
+        "/components/chat/message-actions-toolbar",  
+        "/components/chat/chat-sidebar",             
+
+        "---Model & Params---",
+        "/components/model/model-selector",         
+        "/components/model/model-badge",            
+        "/components/model/model-context-window-bar",
+        "/components/model/temperature-slider",    
+        "/components/model/max-tokens-input",      
+        "/components/model/params-panel",          
+        "/components/model/params-preset-picker",
+
+        
+        "---AI Authentication UI---",
+        "/components/auth/login-form",
+        "/components/auth/register-form",
+        "/components/auth/forgot-password-form",
+        "/components/auth/otp-input",
+        "/components/auth/magic-link-form",
+        "/components/auth/social-auth-buttons",
+        "/components/auth/api-key-gate",
+        "/components/auth/usage-limit-gate",
+        "/components/auth/plan-gate",
+        "/components/auth/waitlist-gate",
+        "/components/auth/invite-code-input",
+        "/components/auth/profile-form",
+
+
+        "---RAG & Search---",
+        "/components/rag/semantic-search-bar",
+        "/components/rag/search-result-card",
+        "/components/rag/source-citation-inline",
+        "/components/rag/source-panel-sidebar",
+
+
+        "---Image Generation---",
+        "/components/image-gen/image-prompt-input",
+        "/components/image-gen/style-preset-picker",
+        "/components/image-gen/aspect-ratio-selector",
+        "/components/image-gen/image-output-card",
+        "/components/image-gen/image-grid-output",
+        "/components/image-gen/generation-progress-bar",
+  
+
+        "---Voice & Audio---",
+        "/components/voice/voice-input-button",
+        "/components/voice/voice-waveform-visualizer",
+        "/components/voice/voice-transcript-display",
+        "/components/voice/tts-audio-player",
+        "/components/voice/tts-voice-selector",
+
+        "---Feedback & Evals---",
+        "/components/evals/thumbs-up-down",
+        "/components/evals/feedback-modal",
+        "/components/evals/confidence-score-bar"
+  
+    ]
+}
