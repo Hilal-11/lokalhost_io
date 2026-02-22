@@ -13,6 +13,7 @@ interface UseTagsProps {
     defaultColors?: string[];
 }
 
+
 export function useTags({
     onChange,
     defaultTags = [],

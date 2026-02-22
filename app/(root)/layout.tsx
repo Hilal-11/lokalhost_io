@@ -21,7 +21,6 @@ export default async function HomeLayout({
             <main className="relative w-full pt-0 md:pt-0 bg-white dark:bg-black">
                 {children}
             </main>
-
         </div>
     );
 }

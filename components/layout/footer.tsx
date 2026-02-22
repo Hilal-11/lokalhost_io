@@ -91,7 +91,7 @@ function Footer({footerConfig}: {footerConfig: FooterConfig}) {
   };
 
   return (
-    <div className='relative h-auto w-[100%] bg-neutral-100 dark:bg-neutral-900 border-t border-neutral-400 dark:border-neutral-600 mt-20'>
+    <div className='relative h-auto w-[100%] bg-neutral-100 dark:bg-neutral-900 border-t border-neutral-400 dark:border-neutral-600'>
 
     <StripedPattern
       direction="right"
