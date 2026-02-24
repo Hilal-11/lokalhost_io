@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 const Bar = ({ w = "w-full", h = "h-1.5", bg = "bg-neutral-200 dark:bg-neutral-800", extra = "" }) => (
   <div className={cn("rounded-full", w, h, bg, extra)} />
 );
-const Block = ({ className = "" }: { className?: string }) => (
-  <div className={cn("rounded-lg", className)} />
+const Block = ({ className = "", children }: { className?: string; children?: React.ReactNode }) => (
+  <div className={cn("rounded-lg", className)}>{children}</div>
 );
 
 // ═══════════════════════════════════════════════════════════════════════════════
