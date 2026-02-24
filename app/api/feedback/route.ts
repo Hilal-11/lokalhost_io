@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Feedback from "@/lib/models/feedback";
 import dbConnect from "@/lib/dbConnect";
-
+export const dynamic = 'force-dynamic'; 
 export const POST = async (request: Request) => {
   try {
     await dbConnect();

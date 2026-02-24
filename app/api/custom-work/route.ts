@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { validateCustomWorkData } from '@/lib/definitions';
 import CustomWork from '@/lib/models/custom-work';
 import dbConnect from "@/lib/dbConnect";
-
+export const dynamic = 'force-dynamic'; 
 export async function POST(request: NextRequest) {
   try {
     await dbConnect();
