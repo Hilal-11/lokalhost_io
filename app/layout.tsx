@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import fs from 'fs';        // ← add this
+import path from 'path'; 
 import GoToTop from '@/components/GoToTop';
 import Providers from "./provider";
 import { FeedbackMobile } from "@/components/GoToTop";
@@ -41,19 +43,11 @@ interface FooterConfig {
 }
 
 
-async function getFooterConfigData(): Promise<FooterConfig> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/config/footerConfig.json`,
-    {
-      cache: 'force-cache', // ✅ cached forever (until rebuild)
-    }
-  );
-  if (!res.ok) {
-    throw new Error('Failed to fetch Footer config');
-  }
-  return res.json();
+function getFooterConfigData(): FooterConfig {
+  const filePath = path.join(process.cwd(), 'public', 'config', 'footerConfig.json');
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  return JSON.parse(fileContents);
 }
-
 
 export default async function RootLayout({
   children,
