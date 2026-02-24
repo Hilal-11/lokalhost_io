@@ -434,7 +434,7 @@ import { HiArrowLeft } from 'react-icons/hi';
 interface StripedPatternProps extends React.SVGProps<SVGSVGElement> {
   direction?: "left" | "right"
 }
-export function StripedPattern2({
+function StripedPattern2({
   direction = "left",
   className,
   width = 10,
