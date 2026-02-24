@@ -4,7 +4,7 @@ import { IoMdSearch } from "react-icons/io";
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { InputGroup, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
-import { AnimatedGridPatternDemo } from '../designs/page';
+import { AnimatedGridPatternDemo } from '../designs/AnimatedGridPattern';
 import { LuFigma } from "react-icons/lu";
 import AnnoncementBadge from "@/components/landing/AnnoncementBadge";
 import Image from "next/image";
