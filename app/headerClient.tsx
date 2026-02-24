@@ -7,7 +7,6 @@ import NProgress from 'nprogress'
 
 
 import { PiTerminalFill } from "react-icons/pi";
-import { PiCrownFill } from "react-icons/pi";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { IoMenu } from "react-icons/io5";
 import { RiCloseFill } from "react-icons/ri";
