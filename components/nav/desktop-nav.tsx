@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import type { NavSection } from "@/config/navigation";
-
+import { NavSection } from "@/config/navigation";
 interface DesktopNavProps {
   sections: NavSection[];
   pathname: string;
