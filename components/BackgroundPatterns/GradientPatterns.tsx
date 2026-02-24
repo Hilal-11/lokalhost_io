@@ -3,16 +3,15 @@ import { BACKGROUND_OPTIONS } from '@/components/BackgroundPatterns/backgrounds'
 import Playground from '@/components/BackgroundPatterns/playground';
 import { useState } from 'react';
 import { Toaster } from 'sonner';
-import Footer from '@/components/layout/footer';
+import { useTheme } from 'next-themes'; // ✅ use next-themes
+
 function AllGradientPatterns() {
   const [preview, setPreview] = useState<null | React.ReactNode>(null);
-  const [theme, setTheme] = useState<"light" | "dark">(
-  (localStorage.getItem("theme") as "light" | "dark") || "light"
-);
+  const { resolvedTheme, setTheme } = useTheme(); // ✅ replaces localStorage
+  const theme = (resolvedTheme as "light" | "dark") || "light";
 
   return (
     <>
-    
       <Toaster position='top-right'/>
       <div className={`${theme}`}>
         <div className="fixed left-0 top-0 -z-10 h-full w-full">
@@ -23,19 +22,17 @@ function AllGradientPatterns() {
             <div />
           </header>
           <div className="px-0 pb-20 pt-0">
-              <div className="grid grid-cols-1 gap-6 pb-6 md:grid-cols-2 lg:grid-cols-2">
-              {BACKGROUND_OPTIONS.map((background, index) => {
-                return (
-                  <Playground
-                    key={index}
-                    setPreview={setPreview}
-                    theme={"light"}
-                    setTheme={setTheme}
-                  >
-                    {background.component}
-                  </Playground>
-                );
-              })}
+            <div className="grid grid-cols-1 gap-6 pb-6 md:grid-cols-2 lg:grid-cols-2">
+              {BACKGROUND_OPTIONS.map((background, index) => (
+                <Playground
+                  key={index}
+                  setPreview={setPreview}
+                  theme={theme}
+                  setTheme={setTheme}
+                >
+                  {background.component}
+                </Playground>
+              ))}
             </div>
           </div>
         </div>
@@ -44,7 +41,4 @@ function AllGradientPatterns() {
   );
 }
 
-
-
-
-export default AllGradientPatterns
+export default AllGradientPatterns;
