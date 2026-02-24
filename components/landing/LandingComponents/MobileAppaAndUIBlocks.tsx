@@ -9,7 +9,20 @@ import { cn } from "@/lib/utils";
 const B = ({ w = "w-full", h = "h-1.5", bg = "bg-neutral-200 dark:bg-neutral-800", cls = "" }) => (
   <div className={cn("rounded-full", w, h, bg, cls)} />
 );
-const Blk = ({ className = "" }) => <div className={cn("rounded-lg", className)} />;
+const Blk = ({ 
+  className = "", 
+  children, 
+  style 
+}: { 
+  className?: string; 
+  children?: React.ReactNode; 
+  style?: React.CSSProperties 
+}) => (
+  <div className={cn("rounded-lg", className)} style={style}>
+    {children}
+  </div>
+);
+
 
 // ─── Mini phone wrapper ───────────────────────────────────────────────────────
 function Phone({ w = 68, h = 120, children, className = "" }: { w?: number; h?: number; children?: React.ReactNode; className?: string }) {
