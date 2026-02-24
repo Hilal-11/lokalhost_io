@@ -4,7 +4,6 @@ import { PiTerminalFill } from "react-icons/pi";
 import Link from 'next/link';
 import { motion } from "motion/react"
 import { StripedPattern } from '../magicui/striped-pattern';
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import NProgress from 'nprogress';
 import {SoonV1} from '../landing/MicroComponents/ComingSoon';
 
