@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import fs from 'fs';        // ← add this
-import path from 'path'; 
 import GoToTop from '@/components/GoToTop';
 import Providers from "./provider";
 import { FeedbackMobile } from "@/components/GoToTop";
@@ -24,37 +22,13 @@ export const metadata: Metadata = {
   description: "component library, web templates, mobile apps, designs and patterns",
 };
 
-interface Service {
-  service: string;
-  navigateTo: string;
-}
 
-interface FooterServicesItem {
-  id: string;
-  service_title: string;
-  services: Service[];
-}
-
-interface FooterConfig {
-  footer_heading: string;
-  creator_name: string;
-  link: string;
-  footerServicesItems: FooterServicesItem[];
-}
-
-
-function getFooterConfigData(): FooterConfig {
-  const filePath = path.join(process.cwd(), 'public', 'config', 'footerConfig.json');
-  const fileContents = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(fileContents);
-}
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const footerConfigData = await getFooterConfigData();
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -67,7 +41,7 @@ export default async function RootLayout({
           <TopLoader />
           <Header />
           {children}
-          <Footer footerConfig={footerConfigData}/>
+          <Footer/>
         </Providers>
       </body>
     </html>

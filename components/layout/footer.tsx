@@ -6,7 +6,7 @@ import { motion } from "motion/react"
 import { StripedPattern } from '../magicui/striped-pattern';
 import NProgress from 'nprogress';
 import {SoonV1} from '../landing/MicroComponents/ComingSoon';
-
+import footerConfig from "@/public/config/footerConfig.json"
 
 import {
   SiGithub,
@@ -68,7 +68,7 @@ const SOCIAL_LINKS = [
   },
 ];
 
-function Footer({footerConfig}: {footerConfig: FooterConfig}) {
+function Footer() {
 
     const handleLinkClick = () => {
       NProgress.start()
