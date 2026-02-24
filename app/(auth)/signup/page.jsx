@@ -1,179 +1,332 @@
 "use client"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
+
 import { FaGoogle } from "react-icons/fa6";
-import { useState } from "react"
-import PrefetchLink from "@/components/pre-fetching"
+import { useState } from "react";
+import PrefetchLink from "@/components/pre-fetching";
 import { SignupFormSchema } from "@/lib/definitions";
 import { useRouter } from "next/navigation";
-import { Spinner } from "@/components/ui/spinner"
 import { PiTerminalFill } from "react-icons/pi";
-
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import { Spinner } from "@/components/ui/spinner";
 
 export const dynamic = "force-static";
 
+// ── reusable field block ─────────────────────────────────────────────
+const Field = ({ label, id, error, children }) => (
+  <div className="flex flex-col gap-1.5">
 
-const  Signup = () => {
+    {/* label */}
+    <label
+      htmlFor={id}
+      className="text-sm font-medium text-neutral-700 dark:text-neutral-300 pl-0.5 select-none"
+    >
+      {label}
+    </label>
 
-  const [invalidLoginCradentials , setInvalidLoginCradentials] = useState({
-    username: "",
-    email: "",
-    password: ""
-  })
-  const [loading , setLoading] = useState(false);
-  const [formData , setFormData] = useState({
-    username: "",
-    email: "",
-    password: ""
-  })
-  const handleFormChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
+    {/* input slot */}
+    {children}
 
+    {/* error */}
+    {error && (
+      <p className="flex items-center gap-1.5 text-[0.72rem] font-medium
+        text-red-500 dark:text-red-400 pl-0.5">
+        <span className="inline-flex items-center justify-center w-3.5 h-3.5
+          rounded-full bg-red-500/15 text-[9px] font-bold shrink-0 leading-none">
+          !
+        </span>
+        {Array.isArray(error) ? error[0] : error}
+      </p>
+    )}
+  </div>
+);
+
+// ── main ─────────────────────────────────────────────────────────────
+const Signup = () => {
+  const [invalidCreds, setInvalidCreds] = useState({ username: "", email: "", password: "" });
+  const [loading, setLoading]           = useState(false);
+  const [formData, setFormData]         = useState({ username: "", email: "", password: "" });
+  const [showPw, setShowPw]             = useState(false);
+  const [errors, setErrors]             = useState({ username: "", email: "", password: "" });
+  const router = useRouter();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((p) => ({ ...p, [name]: value }));
+  };
 
   const handleFocus = (e) => {
-      const { name } = e.target;
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-      setInvalidLoginCradentials((prev) => ({
-        ...prev,
-        [name]: "",
-      }))
-    }
+    const { name } = e.target;
+    setErrors((p)       => ({ ...p, [name]: "" }));
+    setInvalidCreds((p) => ({ ...p, [name]: "" }));
+  };
 
-
-  const router = useRouter();
-  const [errors , setErrors] = useState({
-    username: "",
-    email: "",
-    password: ""
-  })
-  const handleFormSubmittion = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    const validatedFields = SignupFormSchema.safeParse({
-      username: formData?.username,
-      email: formData?.email,
-      password: formData?.password,
-    });
-    // If any form fields are invalid, return early
-    if (!validatedFields.success) {
+    const validated = SignupFormSchema.safeParse(formData);
+    if (!validated.success) {
       setLoading(false);
-      setErrors(validatedFields.error.flatten().fieldErrors)
+      setErrors(validated.error.flatten().fieldErrors);
       return;
     }
-    // api call for backend to entry in databse
-
-    try{
-        const response = await fetch(`/api/users/signup` , {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(validatedFields.data)
-        })
-        
-        if(!response.ok) {
-            const data = await response.json();
-            setInvalidLoginCradentials((prev) => ({
-              ...prev,
-              username: data?.message,
-            }));
-            setInvalidLoginCradentials((prev) => ({
-              ...prev,
-              email: data?.message,
-            }));
-            setInvalidLoginCradentials((prev) => ({
-              ...prev,
-              password: data?.message,
-            }));
-            return;
-          }
-          router.push("/login")
-
-      }catch(error) {
-        console.log("Something went wrong. Please try again.");
+    try {
+      const res = await fetch("/api/users/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validated.data),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setInvalidCreds({ username: data?.message, email: data?.message, password: data?.message });
+        return;
       }
-      finally {
-        setLoading(false);
-      }     
-  
-  }
+      router.push("/login");
+    } catch {
+      console.log("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const fieldError = (f) => errors?.[f] || invalidCreds?.[f];
 
+  // shared input base classes
+  const inputBase =
+    "w-full py-[13px] px-4 text-sm rounded-xl outline-none transition-all duration-150 " +
+    "bg-neutral-100 dark:bg-neutral-800/60 " +
+    "text-neutral-900 dark:text-neutral-100 " +
+    "placeholder:text-neutral-400 dark:placeholder:text-neutral-600 " +
+    "border ";
+
+  const inputNormal =
+    "border-neutral-200 dark:border-neutral-700/70 " +
+    "hover:border-neutral-300 dark:hover:border-neutral-600 " +
+    "focus:border-neutral-400 dark:focus:border-neutral-500 " +
+    "focus:ring-2 focus:ring-neutral-400/10 dark:focus:ring-neutral-500/10 ";
+
+  const inputError =
+    "border-red-400 dark:border-red-500/60 " +
+    "ring-2 ring-red-400/10 dark:ring-red-500/10 ";
 
   return (
-   <div className="w-full h-auto">
-    <div className="flex flex-col w-full h-svh relative justify-center items-start lg:justify-center lg:items-center md:justify-center md:items-center">
-      
-    <div className="dark:hidden absolute top-0 z-[-2] h-svh w-screen flex rotate-180 transform bg-white bg-[radial-gradient(60%_120%_at_50%_50%,hsla(0,0%,100%,0)_0,rgba(252,205,238,.5)_100%)]"></div>
+    <div className="relative min-h-svh w-full flex items-center justify-center
+      overflow-hidden bg-neutral-50 dark:bg-neutral-950">
 
-      <div className="w-svw h-[100%] lg:w-[460px] md:w-[460px] md:h-auto  lg:h-auto z-30 bg-neutral-50 dark:bg-neutral-900
-      shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] px-5 py-4 flex justify-center items-center md:rounded-xl lg:rounded-xl">
-        <form onSubmit={handleFormSubmittion} className="w-full">
-            {/* Brand Header Section */}
-            <div className="justify-center flex items-center gap-2 w-full pb-3">
-                <span className="text-white font-bold text-3xl"><PiTerminalFill /></span><h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">Lokalhost.io</h2>
-            </div>
+      {/* grid — light */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 dark:hidden"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(0,0,0,0.05) 1px,transparent 1px)," +
+            "linear-gradient(90deg,rgba(0,0,0,0.05) 1px,transparent 1px)",
+          backgroundSize: "44px 44px",
+          maskImage:
+            "radial-gradient(ellipse 90% 90% at 50% 50%,black 10%,transparent 100%)",
+        }}
+      />
+      {/* grid — dark */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 hidden dark:block"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.035) 1px,transparent 1px)," +
+            "linear-gradient(90deg,rgba(255,255,255,0.035) 1px,transparent 1px)",
+          backgroundSize: "44px 44px",
+          maskImage:
+            "radial-gradient(ellipse 90% 90% at 50% 50%,black 10%,transparent 100%)",
+        }}
+      />
 
-            {/* Main Heading */}
-            <h1 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">Create Account</h1>
-            <p className="font-sans font-medium text-sm pl-1.5 text-neutral-700 dark:text-neutral-300 pb-3">Sign up to start building amazing projects</p>
+      {/* ── card ── */}
+      <div
+        className="
+          relative z-10 w-full max-w-[460px] mx-4 my-8
+          bg-white dark:bg-neutral-900
+          border border-neutral-200/80 dark:border-neutral-800
+          rounded-2xl
+          shadow-[0_2px_4px_rgba(0,0,0,0.04),0_12px_32px_rgba(0,0,0,0.08),0_40px_64px_rgba(0,0,0,0.05)]
+          dark:shadow-[0_2px_8px_rgba(0,0,0,0.4),0_24px_48px_rgba(0,0,0,0.5)]
+          px-8 py-9
+        "
+        style={{ animation: "cardIn 0.55s cubic-bezier(0.16,1,0.3,1) both" }}
+      >
+        <style>{`
+          @keyframes cardIn {
+            from { opacity:0; transform:translateY(18px) scale(0.984); }
+            to   { opacity:1; transform:translateY(0)    scale(1); }
+          }
+          @keyframes fadeUp {
+            from { opacity:0; transform:translateY(8px); }
+            to   { opacity:1; transform:translateY(0); }
+          }
+          .fu1 { animation:fadeUp .4s .06s both }
+          .fu2 { animation:fadeUp .4s .11s both }
+          .fu3 { animation:fadeUp .4s .16s both }
+          .fu4 { animation:fadeUp .4s .20s both }
+          .fu5 { animation:fadeUp .4s .24s both }
+          .fu6 { animation:fadeUp .4s .28s both }
+          .fu7 { animation:fadeUp .4s .32s both }
+          .fu8 { animation:fadeUp .4s .36s both }
+          .fu9 { animation:fadeUp .4s .40s both }
+        `}</style>
 
-            <div className="mt-3">
-                <Label className="text-[15px] font-sans font-medium pb-1 px-1" htmlFor="username">Username</Label>
-                <Input className="py-5" onChange={handleFormChange} onFocus={handleFocus} value={formData.username} id="username" name="username" type="text" placeholder="Enter username:- "/>
-                <div className='lg:w-[360px] text-red-600 font-sans font-medium px-1 text-[11px] py-px '>{errors?.username}</div>
-                <div className='lg:w-[360px] text-red-600 font-sans font-medium px-1 text-[11px] py-px '>{invalidLoginCradentials?.username}</div>
-            </div>
-            <div className="mt-0">
-                <Label className="text-[15px] font-sans font-medium pb-1 px-1" htmlFor="email">Email</Label>
-                <Input className="py-5" onChange={handleFormChange} onFocus={handleFocus} value={formData.email} id="email" name="email" type="email" placeholder="Enter email ID:- "/>
-                <div className='lg:w-[360px] text-red-600 font-sans font-medium px-1 text-[11px] py-px '>{errors?.email}</div>
-                <div className='lg:w-[360px] text-red-600 font-sans font-medium px-1 text-[11px] py-px '>{invalidLoginCradentials?.email}</div>
-            </div>
-            <div className="mt-3">
-                <Label className="text-[15px] font-sans font-medium pb-1 px-1" htmlFor="password">Password</Label>
-                <Input className="py-5" onChange={handleFormChange} onFocus={handleFocus} value={formData.password} id="password" name="password" type="password" placeholder="Enter Password:-"/>
-                <div className='lg:w-[360px] text-red-600 font-sans font-medium px-1 text-[11px] py-px '>{errors?.password}</div>
-                <div className='lg:w-[360px] text-red-600 font-sans font-medium px-1 text-[11px] py-px '>{invalidLoginCradentials?.password}</div>
-            </div>
-             <div className="mt-1 flex justify-between w-full px-2 text-sm font-medium text-neutral-600">
-                <div className="flex gap-2 items-center justify-center">
-                  <input type="checkbox" id="rememberMe" name="rememberMe" />
-                  <p className="dark:text-neutral-300">Remember Me</p>
-                </div>
-                <div><p className="dark:text-neutral-300">Forget password?</p></div>
-            </div>
-            <div className="mt-8">
-                <Button className="w-full cursor-pointer font-sans font-medium px-10 py-6 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] text-md" type="submit" disabled={loading}>{loading && <div><Spinner/></div>}  Create Account</Button>
-            </div>
+        {/* ── brand ── */}
+        <div className="fu1 flex items-center gap-3 mb-7">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0
+            bg-neutral-900 dark:bg-neutral-100
+            text-white dark:text-neutral-900 text-[16px]
+            shadow-sm">
+            <PiTerminalFill />
+          </div>
+          <span className="font-mono text-[1rem] font-semibold tracking-tight
+            text-neutral-900 dark:text-neutral-100">
+            lokal<span className="text-neutral-400 dark:text-neutral-600">host</span>.io
+          </span>
+        </div>
 
-            <div className="mt-6 mb-6 flex justify-between items-center gap-3 px-4">
-              <div className="border border-gray-300 w-full h-px"></div>
-              <span className="font-medium font-sans text-sm">OR</span>
-              <div className="border border-gray-300 w-full h-px"></div>
-            </div>
-            <div className="mt-3 flex gap-1 w-full">
-                <Button className="w-full cursor-pointer font-sans font-medium px-10 py-6 rounded-md bg-white text-neutral-800 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] text-md hover:bg-none" type="submit"><span className="text-2xl"><FaGoogle  /></span>Google</Button>
-            </div>
+        {/* ── heading ── */}
+        <div className="fu2 mb-6">
+          <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+            Create your account
+          </h1>
+          <p className="text-sm text-neutral-500 dark:text-neutral-500 mt-1">
+            No credit card required. Start building today.
+          </p>
+        </div>
 
-            <div className="mt-4 text-center text-sm mx-auto">
-                <p >Already have an account? <PrefetchLink href="/login" className="font-bold text-neutral-500 pl-1 underline">Login</PrefetchLink></p>
-            </div>
+        {/* ── form ── */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+
+          {/* username */}
+          <div className="fu3">
+            <Field label="Username" id="username" error={fieldError("username")}>
+              <input
+                id="username" name="username" type="text"
+                placeholder="Enter username"
+                value={formData.username}
+                onChange={handleChange}
+                onFocus={handleFocus}
+                autoComplete="username"
+                className={inputBase + (fieldError("username") ? inputError : inputNormal)}
+              />
+            </Field>
+          </div>
+
+          {/* email */}
+          <div className="fu4">
+            <Field label="Email" id="email" error={fieldError("email")}>
+              <input
+                id="email" name="email" type="email"
+                placeholder="Enter email ID"
+                value={formData.email}
+                onChange={handleChange}
+                onFocus={handleFocus}
+                autoComplete="email"
+                className={inputBase + (fieldError("email") ? inputError : inputNormal)}
+              />
+            </Field>
+          </div>
+
+          {/* password */}
+          <div className="fu5">
+            <Field label="Password" id="password" error={fieldError("password")}>
+              <div className="relative">
+                <input
+                  id="password" name="password"
+                  type={showPw ? "text" : "password"}
+                  placeholder="Enter password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  autoComplete="new-password"
+                  className={inputBase + (fieldError("password") ? inputError : inputNormal) + " pr-11"}
+                />
+                <button
+                  type="button" tabIndex={-1}
+                  onClick={() => setShowPw((v) => !v)}
+                  className="absolute inset-y-0 right-3.5 flex items-center
+                    text-neutral-400 hover:text-neutral-600
+                    dark:text-neutral-600 dark:hover:text-neutral-400
+                    transition-colors duration-150"
+                >
+                  {showPw ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+                </button>
+              </div>
+            </Field>
+          </div>
+
+          {/* ── submit ── */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="fu6 mt-1 w-full flex items-center justify-center gap-2.5
+              py-[13px] rounded-xl text-sm font-semibold tracking-tight
+              bg-neutral-900 dark:bg-neutral-100
+              text-white dark:text-neutral-900
+              shadow-[0_1px_2px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.1)]
+              hover:bg-neutral-700 dark:hover:bg-white
+              active:scale-[0.99]
+              hover:-translate-y-px active:translate-y-0
+              transition-all duration-150
+              disabled:opacity-50 disabled:cursor-not-allowed
+              disabled:hover:translate-y-0 disabled:active:scale-100"
+          >
+            {loading && <Spinner className="w-4 h-4 shrink-0" />}
+            {loading ? "Creating account…" : "Create Account →"}
+          </button>
+
+          {/* ── divider ── */}
+          <div className="fu7 flex items-center gap-3">
+            <span className="flex-1 h-px bg-neutral-200 dark:bg-neutral-800" />
+            <span className="text-[0.7rem] font-mono tracking-widest uppercase
+              text-neutral-400 dark:text-neutral-600 select-none px-1">
+              or
+            </span>
+            <span className="flex-1 h-px bg-neutral-200 dark:bg-neutral-800" />
+          </div>
+
+          {/* ── google ── */}
+          <button
+            type="button"
+            className="fu8 w-full flex items-center justify-center gap-2.5
+              py-[13px] rounded-xl text-sm font-medium
+              bg-white dark:bg-transparent
+              text-neutral-700 dark:text-neutral-300
+              border border-neutral-200 dark:border-neutral-800
+              hover:bg-neutral-50 dark:hover:bg-neutral-800/60
+              hover:border-neutral-300 dark:hover:border-neutral-700
+              shadow-[0_1px_2px_rgba(0,0,0,0.04)]
+              hover:-translate-y-px active:translate-y-0
+              transition-all duration-150"
+          >
+            <FaGoogle className="text-[#ea4335] text-[0.9rem] shrink-0" />
+            Continue with Google
+          </button>
 
         </form>
+
+        {/* ── footer ── */}
+        <p className="fu9 mt-6 text-center text-[0.8rem]
+          text-neutral-400 dark:text-neutral-600">
+          Already have an account?{" "}
+          <PrefetchLink
+            href="/login"
+            className="font-semibold
+              text-neutral-700 dark:text-neutral-300
+              underline underline-offset-2
+              decoration-neutral-300 dark:decoration-neutral-700
+              hover:text-neutral-900 dark:hover:text-neutral-100
+              hover:decoration-neutral-500 dark:hover:decoration-neutral-500
+              transition-colors duration-150"
+          >
+            Login
+          </PrefetchLink>
+        </p>
       </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default Signup
+export default Signup;
