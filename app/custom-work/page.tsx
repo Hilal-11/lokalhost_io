@@ -20,15 +20,27 @@ interface IResponse {
     serviceType: string
     timeline: string
   }
+interface IFormData {
+    name: string
+    email: string
+    company: string
+    phone: string
+    serviceType: string
+    projectDescription: string
+    timeline: string
+    referenceUrls: string
+    additionalInfo: string
+
+}
 function CustomWorkPage() {
   
-  const [selectedService, setSelectedService] = useState(null)
+  const [selectedService, setSelectedService] = useState<IServices | null>(null)
   const [selectedTimeline, setSelectedTimeline] = useState('')
   const [responseData , setResponseData] = useState<IResponse | null>(null)
   const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(1)
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IFormData>({
     name: '',
     email: '',
     company: '',
@@ -665,7 +677,7 @@ function CustomWorkPage() {
                             value={formData.projectDescription}
                             onChange={handleInputChange}
                             required
-                            rows="6"
+                            rows={6}
                             placeholder="Describe your project, goals, target audience, and any specific requirements..."
                             className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
                           />
@@ -718,7 +730,7 @@ function CustomWorkPage() {
                             name="referenceUrls"
                             value={formData.referenceUrls}
                             onChange={handleInputChange}
-                            rows="3"
+                            rows={3}
                             placeholder="Share links to websites, apps, or designs that inspire you (one per line)..."
                             className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
                           />
@@ -730,7 +742,7 @@ function CustomWorkPage() {
                             name="additionalInfo"
                             value={formData.additionalInfo}
                             onChange={handleInputChange}
-                            rows="4"
+                            rows={4}
                             placeholder="Any other details, specific requirements, or questions you have..."
                             className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
                           />
@@ -948,16 +960,17 @@ function CustomWorkPage() {
                           onClick={() => {
                             // Reset form or navigate to home
                             setStep(1)
-                            setFormData({
-                              name: '',
-                              email: '',
-                              company: '',
-                              phone: '',
-                              projectDescription: '',
-                              timeline: '',
-                              referenceUrls: '',
-                              additionalInfo: ''
-                            })
+                           setFormData({
+                            name: '', 
+                            email: '', 
+                            company: '', 
+                            phone: '',
+                            serviceType: '',
+                            projectDescription: '', 
+                            timeline: '',
+                            referenceUrls: '', 
+                            additionalInfo: ''
+                          })
                           }}
                           className="px-8 py-3 bg-gradient-to-r from-neutral-800 to-neutral-900 hover:from-neutral-700 hover:to-neutral-800 text-white font-sans font-semibold rounded-lg shadow-lg transition-all duration-200"
                         >
