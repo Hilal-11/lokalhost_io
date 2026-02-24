@@ -7,7 +7,6 @@ import { InputGroup, InputGroupButton, InputGroupInput } from "@/components/ui/i
 import { AnimatedGridPatternDemo } from '../designs/AnimatedGridPattern';
 import { LuFigma } from "react-icons/lu";
 import AnnoncementBadge from "@/components/landing/AnnoncementBadge";
-import Image from "next/image";
 import { HiArrowRight } from "react-icons/hi";
 import { PiDeviceMobileFill } from 'react-icons/pi';
 import { SiReact } from "react-icons/si";
@@ -22,10 +21,12 @@ function PhoneMockup({
   className,
   children,
   tilt = 0,
+  style,
 }: {
   className?: string;
   children?: React.ReactNode;
   tilt?: number;
+  style?: React.CSSProperties;
 }) {
   return (
     <div
