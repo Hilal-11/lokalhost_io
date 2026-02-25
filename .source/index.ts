@@ -1,4 +1,5 @@
 // @ts-nocheck -- skip type checking
+import * as meta_0 from "../content/docs/meta.json?collection=meta&hash=1768485949753"
 import * as docs_44 from "../content/docs/components/templates/templates.mdx?collection=docs&hash=1768485949753"
 import * as docs_43 from "../content/docs/components/model/params-preset-picker.mdx?collection=docs&hash=1768485949753"
 import * as docs_42 from "../content/docs/components/model/params-panel.mdx?collection=docs&hash=1768485949753"
@@ -44,7 +45,6 @@ import * as docs_3 from "../content/docs/components/buttons.mdx?collection=docs&
 import * as docs_2 from "../content/docs/components/bentos.mdx?collection=docs&hash=1768485949753"
 import * as docs_1 from "../content/docs/index.mdx?collection=docs&hash=1768485949753"
 import * as docs_0 from "../content/docs/cli.mdx?collection=docs&hash=1768485949753"
-import * as meta_0 from "../content/docs/meta.json?collection=meta&hash=1768485949753"
 import * as backgroundsmeta_0 from "../content/backgrounds/meta.json?collection=backgroundsmeta&hash=1768485949753"
 import * as backgrounds_28 from "../content/backgrounds/gradients/gradients.mdx?collection=backgrounds&hash=1768485949753"
 import * as backgrounds_27 from "../content/backgrounds/SpiralAnimationBackground.mdx?collection=backgrounds&hash=1768485949753"

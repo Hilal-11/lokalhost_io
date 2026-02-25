@@ -213,13 +213,13 @@ export function HeroSection() {
         <div className="mt-16 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
           <FeaturesBento />
         </div>
-        <div className="mt-16 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
+        <div className="mt-20 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
           <ComponentsBento/>
         </div>
-        <div className="mt-16 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
+        <div className="mt-20 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
           <TemplatesShowcaseBento/>
         </div>
-        <div className="mt-16 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
+        <div className="mt-20 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
           <DesignsBento />
         </div>
     </div>

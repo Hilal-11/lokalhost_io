@@ -38,25 +38,25 @@ interface FooterConfig {
 const SOCIAL_LINKS = [
   {
     label: "GitHub",
-    href: "https://github.com/yourusername",
+    href: "https://github.com/Hilal-11",
     icon: SiGithub,
     title: "Follow on GitHub",
   },
   {
     label: "LinkedIn",
-    href: "https://linkedin.com/in/yourusername",
+    href: "https://linkedin.com/in/hilal-ab5466347",
     icon: SiLinkedin,
     title: "Connect on LinkedIn",
   },
   {
     label: "Instagram",
-    href: "https://instagram.com/yourusername",
+    href: "https://instagram.com/hilal_11_n",
     icon: SiInstagram,
     title: "Follow on Instagram",
   },
   {
     label: "Email",
-    href: "mailto:hello@lokalhost.io",
+    href: "mailto:hilalahmadcodedev123@gmail.com",
     icon: MdEmail,
     title: "Send an email",
   },
