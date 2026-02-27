@@ -8,7 +8,7 @@ import Footer from "@/components/layout/footer";
 import TopLoader from '@/components/TopLoader'
 import Header from "./header";
 import { JsonLd } from "./jsonid";
-
+import { Analytics } from '@vercel/analytics/next';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -217,6 +217,7 @@ export default async function RootLayout({
           <div className="lg:hidden md:hidden flex"><FeedbackMobile /></div>
           <TopLoader />
           <Header />
+          <Analytics />
           {children}
           <Footer />
         </Providers>
