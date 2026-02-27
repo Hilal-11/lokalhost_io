@@ -1,4 +1,4 @@
-import { FAQ_A, FAQ_B, FAQ_C, FAQ_D } from "./FAQS";
+import { FAQ_A, FAQ_B, FAQ_C, FAQ_D , FAQ_E, FAQ_F , FAQ_G , FAQ_H   } from "./FAQS";
 import fs from 'fs';
 import path from 'path';
 
@@ -25,8 +25,8 @@ export const FinalMainFAQ = () => {
   const FAQItems = fetchFAQSConfig();
 
   return (
-    <div className='w-full h-full pt-8 lg:pt-20'>
-      <div className='w-full mx-auto py-20 pb-5 flex flex-col items-center justify-center'>
+    <div className='w-full h-full pt-8 lg:pt-10'>
+      <div className='w-full mx-auto py-20 pb-5 flex flex-col items-center justify-center px-20 '>
         <h1 className='text-center font-sans font-bold text-2xl lg:text-4xl text-neutral-800 dark:text-neutral-200 pb-2'>
           Frequently Asked Questions about Lokalhost.io
         </h1>
@@ -39,6 +39,10 @@ export const FinalMainFAQ = () => {
         <div>{FAQItems[1] && <FAQ_B faq={FAQItems[1]} />}</div>
         <div>{FAQItems[2] && <FAQ_C faq={FAQItems[2]} />}</div>
         <div>{FAQItems[3] && <FAQ_D faq={FAQItems[3]} />}</div>
+        <div>{FAQItems[4] && <FAQ_E faq={FAQItems[4]} />}</div>
+        <div>{FAQItems[5] && <FAQ_F faq={FAQItems[5]} />}</div>
+        <div>{FAQItems[6] && <FAQ_G faq={FAQItems[6]} />}</div>
+        <div>{FAQItems[7] && <FAQ_H faq={FAQItems[7]} />}</div>
       </div>
     </div>
   );

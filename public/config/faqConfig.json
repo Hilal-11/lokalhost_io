@@ -2,23 +2,35 @@
   "faqs": [
     {
       "id": "faq1",
-      "title": "Getting Started",
+      "title": "About Lokalhost.io",
       "questions": [
         {
-          "question": "What is Lokalhost.io?",
-          "answer": "Lokalhost.io is a platform providing developers and startups with ready-to-use templates, components, UI kits, and design resources."
+          "question": "What exactly is Lokalhost.io?",
+          "answer": "Lokalhost.io is a premium developer platform built for modern product teams, indie developers, and startups. We provide production-ready UI components, web templates, mobile UI kits, AI-ready design resources, Figma kits, auth boilerplates, and full custom development services — everything you need to ship faster without starting from scratch.",
+          "links": []
         },
         {
-          "question": "How do I create an account?",
-          "answer": "You can sign up using your email or social login options available on the registration page."
+          "question": "Who is Lokalhost.io built for?",
+          "answer": "Lokalhost.io is built for React and Next.js developers, Flutter and React Native mobile developers, startup founders building SaaS products, AI application developers, freelancers, and design engineers who want high-quality, production-ready resources. Whether you're a solo developer or a product team, our resources are designed to save you weeks of work.",
+          "links": []
         },
         {
-          "question": "Are the templates free to use?",
-          "answer": "We provide a mix of free and premium templates. Free templates can be used directly in your projects."
+          "question": "How is Lokalhost.io different from other component libraries like shadcn/ui, HeroUI, or Aceternity?",
+          "answer": "While libraries like shadcn/ui (https://ui.shadcn.com) and Aceternity UI (https://ui.aceternity.com) focus on components, Lokalhost.io is a full ecosystem. We combine UI components, full website templates, mobile UI kits, Figma design files, AI-focused UI resources, auth boilerplates, and custom development services — all in one place. You don't just get components; you get everything you need to ship a real product.",
+          "links": [
+            { "label": "shadcn/ui", "url": "https://ui.shadcn.com" },
+            { "label": "Aceternity UI", "url": "https://ui.aceternity.com" }
+          ]
         },
         {
-          "question": "Can I customize the templates?",
-          "answer": "Yes, all templates come with full customization support to match your project needs."
+          "question": "Is Lokalhost.io open source?",
+          "answer": "Our core UI components are free and open to use in personal and commercial projects. Premium templates, full project boilerplates, and Figma kits are available under our paid plans. We believe in giving developers a strong free tier while offering serious value in our premium offerings for teams that want to move even faster.",
+          "links": []
+        },
+        {
+          "question": "What technologies does Lokalhost.io support?",
+          "answer": "We primarily support React, Next.js, Tailwind CSS, Framer Motion, Radix UI, and shadcn/ui on the web side. For mobile, we support Flutter and React Native. Our Figma kits are compatible with Figma's latest component system. All resources are built with TypeScript and designed for modern full-stack development workflows.",
+          "links": []
         }
       ]
     },
@@ -27,64 +39,238 @@
       "title": "Components & UI Kits",
       "questions": [
         {
-          "question": "What are the components offered?",
-          "answer": "We provide functional and production-ready components like buttons, forms, dashboards, headers, and more."
+          "question": "What kinds of UI components does Lokalhost.io offer?",
+          "answer": "We offer 80+ production-ready components including animated hero sections, bento grids, pricing tables, testimonials, feature sections, navbars, footers, dashboards, modals, auth forms, waitlist pages, and more. All components are built with Tailwind CSS, Framer Motion for animations, and are fully dark mode compatible out of the box.",
+          "links": []
         },
         {
-          "question": "Are UI kits compatible with React?",
-          "answer": "Yes, all our UI kits are designed for React, Next.js, and modern frontend stacks."
+          "question": "How do I install components into my project?",
+          "answer": "You have two options. First, copy-paste: every component has a clean copy button — paste directly into your codebase and it's yours. Second, CLI install via our shadcn-compatible registry: run `npx shadcn@latest add @lokalhost/components` in your Next.js project. We recommend the CLI for faster setup. Full documentation is available at https://lokalhost.io/docs.",
+          "links": [
+            { "label": "CLI Documentation", "url": "https://lokalhost.io/docs" }
+          ]
         },
         {
-          "question": "How do I install components?",
-          "answer": "You can install components via our CLI or copy-paste them directly into your project."
+          "question": "Are the components compatible with shadcn/ui projects?",
+          "answer": "Yes. Our components are built on top of the shadcn/ui ecosystem and Radix UI primitives, so they integrate seamlessly into any existing shadcn/ui project. You can mix and match Lokalhost.io components with your existing shadcn components without any conflicts.",
+          "links": [
+            { "label": "shadcn/ui docs", "url": "https://ui.shadcn.com/docs" }
+          ]
         },
         {
-          "question": "Can I use components in commercial projects?",
-          "answer": "Yes, you have full ownership and can use the components in commercial and personal projects."
+          "question": "Do the components support dark mode?",
+          "answer": "Every single component on Lokalhost.io is built with full dark mode support using Tailwind CSS dark mode classes. We also support system preference detection. If your app uses next-themes (https://github.com/pacocoursey/next-themes), our components integrate with it perfectly.",
+          "links": [
+            { "label": "next-themes", "url": "https://github.com/pacocoursey/next-themes" }
+          ]
+        },
+        {
+          "question": "Can I use the components in commercial projects?",
+          "answer": "Yes, absolutely. Once you install or copy a component, the code is yours. You have full ownership to use it in personal projects, client work, commercial SaaS products, or anything else. There is no attribution required for free components. Premium template licenses cover unlimited projects per user.",
+          "links": []
+        },
+        {
+          "question": "What are AI UI components and why do you focus on them?",
+          "answer": "AI UI components are interface elements specifically designed for AI-powered applications — things like AI chat interfaces, streaming response UIs, prompt input fields, AI loading states, model selector dropdowns, token usage indicators, and AI onboarding flows. As more developers build on top of APIs like OpenAI (https://platform.openai.com), Anthropic (https://anthropic.com), and Vercel AI SDK (https://sdk.vercel.ai), we provide the UI layer so you can focus on the AI logic, not building interfaces from scratch.",
+          "links": [
+            { "label": "OpenAI Platform", "url": "https://platform.openai.com" },
+            { "label": "Vercel AI SDK", "url": "https://sdk.vercel.ai" },
+            { "label": "Anthropic", "url": "https://anthropic.com" }
+          ]
         }
       ]
     },
     {
       "id": "faq3",
-      "title": "Templates & Projects",
+      "title": "Templates & Boilerplates",
       "questions": [
         {
-          "question": "Do templates include full projects?",
-          "answer": "Yes, most templates come as full project setups including frontend, backend boilerplate, or just frontend depending on the template type."
+          "question": "What types of templates does Lokalhost.io offer?",
+          "answer": "We offer a wide range of templates including: SaaS landing pages, SaaS dashboard templates, business and agency websites, portfolio templates, AI product landing pages, waitlist pages, marketing sites, pricing pages, blog templates, and e-commerce storefronts — all built with Next.js and Tailwind CSS and ready to deploy on Vercel (https://vercel.com) or any hosting platform.",
+          "links": [
+            { "label": "Browse Templates", "url": "https://lokalhost.io/templates" },
+            { "label": "Vercel", "url": "https://vercel.com" }
+          ]
         },
         {
-          "question": "Can I get source files?",
-          "answer": "All templates include code files and design files like Figma, ready for customization."
+          "question": "What are boilerplates and what do they include?",
+          "answer": "Boilerplates are full project starters that go beyond UI — they include project structure, authentication setup, database connection (with Prisma or Drizzle), API routes, environment variable setup, and deployment configuration. Our SaaS boilerplate for example includes Next.js 14 App Router, authentication, Stripe payments integration, user dashboard, and a full component library pre-installed — saving you 2–4 weeks of setup.",
+          "links": [
+            { "label": "Auth Kits", "url": "https://lokalhost.io/authdocs" }
+          ]
         },
         {
-          "question": "Are templates mobile-friendly?",
-          "answer": "Yes, all templates are responsive and optimized for mobile devices."
+          "question": "Are templates mobile responsive?",
+          "answer": "Yes, every template and component on Lokalhost.io is fully responsive and tested across mobile, tablet, and desktop screen sizes. We follow a mobile-first design approach using Tailwind CSS responsive utilities.",
+          "links": []
         },
         {
-          "question": "How can I contribute templates?",
-          "answer": "You can submit templates or request features by contacting our team via email or social channels."
+          "question": "Do templates include Figma design files?",
+          "answer": "Selected premium templates include the original Figma design file so your design team can reference, extend, or handoff designs. Figma files are available for download immediately after purchase. Check individual template pages for Figma file availability.",
+          "links": [
+            { "label": "Design Kits", "url": "https://lokalhost.io/designs" }
+          ]
+        },
+        {
+          "question": "Can I get a full-stack template with backend included?",
+          "answer": "Yes. Our premium boilerplates include full-stack setups with Next.js API routes or separate backend options. We support database integrations with Prisma (https://www.prisma.io), Supabase (https://supabase.com), and PlanetScale. Payment integrations with Stripe (https://stripe.com) are also available in our SaaS boilerplates.",
+          "links": [
+            { "label": "Prisma", "url": "https://www.prisma.io" },
+            { "label": "Supabase", "url": "https://supabase.com" },
+            { "label": "Stripe", "url": "https://stripe.com" }
+          ]
         }
       ]
     },
     {
       "id": "faq4",
-      "title": "Support & Services",
+      "title": "Mobile UI — Flutter & React Native",
       "questions": [
         {
-          "question": "Can I get help with customization?",
-          "answer": "Yes, our team provides customization support for layouts, styling, and minor functionality tweaks."
+          "question": "Does Lokalhost.io support mobile app development?",
+          "answer": "Yes. We provide dedicated UI kits, components, and full screen templates for both Flutter (https://flutter.dev) and React Native (https://reactnative.dev). Our mobile resources cover onboarding screens, auth flows, dashboard UIs, settings screens, profile pages, and more — all built with production-quality design standards.",
+          "links": [
+            { "label": "Flutter", "url": "https://flutter.dev" },
+            { "label": "React Native", "url": "https://reactnative.dev" },
+            { "label": "Mobile UI Kits", "url": "https://lokalhost.io/mobile" }
+          ]
         },
         {
-          "question": "Is there production support?",
-          "answer": "Yes, we provide guidance for deployment, optimizations, and bug fixes for templates and components."
+          "question": "Are Flutter UI kits compatible with the latest Flutter SDK?",
+          "answer": "Yes. All our Flutter UI kits are built and tested with the latest stable Flutter SDK. We use standard Flutter widgets and follow Material 3 and custom design systems. Components are null-safe, well-commented, and structured for easy integration into existing Flutter projects.",
+          "links": [
+            { "label": "Flutter Docs", "url": "https://docs.flutter.dev" }
+          ]
         },
         {
-          "question": "How do I report issues?",
-          "answer": "Issues can be reported via GitHub, email, or our support portal. We respond as quickly as possible."
+          "question": "Do you provide cross-platform designs that work for both iOS and Android?",
+          "answer": "Yes. All our mobile UI kits follow cross-platform design principles — they work seamlessly on both iOS and Android. Where platform-specific behavior is needed (like navigation patterns), we provide both variants with clear documentation.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "id": "faq5",
+      "title": "Custom Development Services",
+      "questions": [
+        {
+          "question": "Does Lokalhost.io offer custom development work?",
+          "answer": "Yes. Custom development is one of our core services. Whether you need a custom SaaS product, a business website, a mobile app (Flutter or React Native), a full-stack web application, an AI-powered tool, or a complete design system built from scratch — our team is available to work with you from concept to deployment with unlimited revisions.",
+          "links": [
+            { "label": "Contact Us", "url": "https://lokalhost.io/contact" }
+          ]
         },
         {
-          "question": "Can I request new features?",
-          "answer": "Absolutely! We welcome feature requests and try to incorporate them into our future releases."
+          "question": "What kind of custom projects do you take on?",
+          "answer": "We accept a wide range of projects including: SaaS web applications, AI-powered products and tools, business and corporate websites, mobile apps (iOS, Android, cross-platform), admin dashboards and internal tools, e-commerce platforms, design systems and component libraries, landing pages and marketing sites, and complete product MVPs. If you have an idea, reach out and we'll tell you if and how we can build it.",
+          "links": []
+        },
+        {
+          "question": "How does the custom work process work?",
+          "answer": "The process is simple: (1) You reach out via our contact form or email with your project requirements. (2) We schedule a discovery call to understand your needs, timeline, and budget. (3) We send a detailed proposal with scope, timeline, and pricing. (4) Once approved, development begins with regular progress updates. (5) You review, request changes (unlimited revisions), and we deploy. Full deployment support is included.",
+          "links": [
+            { "label": "Start a Project", "url": "https://lokalhost.io/contact" }
+          ]
+        },
+        {
+          "question": "Do you offer post-launch support after custom work is delivered?",
+          "answer": "Yes. All custom projects include a post-launch support period for bug fixes, minor adjustments, and deployment issues. Extended maintenance and support plans are available for ongoing projects that need regular updates, feature additions, or performance monitoring.",
+          "links": []
+        },
+        {
+          "question": "Can you build an AI-powered SaaS product?",
+          "answer": "Absolutely. This is one of our specialties. We build AI-powered applications using OpenAI APIs (https://platform.openai.com), Anthropic Claude (https://anthropic.com), Google Gemini, and the Vercel AI SDK (https://sdk.vercel.ai). We handle everything from the AI integration and streaming responses to the complete frontend UI, backend API, auth, payments, and deployment.",
+          "links": [
+            { "label": "OpenAI API", "url": "https://platform.openai.com" },
+            { "label": "Anthropic Claude", "url": "https://anthropic.com" },
+            { "label": "Vercel AI SDK", "url": "https://sdk.vercel.ai" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faq6",
+      "title": "Pricing & Plans",
+      "questions": [
+        {
+          "question": "How much does Lokalhost.io cost?",
+          "answer": "We have a generous free tier that includes access to our core UI components with no credit card required. Premium plans unlock full template access, Figma kits, boilerplates, and priority support. Custom development is priced per project based on scope. Visit our pricing page for full details and to compare plans.",
+          "links": [
+            { "label": "View Pricing", "url": "https://lokalhost.io/pricing" }
+          ]
+        },
+        {
+          "question": "Is there a free plan available?",
+          "answer": "Yes. Our free plan gives you access to all core UI components, basic templates, and CLI installation — no credit card required. It's genuinely free and not a trial. Paid plans give you access to premium templates, full project boilerplates, Figma files, and dedicated support.",
+          "links": [
+            { "label": "Get Started Free", "url": "https://lokalhost.io" }
+          ]
+        },
+        {
+          "question": "Do you offer refunds?",
+          "answer": "Yes. We offer a 7-day refund policy on all premium purchases. If you're not satisfied with what you received for any reason, contact us within 7 days of purchase and we'll process a full refund — no questions asked.",
+          "links": [
+            { "label": "Contact Support", "url": "https://lokalhost.io/contact" }
+          ]
+        },
+        {
+          "question": "Can I use premium templates for multiple client projects?",
+          "answer": "Yes. Our premium license covers unlimited personal and commercial projects for a single user. If you are an agency building for multiple clients, our Agency plan covers all your team members and client projects under one license.",
+          "links": [
+            { "label": "View Pricing", "url": "https://lokalhost.io/pricing" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faq7",
+      "title": "Auth Kits & Security",
+      "questions": [
+        {
+          "question": "What are Auth Kits?",
+          "answer": "Auth Kits are complete authentication UI and logic boilerplates — including sign in, sign up, forgot password, email verification, and OAuth social login screens. They are pre-integrated with popular auth providers like NextAuth.js (https://next-auth.js.org), Clerk (https://clerk.com), and Supabase Auth (https://supabase.com/auth), saving you days of authentication setup.",
+          "links": [
+            { "label": "Auth Kits", "url": "https://lokalhost.io/authdocs" },
+            { "label": "NextAuth.js", "url": "https://next-auth.js.org" },
+            { "label": "Clerk", "url": "https://clerk.com" }
+          ]
+        },
+        {
+          "question": "Is my account data secure?",
+          "answer": "Yes. We take security seriously. All passwords are hashed, data is encrypted in transit with HTTPS, and we never store sensitive payment information directly — payments are handled by Stripe (https://stripe.com), which is PCI-DSS compliant. We follow industry-standard security practices for all user data.",
+          "links": [
+            { "label": "Stripe Security", "url": "https://stripe.com/docs/security" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faq8",
+      "title": "Support & Community",
+      "questions": [
+        {
+          "question": "How do I get support if I'm stuck?",
+          "answer": "We offer multiple support channels. Free plan users can open issues on GitHub or reach us via email. Premium users get priority email support with faster response times. Custom project clients get dedicated support throughout and after the project. We aim to respond to all queries within 24 hours on business days.",
+          "links": [
+            { "label": "Contact Support", "url": "https://lokalhost.io/contact" }
+          ]
+        },
+        {
+          "question": "Is there a community I can join?",
+          "answer": "Yes. We have an active community where developers share what they're building, ask questions, and request new components. Join us to get early access to new releases, vote on upcoming features, and connect with other developers using Lokalhost.io.",
+          "links": []
+        },
+        {
+          "question": "How do I report a bug or request a new component?",
+          "answer": "Bug reports and feature requests are always welcome. You can open an issue on our GitHub repository, contact us via email, or use the in-app feedback button. We review every request and prioritize based on community demand. Popular requests make it into our regular release cycles.",
+          "links": [
+            { "label": "Submit Feedback", "url": "https://lokalhost.io/contact" }
+          ]
+        },
+        {
+          "question": "How often are new components and templates released?",
+          "answer": "We ship new components, templates, and updates regularly. Subscribers to our newsletter get notified of every new release. Follow us on our social channels for sneak peeks and early access announcements. Our roadmap is publicly visible so you always know what's coming next.",
+          "links": []
         }
       ]
     }
