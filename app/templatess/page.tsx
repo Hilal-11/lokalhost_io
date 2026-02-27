@@ -17,12 +17,10 @@ import js from "@/public/tech/js.jpeg"
 import { HiArrowNarrowRight } from "react-icons/hi";
 import HoverExternalIcon from "@/components/landing/MicroComponents/HoverExternalIcon";
 import { InputGroup, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
-
-import { useQuery as useConvexQuery } from 'convex/react'; // ← Rename this
+import { motion, AnimatePresence } from "motion/react"
 import { useQuery } from '@tanstack/react-query'; // ← Keep this as useQuery
 import { useConvex } from 'convex/react';
 import { api } from '@/convex/_generated/api';
-
 import React, { useEffect, useState } from 'react'
 import {
   Dialog,
@@ -32,7 +30,11 @@ import {
 import Link from 'next/link';
 import { IoSearchSharp } from 'react-icons/io5';
 import { RiCheckboxBlankCircleLine } from "react-icons/ri";
+import { RxCross2 } from 'react-icons/rx'
+import { LuLayoutTemplate } from 'react-icons/lu'
+
 import { SortTemplates } from "./sortTemplates";
+import CTA from "@/components/landing/CTA";
 const techStackImages = [
     react,
     next,
@@ -51,7 +53,14 @@ function Templates(){
             return result;
         },
     });
+    const [searchQuery, setSearchQuery]     = useState('')
+    const [filteredItems, setFilteredItems] = useState(templates ?? [])
+    const [open, setOpen]                   = useState(false)
+    const [focused, setFocused]             = useState(false)
+    const inputRef = useRef<HTMLInputElement>(null)
     const [activeFilter, setActiveFilter] = useState<'All' | 'Free' | 'Premium'>('All');
+
+
     const filteredTemplates = templates?.filter((template) => {
         if (activeFilter === 'All') return true
         if (activeFilter === 'Free') return template?.projectPrize === 'Free'
@@ -59,17 +68,22 @@ function Templates(){
         return true
     })  
      
-    const [searchQuery , setSearchQuery] = useState('');
-    const [filteredItem , setFilteredItem] = useState(templates);
-    const handleSearching = (event:any) => {
-        setSearchQuery(event.target.value)
-    }
-  
-      useEffect(() => {
-          const filtering = templates?.filter((item:any) => item.projectName.toLowerCase().includes(searchQuery.toLowerCase()))
-          setFilteredItem(filtering);
-      }, [])
+    useEffect(() => {
+        if (!templates) return
+        const q = searchQuery.toLowerCase().trim()
+        setFilteredItems(q ? templates.filter(({ projectName }) => projectName.toLowerCase().includes(q)) : templates)
+    }, [searchQuery, templates])
 
+    useEffect(() => {
+        if (!open) return
+        setTimeout(() => inputRef.current?.focus(), 80)
+        setSearchQuery('')
+        if (templates) setFilteredItems(templates)
+    }, [open, templates])
+
+    const isFiltering  = searchQuery.length > 0
+    const noResults    = isFiltering && filteredItems.length === 0
+    const displayItems = filteredItems
 
 
 
@@ -114,7 +128,7 @@ function Templates(){
                     <button className="px-8 py-[10px] cursor-pointer border-t border-l border-r border-neutral-800 rounded-lg whitespace-nowrap font-sans font-medium text-sm text-neutral-200 dark:text-neutral-200 bg-gradient-to-t from-[#262626] to-[#525252] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]">Get All Premium Templates</button>
                 </div>
             </div>  
-            <section className="h-auto pt-4 mx-auto border border-dashed border-neutral-300 dark:border-neutral-700 mt-10">
+            <section className="h-auto pt-4 mx-auto border border-dashed border-neutral-300 dark:border-neutral-700 mt-10 mb-10">
                 <div className="flex justify-between gap-2 items-center w-full pt-0 pb-4 border-b border-dashed border-neutral-300 dark:border-neutral-700 px-5">
                     <div>
                         <SortTemplates />
@@ -127,39 +141,157 @@ function Templates(){
                                 <InputGroupButton variant="secondary" className="bg-transparent flex items-center justify-center"><IoMdSearch className="text-lg mx-auto mr-px"/></InputGroupButton>
                             </InputGroup>
                         </DialogTrigger>
-                        <DialogContent className="lg:w-[500px] h-[400px] overflow-y-scroll pb-4">
-                            {/* Header search box */}
-                            <div className="w-full h-[48px] fixed top-0 border-b rounded-5-lg p-1 flex justify-center items-center pl-2  ">
-                                <span><IoSearchSharp className="text-lg text-neutral-400 dark:text-neutral-700"/></span>
-                                <input className="w-full h-full outline-0 text-sm font-sans font-medium pl-1" onChange={handleSearching} type="text" placeholder="Searching..." />
-                                    </div>
-                                        <div className="flex flex-col gap-1 w-full h-auto mt-10">
-                                            <p className="text-xs fonr-sans text-neutral-600">Templates</p>
-                                            {
-                                            filteredItem && filteredItem?.length > 0 ? (
-                                                <div>
-                                                    {
-                                                    filteredItem?.map(({id , projectName}) => (
-                                                    <div key={id} className="w-full h-[42px] rounded-sm hover:bg-neutral-200 hover:dark:bg-neutral-800 transition duration-300 flex items-center">
-                                                        <Link prefetch={true} className="flex gap-3 pl-2 items-center text-sm font-medium" href={`#${id}`}><span className="text-xs"><RiCheckboxBlankCircleLine/></span>{projectName}</Link>
-                                                    </div>
-                                                    ))
-                                                }
-                                                </div>
-                                            ) : (
-                                                <div>
-                                                {
-                                                    templates?.map(({id , projectName}) => (
-                                                    <div key={id} className="w-full h-[42px] rounded-sm hover:bg-neutral-200 hover:dark:bg-neutral-800 transition duration-300 flex items-center">
-                                                        <Link prefetch={true} className="flex gap-3 pl-2 items-center text-sm font-medium" href={`#${id}`}><span className="text-xs"><RiCheckboxBlankCircleLine/></span>{projectName}</Link>
-                                                    </div>
-                                                    ))
-                                                }
-                                                </div>
-                                            )
-                                            }
-                            </div>
-                        </DialogContent>
+
+                    <DialogContent className="p-0 gap-0 lg:w-[520px] max-h-[480px] overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-800 shadow-2xl bg-white dark:bg-neutral-950">
+
+                        {/* ── Sticky search bar ── */}
+                        <div className={`sticky top-0 z-20 w-full bg-white dark:bg-neutral-950 border-b border-neutral-100 dark:border-neutral-800 transition-shadow duration-200 ${focused ? 'shadow-sm' : ''}`}>
+                        <div className="flex items-center gap-2 px-3 h-12">
+                            <motion.span
+                            animate={focused ? { scale: 1.1, color: "#525252" } : { scale: 1, color: "#a3a3a3" }}
+                            transition={{ duration: 0.2 }}
+                            >
+                            <IoSearchSharp className="text-lg flex-shrink-0" />
+                            </motion.span>
+
+                            <input
+                            ref={inputRef}
+                            value={searchQuery}
+                            onChange={e => setSearchQuery(e.target.value)}
+                            onFocus={() => setFocused(true)}
+                            onBlur={() => setFocused(false)}
+                            type="text"
+                            placeholder="Search templates by name…"
+                            className="flex-1 h-full outline-none text-sm font-sans font-medium bg-transparent text-neutral-800 dark:text-neutral-200 placeholder:text-neutral-400 dark:placeholder:text-neutral-600"
+                            />
+
+                            <AnimatePresence>
+                            {searchQuery.length > 0 && (
+                                <motion.button
+                                initial={{ opacity: 0, scale: 0.7 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.7 }}
+                                transition={{ duration: 0.15 }}
+                                onClick={() => setSearchQuery('')}
+                                className="flex items-center justify-center w-5 h-5 rounded-full bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors duration-150 flex-shrink-0"
+                                >
+                                <RxCross2 className="text-[10px] text-neutral-600 dark:text-neutral-300" />
+                                </motion.button>
+                            )}
+                            </AnimatePresence>
+
+                            <kbd className="hidden sm:flex items-center justify-center h-5 px-1.5 rounded border border-neutral-200 dark:border-neutral-700 text-[10px] font-mono text-neutral-400 dark:text-neutral-500 bg-neutral-50 dark:bg-neutral-900 flex-shrink-0">
+                            ESC
+                            </kbd>
+                        </div>
+
+                        {/* animated focus underline */}
+                        <motion.div
+                            className="absolute bottom-0 left-3 right-3 h-px bg-gradient-to-r from-transparent via-neutral-400 dark:via-neutral-500 to-transparent"
+                            initial={{ scaleX: 0, opacity: 0 }}
+                            animate={focused ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            style={{ originX: 0.5 }}
+                        />
+                        </div>
+
+                        {/* ── Results ── */}
+                        <div className="overflow-y-auto max-h-[380px] px-2 py-2 scroll-smooth">
+
+                        {/* label */}
+                        <p className="text-[11px] font-mono font-semibold text-neutral-400 dark:text-neutral-600 px-2 pt-1 pb-2 uppercase tracking-wider">
+                            {isFiltering
+                            ? `${filteredItems.length} template${filteredItems.length !== 1 ? 's' : ''} for "${searchQuery}"`
+                            : `All Templates — ${templates?.length ?? 0}`}
+                        </p>
+
+                        <AnimatePresence mode="wait">
+                            {/* no results */}
+                            {noResults ? (
+                            <motion.div
+                                key="no-results"
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -8 }}
+                                transition={{ duration: 0.2 }}
+                                className="flex flex-col items-center justify-center py-12 gap-3"
+                            >
+                                <motion.div
+                                animate={{ rotate: [0, -10, 10, -10, 0] }}
+                                transition={{ duration: 0.5 }}
+                                className="text-3xl text-neutral-300 dark:text-neutral-700"
+                                >
+                                <LuLayoutTemplate />
+                                </motion.div>
+                                <p className="text-sm font-sans font-medium text-neutral-400 dark:text-neutral-600">
+                                No templates matching{" "}
+                                <span className="text-neutral-600 dark:text-neutral-400">"{searchQuery}"</span>
+                                </p>
+                            </motion.div>
+                            ) : (
+                            <motion.div key="results" className="flex flex-col gap-0.5">
+                                {displayItems.map(({ id, projectName }, i) => (
+                                <motion.div
+                                    key={id}
+                                    initial={{ opacity: 0, x: -8 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.18, delay: i * 0.025 }}
+                                >
+                                    <Link
+                                    prefetch={true}
+                                    href={`#${id}`}
+                                    onClick={() => setOpen(false)}
+                                    className="group/item flex items-center gap-3 w-full px-2 py-2.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800/80 transition-colors duration-150 relative overflow-hidden"
+                                    >
+                                    {/* hover sweep */}
+                                    <span className="absolute inset-0 bg-gradient-to-r from-neutral-100/80 dark:from-neutral-800/80 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-200 rounded-lg" />
+
+                                    {/* icon box */}
+                                    <span className="relative z-10 flex items-center justify-center w-7 h-7 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-500 dark:text-neutral-400 group-hover/item:border-neutral-300 dark:group-hover/item:border-neutral-600 transition-colors duration-150 flex-shrink-0">
+                                        <RiCheckboxBlankCircleLine className="text-xs" />
+                                    </span>
+
+                                    {/* name + highlight */}
+                                    <span className="relative z-10 text-sm font-sans font-medium text-neutral-700 dark:text-neutral-300 group-hover/item:text-neutral-900 dark:group-hover/item:text-neutral-100 transition-colors duration-150 flex-1 truncate">
+                                        {isFiltering ? highlightMatch(projectName, searchQuery) : projectName}
+                                    </span>
+
+                                    {/* anchor badge */}
+                                    <span className="relative z-10 text-[10px] font-mono text-neutral-300 dark:text-neutral-700 opacity-0 group-hover/item:opacity-100 transition-opacity duration-150 flex-shrink-0">
+                                        #{id}
+                                    </span>
+
+                                    {/* arrow */}
+                                    <span className="relative z-10 text-xs text-neutral-400 dark:text-neutral-600 opacity-0 group-hover/item:opacity-100 -translate-x-1 group-hover/item:translate-x-0 transition-all duration-150 flex-shrink-0">
+                                        →
+                                    </span>
+                                    </Link>
+                                </motion.div>
+                                ))}
+                            </motion.div>
+                            )}
+                        </AnimatePresence>
+                        </div>
+
+                        {/* ── Footer ── */}
+                        <div className="sticky bottom-0 border-t border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-950 px-4 py-2 flex items-center gap-3">
+                        {[
+                            { key: '↑↓', label: 'navigate' },
+                            { key: '↵',  label: 'jump to' },
+                            { key: 'ESC', label: 'close' },
+                        ].map(({ key, label }) => (
+                            <span key={key} className="flex items-center gap-1 text-[10px] font-sans text-neutral-400 dark:text-neutral-600">
+                            <kbd className="px-1 py-0.5 rounded border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 font-mono text-[10px]">
+                                {key}
+                            </kbd>
+                            {label}
+                            </span>
+                        ))}
+                        <span className="ml-auto text-[10px] font-mono text-neutral-300 dark:text-neutral-700">
+                            {templates?.length ?? 0} templates
+                        </span>
+                        </div>
+                    </DialogContent>
                     </Dialog>
                     <ButtonGroup>
                         <Button 
@@ -281,7 +413,7 @@ function Templates(){
                     
                 )}
             </section>
-
+            <CTA />
         </div>
     )
 }
@@ -292,5 +424,18 @@ export default Templates;
 
 
 
-
+function highlightMatch(text: string, query: string) {
+  if (!query) return <>{text}</>
+  const idx = text.toLowerCase().indexOf(query.toLowerCase())
+  if (idx === -1) return <>{text}</>
+  return (
+    <>
+      {text.slice(0, idx)}
+      <mark className="bg-transparent text-neutral-900 dark:text-white font-bold underline decoration-neutral-400 dark:decoration-neutral-500 underline-offset-2">
+        {text.slice(idx, idx + query.length)}
+      </mark>
+      {text.slice(idx + query.length)}
+    </>
+  )
+}
 
