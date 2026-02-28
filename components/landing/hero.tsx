@@ -49,7 +49,7 @@ export function HeroSection() {
     }
 
   return (
-    <div className="w-full container max-w-[1580px] h-auto mx-auto  py-8 lg:py-16 flex flex-col items-center justify-center text-center gap-6">
+    <div className="w-full container max-w-[1580px] h-auto mx-auto py-8 lg:py-16 flex flex-col items-center justify-center text-center gap-6">
       <motion.span
        initial={{opacity: 0 , y: -100}}
        animate={{opacity: 1 , y: 0}}
@@ -106,8 +106,8 @@ export function HeroSection() {
     <div className="relative h-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t gap-4 md:gap-0 lg:gap-0 border-b border-dashed px-px">
 
             {/* corner circle decorations */}
-            <span className="absolute h-[160px] w-[160px] rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 -top-20 -left-20" />
-            <span className="absolute h-[160px] w-[160px] rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 -top-20 -right-20" />
+            {/* <span className="absolute h-[160px] w-[160px] rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 -top-20 -left-20" />
+            <span className="absolute h-[160px] w-[160px] rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 -top-20 -right-20" /> */}
 
             {SERVICES.map((service) => {
               const { Shader } = service;
