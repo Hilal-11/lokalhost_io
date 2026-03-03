@@ -325,16 +325,17 @@ function ComponentsBento() {
         </div>
 
         {/* ── Bento Grid ── */}
+
+                
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           className="mt-10 border-l relative h-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-0 lg:gap-0 border-b border-r border-dashed px-px"
         >
-
           {/* ── Card 1: What is Lokalhost ── */}
           <motion.div variants={cardVariants} className="w-full lg:col-span-2">
-            <TiltCard className="relative h-[340px] border-r border-dashed border-t flex flex-wrap justify-start animated-border feature-card overflow-hidden group">
+            <TiltCard className="relative lg:h-[340px] h-auto border-r border-dashed border-t flex flex-wrap justify-start animated-border feature-card group">
               <div className="pt-7 px-4 lg:pl-14 w-full relative z-10">
                 <motion.h1
                   initial={{ opacity: 0, x: -10 }}
@@ -382,7 +383,6 @@ function ComponentsBento() {
               <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-white/30 dark:from-neutral-950/30 to-transparent pointer-events-none z-20" />
             </TiltCard>
           </motion.div>
-
           {/* ── Card 2: Foundational Components ── */}
           <motion.div variants={cardVariants} className="lg:col-span-2">
             <TiltCard className="relative w-full h-[340px] border border-dashed animated-border feature-card overflow-hidden group">
@@ -427,7 +427,6 @@ function ComponentsBento() {
               </motion.div>
             </TiltCard>
           </motion.div>
-
           {/* ── Card 3: Built for Production (Globe) ── */}
           <motion.div variants={cardVariants}>
             <TiltCard className="relative overflow-hidden h-[340px] w-full border-r border-dashed border-t animated-border feature-card group">
@@ -500,7 +499,6 @@ function ComponentsBento() {
               </div>
             </TiltCard>
           </motion.div>
-
           {/* ── Card 4: CLI Install ── */}
           <motion.div variants={cardVariants}>
             <TiltCard className="px-2 relative overflow-hidden h-[340px] w-full border-r border-dashed border-t animated-border feature-card group">
@@ -547,7 +545,7 @@ function ComponentsBento() {
           </motion.div>
 
           {/* ── Card 5: Bento / Dashboards / Headers (wide) ── */}
-          <motion.div variants={cardVariants} className="col-span-2">
+          <motion.div variants={cardVariants} className="lg:col-span-2">
             <TiltCard className="relative overflow-hidden h-[340px] w-full border-dashed border-t animated-border feature-card group">
 
               {/* ── text ── */}
@@ -623,8 +621,7 @@ function ComponentsBento() {
               <div className="absolute inset-y-0 left-0  w-10 bg-gradient-to-r from-white dark:from-neutral-950 to-transparent pointer-events-none z-30" />
               <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white dark:from-neutral-950 to-transparent pointer-events-none z-30" />
             </TiltCard>
-          </motion.div>
-
+          </motion.div>  
         </motion.div>
 
         {/* ── CTA strip ── */}

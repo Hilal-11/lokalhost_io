@@ -25,7 +25,7 @@ const ReviewCard = ({
     to?: string
 }) => {
   return (
-    <img alt="Error" src={image} className="w-auto h-[178px] object-cover object-center rounded-sm border" />
+    <img alt="Error" src={image} className="w-auto h-[120px] lg:h-[178px] object-cover object-center rounded-sm border" />
   )
 }
 

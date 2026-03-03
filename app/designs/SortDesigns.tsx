@@ -13,7 +13,7 @@ import { CgDesktop } from "react-icons/cg";
 export function SortDesigns() {
   return (
     <Select>
-      <SelectTrigger className="w-full max-w-56 bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-100 font-sans font-medium">
+      <SelectTrigger className="w-auto bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-100 font-sans font-medium">
         <SelectValue placeholder="Sort" />
       </SelectTrigger>
       <SelectContent>

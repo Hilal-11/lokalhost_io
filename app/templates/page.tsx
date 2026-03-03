@@ -129,16 +129,14 @@ function Templates(){
                 </div>
             </div>  
             <section className="h-auto pt-4 mx-auto border border-dashed border-neutral-300 dark:border-neutral-700 mt-10 mb-10">
-                <div className="flex justify-between gap-2 items-center w-full pt-0 pb-4 border-b border-dashed border-neutral-300 dark:border-neutral-700 px-5">
-                    <div>
-                        <SortTemplates />
-                    </div>
-                    <div className="flex items-center gap-1">
+                <div className="flex flex-wrap justify-between gap-2 items-center w-full pt-0 pb-4 border-b border-dashed border-neutral-300 dark:border-neutral-700 px-5">
+                    <SortTemplates />
+                    <div className="flex lg:flex-nowrap flex-wrap items-center gap-1">
                     <Dialog>
                         <DialogTrigger asChild className='flex items-center justify-center'>
-                            <InputGroup className="flex items-center justify-center">
+                            <InputGroup className="flex items-center justify-center w-[34px] lg:w-full overflow-hidden">
                                 <InputGroupInput placeholder="Search Template:- " className="flex lg:flex md:flex"/>
-                                <InputGroupButton variant="secondary" className="bg-transparent flex items-center justify-center"><IoMdSearch className="text-lg mx-auto mr-px"/></InputGroupButton>
+                                <InputGroupButton variant="secondary" className="relative right-3 lg:right-0 bg-transparent flex items-center justify-center"><IoMdSearch className="lg:text-lg text-xl mx-auto mr-px"/></InputGroupButton>
                             </InputGroup>
                         </DialogTrigger>
 

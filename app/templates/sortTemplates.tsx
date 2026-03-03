@@ -20,7 +20,7 @@ import { TbBrandDjango } from "react-icons/tb";
 export function SortTemplates() {
   return (
     <Select>
-      <SelectTrigger className="w-full max-w-56 bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-100">
+      <SelectTrigger className="w-full w-auto bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-100">
         <SelectValue className="font-sans font-medium" placeholder="Sort" />
       </SelectTrigger>
       <SelectContent className="">

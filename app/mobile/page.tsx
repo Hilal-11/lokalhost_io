@@ -362,9 +362,9 @@ function Mobile() {
                       <SortMobile />
                     </div>
                     <div className="flex items-center gap-1">
-                          <InputGroup className="flex items-center justify-center">
-                              <InputGroupInput placeholder="Search Template:- " className="hidden lg:flex md:flex"/>
-                              <InputGroupButton variant="secondary" className="bg-transparent flex items-center justify-center"><IoMdSearch className="text-lg mx-auto mr-px"/></InputGroupButton>
+                          <InputGroup className="flex items-center justify-center w-[34px] lg:w-full overflow-hidden">
+                            <InputGroupInput placeholder="Search Template:- " className="flex lg:flex md:flex"/>
+                            <InputGroupButton variant="secondary" className="relative right-3 lg:right-0 bg-transparent flex items-center justify-center"><IoMdSearch className="lg:text-lg text-xl mx-auto mr-px"/></InputGroupButton>
                           </InputGroup>
                     <ButtonGroup>
                         <Button 
@@ -439,7 +439,7 @@ import CTA from "@/components/landing/CTA";
 function SortMobile() {
   return (
     <Select>
-      <SelectTrigger className="w-full max-w-56 bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-100">
+      <SelectTrigger className="w-auto bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-100">
         <SelectValue className="font-sans font-medium" placeholder="Sort" />
       </SelectTrigger>
       <SelectContent className="">

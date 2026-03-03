@@ -9,7 +9,7 @@ export const dynamic = 'force-static';
 function Pricing() {
   return (
     <div className='bg-[#f4f4f5] dark:bg-neutral-950 h-full'>
-      <div className='pt-10 h-auto pricing_breakpoint container mx-auto px-5 lg:pt-28 pb-20'>
+      <div className='pt-10 h-auto pricing_breakpoint container mx-auto px-5 lg:pt-10 pb-20'>
         <div className="flex flex-col items-center gap-6 pb-10 py-10">
           <div className="mx-auto border-t border-dashed border-b py-1 w-38 text-center relative border-neutral-300 dark:border-neutral-800">
             <span className="h-14 absolute left-4 -top-4 border border-dashed border-neutral-300 dark:border-neutral-800"></span>

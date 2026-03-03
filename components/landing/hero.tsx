@@ -102,12 +102,12 @@ export function HeroSection() {
       </div>
 {/*  */}
 
-
+          
     <div className="relative h-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t gap-4 md:gap-0 lg:gap-0 border-b border-dashed px-px">
 
             {/* corner circle decorations */}
-            {/* <span className="absolute h-[160px] w-[160px] rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 -top-20 -left-20" />
-            <span className="absolute h-[160px] w-[160px] rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 -top-20 -right-20" /> */}
+            <span className="absolute h-[160px] w-[160px] rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 -top-20 -left-20" />
+            <span className="absolute h-[160px] w-[160px] rounded-full border border-dashed border-neutral-300 dark:border-neutral-700 -top-20 -right-20" />
 
             {SERVICES.map((service) => {
               const { Shader } = service;
@@ -198,24 +198,16 @@ export function HeroSection() {
         <div className="w-full h-auto mt-10 mb-10">
           <MarqueeTemplates/>
         </div>
-        <div className="w-full container max-w-[1580px]">
-          <ComponentsShowcase/>
-        </div>
-        <div className="w-full container max-w-[1580px]">
-          <TemplatesBlockList/>
-        </div>
-        <div className="pt-16">
-          <LandingPagesShowcase />
-        </div>
-        <div>
-          <MobileAppsAndUIBlocks />
-        </div>
+        <ComponentsShowcase/>
+        <TemplatesBlockList/>
+        <LandingPagesShowcase />
+        <MobileAppsAndUIBlocks />
         <div className="mt-16 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
           <FeaturesBento />
         </div>
         <div className="mt-20 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
           <ComponentsBento/>
-        </div>
+        </div> 
         <div className="mt-20 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
           <TemplatesShowcaseBento/>
         </div>

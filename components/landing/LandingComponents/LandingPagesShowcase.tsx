@@ -475,7 +475,7 @@ const LANDING_PAGES = [
 // ─── Main component ────────────────────────────────────────────────────────────
 function LandingPagesShowcase() {
   return (
-    <div className="w-full container max-w-[1580px] max-h-[1024px] lg:max-h-[870px]  overflow-hidden relative pb-16">
+    <div className="mt-16 w-full container max-w-[1580px] max-h-[1024px] lg:max-h-[870px]  overflow-hidden relative pb-16">
       <div className="w-full">
 
         {/* ── Header ── */}
@@ -496,7 +496,7 @@ function LandingPagesShowcase() {
         </div>
 
         {/* ── Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 lg:px-10 py-10 gap-5 mask-b-from-20% to-95%">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 py-10 gap-5 mask-b-from-20% to-95%">
           {LANDING_PAGES.map(({ component: Skeleton, label, tag }, index) => (
             <div
               key={index}

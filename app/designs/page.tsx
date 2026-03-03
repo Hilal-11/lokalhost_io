@@ -142,17 +142,16 @@ function DesignKits() {
         <section className="h-auto pt-4 mx-auto border border-dashed border-neutral-300 dark:border-neutral-700 mt-24 bg-neutral-50 dark:bg-neutral-950">
 
           {/* toolbar */}
-          <div className="flex justify-between flex-wrap gap-2 items-center w-full pt-0 pb-4 border-b border-dashed border-neutral-300 dark:border-neutral-700 px-5">
+          <div className="flex flex-wrap justify-between gap-2 items-center w-full pt-0 pb-4 border-b border-dashed border-neutral-300 dark:border-neutral-700 px-5">
             <SortDesigns />
 
-            <div className="flex items-center gap-1">
-
+            <div className="flex lg:flex-nowrap flex-wrap items-center gap-1">
               {/* ── Search Dialog ── */}
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild className='flex items-center justify-center'>
-                    <InputGroup className="flex items-center justify-center">
-                        <InputGroupInput placeholder="Search Design Kit:- " className="flex lg:flex md:flex"/>
-                        <InputGroupButton variant="secondary" className="bg-transparent flex items-center justify-center"><IoMdSearch className="text-lg mx-auto mr-px"/></InputGroupButton>
+                    <InputGroup className="flex items-center justify-center w-[34px] lg:w-full overflow-hidden">
+                      <InputGroupInput placeholder="Search Design:- " className="flex lg:flex md:flex"/>
+                      <InputGroupButton variant="secondary" className="relative right-3 lg:right-0 bg-transparent flex items-center justify-center"><IoMdSearch className="lg:text-lg text-xl mx-auto mr-px"/></InputGroupButton>
                     </InputGroup>
                 </DialogTrigger>
 
