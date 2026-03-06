@@ -19,6 +19,7 @@ import nProgress from "nprogress";
 import ComponentsShowcase, { TemplatesBlockList } from "./LandingComponents/ComponentsShowcase";
 import LandingPagesShowcase from "./LandingComponents/LandingPagesShowcase";
 import MobileAppsAndUIBlocks from "./LandingComponents/MobileAppaAndUIBlocks"; 
+import MainInstallationSetupAndCLIGuide from "./MicroComponents/MainInstallationSetupAndCLIGuide";
 interface IServiceType {
     button_name: string,
     button_link: string
@@ -194,7 +195,7 @@ export function HeroSection() {
             })}
     </div>
 
-        
+        {/* <MainInstallationSetupAndCLIGuide /> */}
         <div className="w-full h-auto mt-10 mb-10">
           <MarqueeTemplates/>
         </div>
