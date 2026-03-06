@@ -1,0 +1,1067 @@
+---
+title: Button
+description: Different design of buttons and use case.
+
+---
+### Button - Classic Buttons
+
+import { MdOutlineFileDownload } from "react-icons/md";
+import { BiSolidTerminal } from "react-icons/bi";
+import { IoMdSend, IoMdRocket } from 'react-icons/io'
+import { FaHeart, FaStar } from 'react-icons/fa'
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { TabsList, TabsTrigger, TabsContent } from "fumadocs-ui/components/tabs";
+
+<div className="my-8">
+  <Tabs defaultValue="variants" className="w-full">
+    
+    <TabsList className="inline-flex h-auto items-center justify-start gap-1 rounded-xl bg-transparent border border-border/40 p-1.5">
+    <TabsTrigger 
+        value="variants" 
+        className="relative inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+    >
+        <span className="relative z-10">Variants</span>
+    </TabsTrigger>
+    
+    <TabsTrigger 
+        value="sizes"
+        className="relative inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+    >
+        <span className="relative z-10">Sizes</span>
+    </TabsTrigger>
+    
+    <TabsTrigger 
+        value="icons"
+        className="relative inline-flex items-center justify-center whitespace-nowrap  px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+    >
+        <span className="relative z-10">Icons</span>
+    </TabsTrigger>
+    
+    <TabsTrigger 
+        value="states"
+        className="relative inline-flex items-center justify-center whitespace-nowrap  px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+    >
+        <span className="relative z-10">States</span>
+    </TabsTrigger>
+    
+    <TabsTrigger 
+        value="motion"
+        className="relative inline-flex items-center justify-center whitespace-nowrap  px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+    >
+        <span className="relative z-10">Motion</span>
+    </TabsTrigger>
+    
+    <TabsTrigger 
+        value="rounded"
+        className="relative inline-flex items-center justify-center whitespace-nowrap  px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+    >
+        <span className="relative z-10">Rounded</span>
+    </TabsTrigger>
+    </TabsList>
+
+
+    <div className="mt-2 rounded-xl border border-border/40 bg-card shadow-sm">
+      <div className="max-h-[400px] min-h-auto overflow-y-auto p-2">
+        
+        <TabsContent value="variants" className="mt-0 space-y-4">
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<Button variant="light">Light Button</Button>
+<Button variant="dark">Dark Button</Button>
+<Button variant="primary">Primary Button</Button>
+<Button variant="success">Success Button</Button>
+<Button variant="danger">Danger Button</Button>
+<Button variant="warning">Warning Button</Button>
+<Button variant="outline">Outline Button</Button>
+<Button variant="ghost">Ghost Button</Button>
+<Button variant="link">Link Button</Button>
+<Button variant="rainbow">Rainbow Button</Button>
+<Button variant="shimmer">Shimmer Button</Button>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="sizes" className="mt-0 space-y-4">
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<Button size="sm">Small</Button>
+<Button size="md">Medium (Default)</Button>
+<Button size="lg">Large</Button>
+<Button size="xl">Extra Large</Button>
+<Button size="icon"><MdOutlineFileDownload /></Button>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="icons" className="mt-0 space-y-6">
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<Button leftIcon={<MdOutlineFileDownload />}>Download</Button>
+<Button rightIcon={<BiSolidTerminal />}>Terminal</Button>
+<Button leftIcon={<IoMdSend />} rightIcon={<IoMdRocket />}>Both Icons</Button>`}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<Button variant="primary" size="icon" rounded="full">
+  <IoMdSend />
+</Button>
+<Button variant="success" size="icon" rounded="full">
+  <FaHeart />
+</Button>
+<Button variant="danger" size="icon" rounded="full">
+  <FaStar />
+</Button>
+<Button variant="warning" size="icon" rounded="full">
+  <IoMdRocket />
+</Button>
+<Button variant="outline" size="icon" rounded="full">
+  <MdOutlineFileDownload />
+</Button>
+<Button variant="ghost" size="icon" rounded="full">
+  <BiSolidTerminal />
+</Button>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="states" className="mt-0 space-y-4">
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<Button loading>Loading...</Button>
+<Button disabled>Disabled</Button>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="motion" className="mt-0 space-y-4">
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<Button motionHover="lift">Lift on hover</Button>
+<Button motionHover="scale">Scale on hover</Button>
+<Button motionHover="none">No hover</Button>
+<Button motionTap="lift">Lift on tap</Button>
+<Button motionTap="scale">Scale on tap</Button>
+<Button motionTap="press">Press on tap</Button>
+<Button motionDuration={0.5}>Slow animation</Button>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="rounded" className="mt-0 space-y-6">
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<Button rounded="none">No Rounded</Button>
+<Button rounded="sm">Rounded SM</Button>
+<Button rounded="md">Rounded MD (Default)</Button>
+<Button rounded="lg">Rounded LG</Button>
+<Button rounded="xl">Rounded XL</Button>
+<Button rounded="2xl">Rounded 2XL</Button>
+<Button rounded="3xl">Rounded 3XL</Button>
+<Button rounded="full">Rounded Full</Button>`}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<Button rounded="full" leftIcon={<IoMdSend />}>Send Message</Button>
+<Button rounded="full" rightIcon={<IoMdRocket />}>Launch Now</Button>
+<Button rounded="full" leftIcon={<MdOutlineFileDownload />} rightIcon={<BiSolidTerminal />}>
+  Both Icons
+</Button>`}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<Button 
+  variant="shimmer" 
+  rounded="full" 
+  rightIcon={<MdOutlineFileDownload />}
+  motionHover="lift"
+>
+  Download Now
+</Button>
+
+<Button 
+  variant="rainbow" 
+  rounded="full" 
+  size="lg"
+  leftIcon={<IoMdSend />} 
+  rightIcon={<IoMdRocket />}
+  motionHover="scale"
+  motionTap="press"
+>
+  Launch Project
+</Button>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+      </div>
+    </div>
+
+  </Tabs>
+</div>
+## Props
+
+<div className="not-prose my-8">
+  <div className="overflow-hidden rounded-xl border border-border/40 bg-card shadow-sm">
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="border-b border-border/60 bg-muted/30">
+            <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Prop</th>
+            <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Type</th>
+            <th className="px-3 py-3 text-left text-sm font-semibold text-foreground">Default</th>
+            <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border/40">
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">variant</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">
+                'light' | 'dark' | 'primary' | 'success' | 'danger' | 'warning' | 'outline' | 'ghost' | 'link' | 'rainbow' | 'shimmer'
+              </code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'primary'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Button color variant</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">size</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">
+                'sm' | 'md' | 'lg' | 'xl' | 'icon'
+              </code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'md'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Button size</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">rounded</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">
+                'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'
+              </code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'md'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Border radius variant</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">motionHover</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">
+                'lift' | 'scale' | 'none'
+              </code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'scale'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Hover animation effect</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">motionTap</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">
+                'lift' | 'scale' | 'press'
+              </code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'press'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Tap/click animation effect</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">motionDuration</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">number</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                0.2
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Animation duration in seconds</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">leftIcon</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">ReactNode</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="text-xs text-muted-foreground/50">—</span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Icon to display on the left side</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">rightIcon</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">ReactNode</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="text-xs text-muted-foreground/50">—</span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Icon to display on the right side</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">loading</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">boolean</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                false
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Show loading state</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">disabled</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">boolean</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                false
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Disable the button</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">className</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">string</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="text-xs text-muted-foreground/50">—</span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Additional CSS classes</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">children</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">ReactNode</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="text-xs text-muted-foreground/50">—</span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Button content</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+---
+
+---
+### Button - Copy Buttons
+
+<div className="my-8">
+  <Tabs defaultValue="variants" className="w-full">
+    
+    <TabsList className="inline-flex h-auto items-center justify-start gap-1 rounded-xl bg-transparent border border-border/40 p-1.5">
+      <TabsTrigger 
+        value="variants" 
+        className="relative inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+      >
+        <span className="relative z-10">Variants</span>
+      </TabsTrigger>
+      
+      <TabsTrigger 
+        value="sizes"
+        className="relative inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+      >
+        <span className="relative z-10">Sizes</span>
+      </TabsTrigger>
+      
+      <TabsTrigger 
+        value="animations"
+        className="relative inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+      >
+        <span className="relative z-10">Animations</span>
+      </TabsTrigger>
+      
+      <TabsTrigger 
+        value="icon-only"
+        className="relative inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+      >
+        <span className="relative z-10">Icon Only</span>
+      </TabsTrigger>
+      
+      <TabsTrigger 
+        value="custom"
+        className="relative inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+      >
+        <span className="relative z-10">Custom</span>
+      </TabsTrigger>
+      
+      <TabsTrigger 
+        value="examples"
+        className="relative inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-semibold transition-all duration-200 hover:text-foreground data-[state=active]:text-primary data-[state=inactive]:text-muted-foreground data-[state=active]:shadow-none data-[state=inactive]:hover:bg-muted/50"
+      >
+        <span className="relative z-10">Examples</span>
+      </TabsTrigger>
+    </TabsList>
+
+    <div className="mt-2 rounded-xl border border-border/40 bg-card shadow-sm">
+      <div className="max-h-[400px] min-h-auto overflow-y-auto p-2">
+        
+        {/* Variants Tab */}
+        <TabsContent value="variants" className="mt-0 space-y-4">
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<CopyButton variant="default" textToCopy="Default variant" />
+<CopyButton variant="primary" textToCopy="Primary variant" />
+<CopyButton variant="secondary" textToCopy="Secondary variant" />
+<CopyButton variant="success" textToCopy="Success variant" />
+<CopyButton variant="outline" textToCopy="Outline variant" />
+<CopyButton variant="ghost" textToCopy="Ghost variant" />
+<CopyButton variant="gradient" textToCopy="Gradient variant" />
+<CopyButton variant="solid" textToCopy="Solid variant" />`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Sizes Tab */}
+        <TabsContent value="sizes" className="mt-0 space-y-4">
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<CopyButton size="sm" textToCopy="Small button" />
+<CopyButton size="md" textToCopy="Medium button" />
+<CopyButton size="lg" textToCopy="Large button" />
+<CopyButton size="xl" textToCopy="Extra large button" />`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Animations Tab */}
+        <TabsContent value="animations" className="mt-0 space-y-4">
+          <div>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<CopyButton 
+  animation="scale" 
+  textToCopy="Scale animation" 
+  copyText="Scale" 
+/>
+<CopyButton 
+  animation="bounce" 
+  textToCopy="Bounce animation" 
+  copyText="Bounce" 
+/>
+<CopyButton 
+  animation="slide" 
+  textToCopy="Slide animation" 
+  copyText="Slide" 
+/>
+<CopyButton 
+  animation="fade" 
+  textToCopy="Fade animation" 
+  copyText="Fade" 
+/>
+<CopyButton 
+  animation="none" 
+  textToCopy="No animation" 
+  copyText="None" 
+/>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Icon Only Tab */}
+        <TabsContent value="icon-only" className="mt-0 space-y-6">
+          <div>
+            <h4 className="text-sm font-semibold mb-3 px-1">Icon Size Variants</h4>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<CopyButton 
+  variant="default" 
+  size="icon" 
+  iconOnly 
+  textToCopy="Icon only default"
+/>
+<CopyButton 
+  variant="primary" 
+  size="icon" 
+  iconOnly 
+  textToCopy="Icon only primary"
+/>
+<CopyButton 
+  variant="outline" 
+  size="icon" 
+  iconOnly 
+  textToCopy="Icon only outline"
+/>
+<CopyButton 
+  variant="gradient" 
+  size="icon" 
+  iconOnly 
+  textToCopy="Icon only gradient"
+/>`}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-3 px-1">Without Text (showText=false)</h4>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<CopyButton 
+  variant="primary" 
+  size="sm"
+  showText={false}
+  textToCopy="Small icon button"
+/>
+<CopyButton 
+  variant="success" 
+  size="md"
+  showText={false}
+  textToCopy="Medium icon button"
+/>
+<CopyButton 
+  variant="gradient" 
+  size="lg"
+  showText={false}
+  textToCopy="Large icon button"
+/>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Custom Tab */}
+        <TabsContent value="custom" className="mt-0 space-y-6">
+          <div>
+            <h4 className="text-sm font-semibold mb-3 px-1">Custom Text</h4>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<CopyButton 
+  textToCopy="npm install my-package"
+  copyText="Copy command"
+  copiedText="Command copied!"
+/>
+<CopyButton 
+  textToCopy="git clone repo.git"
+  copyText="Copy git command"
+  copiedText="Git command copied!"
+  variant="primary"
+/>
+<CopyButton 
+  textToCopy="https://example.com/api/endpoint"
+  copyText="Copy URL"
+  copiedText="URL copied!"
+  variant="success"
+/>`}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-3 px-1">Custom Duration</h4>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<CopyButton 
+  textToCopy="Quick feedback"
+  copyText="500ms"
+  successDuration={500}
+  variant="primary"
+/>
+<CopyButton 
+  textToCopy="Normal feedback"
+  copyText="2000ms (default)"
+  successDuration={2000}
+/>
+<CopyButton 
+  textToCopy="Long feedback"
+  copyText="5000ms"
+  successDuration={5000}
+  variant="success"
+/>`}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-3 px-1">With Callbacks</h4>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<CopyButton 
+  textToCopy="Copy with success callback"
+  onCopySuccess={() => console.log('Copied successfully!')}
+  variant="gradient"
+/>
+<CopyButton 
+  textToCopy="Copy with error callback"
+  onCopyError={(error) => console.error('Copy failed:', error)}
+  variant="outline"
+/>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Examples Tab */}
+        <TabsContent value="examples" className="mt-0 space-y-6">
+          <div>
+            <h4 className="text-sm font-semibold mb-3 px-1">Code Block</h4>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<div className="relative">
+  <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+    <code>npm install @my-org/package</code>
+  </pre>
+  <div className="absolute top-2 right-2">
+    <CopyButton 
+      textToCopy="npm install @my-org/package"
+      size="sm"
+      variant="ghost"
+      copyText="Copy"
+      className="bg-gray-800/50 hover:bg-gray-700/50"
+    />
+  </div>
+</div>`}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-3 px-1">API Endpoint</h4>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<div className="flex items-center gap-2 p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+  <code className="flex-1 text-sm font-mono">
+    https://api.example.com/v1/users
+  </code>
+  <CopyButton 
+    textToCopy="https://api.example.com/v1/users"
+    size="sm"
+    variant="primary"
+    showText={false}
+  />
+</div>`}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-3 px-1">Git Command</h4>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<div className="flex items-center gap-2 p-4 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
+  <code className="flex-1 text-sm font-mono">
+    git clone https://github.com/user/repo.git
+  </code>
+  <CopyButton 
+    textToCopy="git clone https://github.com/user/repo.git"
+    size="sm"
+    variant="success"
+    animation="bounce"
+    iconOnly
+  />
+</div>`}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-3 px-1">Combinations</h4>
+            <div className="rounded-lg border border-border/40 bg-muted/20 p-1">
+              <pre className="text-sm overflow-x-auto"><code className="language-tsx">{`<CopyButton 
+  variant="gradient"
+  size="lg"
+  animation="bounce"
+  textToCopy="Gradient + Large + Bounce"
+  copyText="Copy Code"
+  successDuration={3000}
+/>
+
+<CopyButton 
+  variant="solid"
+  size="xl"
+  animation="scale"
+  textToCopy="Solid + Extra Large + Scale"
+  copyText="Copy Command"
+/>
+
+<CopyButton 
+  variant="outline"
+  size="md"
+  animation="slide"
+  textToCopy="Outline + Medium + Slide"
+  copyText="Copy Link"
+  className="rounded-full"
+/>`}</code></pre>
+            </div>
+          </div>
+        </TabsContent>
+
+      </div>
+    </div>
+
+  </Tabs>
+</div>
+## Props
+<div className="not-prose my-8">
+  <div className="overflow-hidden rounded-xl border border-border/40 bg-card shadow-sm">
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="border-b border-border/60 bg-muted/30">
+            <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Prop</th>
+            <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Type</th>
+            <th className="px-3 py-3 text-left text-sm font-semibold text-foreground">Default</th>
+            <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border/40">
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">variant</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">
+                'default' | 'primary' | 'secondary' | 'success' | 'outline' | 'ghost' | 'gradient' | 'solid'
+              </code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'default'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Button color variant</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">size</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">
+                'sm' | 'md' | 'lg' | 'xl' | 'icon'
+              </code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'md'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Button size</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">animation</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">
+                'scale' | 'bounce' | 'slide' | 'fade' | 'none'
+              </code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'scale'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Copy success animation</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">textToCopy</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">string</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-medium">
+                Required
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Text to copy to clipboard</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">successDuration</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">number</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                2000
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">How long to show success state (milliseconds)</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">showText</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">boolean</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                true
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Show button text</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">copyText</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">string</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'Copy code'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Text shown before copying</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">copiedText</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">string</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                'Copied!'
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Text shown after successful copy</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">iconOnly</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">boolean</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                false
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Show only icon (works with size='icon')</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">onCopySuccess</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">() => void</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="text-xs text-muted-foreground/50">—</span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Callback function on successful copy</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">onCopyError</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">(error: Error) => void</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="text-xs text-muted-foreground/50">—</span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Callback function on copy error</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">className</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">string</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="text-xs text-muted-foreground/50">—</span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Additional CSS classes for customization</td>
+          </tr>
+          
+          <tr className="group hover:bg-muted/40 transition-colors duration-150">
+            <td className="px-4 py-3.5">
+              <code className="text-sm font-semibold text-primary">disabled</code>
+            </td>
+            <td className="px-4 py-3.5">
+              <code className="text-xs text-muted-foreground/90 font-mono">boolean</code>
+            </td>
+            <td className="px-3 py-3.5">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+                false
+              </span>
+            </td>
+            <td className="px-4 py-3.5 text-sm text-muted-foreground">Disable the button</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+### Button - Fancy
+
+import Btn12 from "@/components/lokalhost_io/buttons/btn-12";
+
+<Preview link="buttons/btn-12">
+    <Btn12 />
+</Preview>
+
+---
+
+### Button - Attract
+
+import Btn03 from "@/components/lokalhost_io/buttons/btn-03";
+
+<Preview link="buttons/btn-03">
+    <Btn03 />
+</Preview>
+
+---
+
+### Button - Hold and Charge
+
+import Btn04 from "@/components/lokalhost_io/buttons/btn-04";
+
+<Preview link="buttons/btn-04">
+    <Btn04 />
+</Preview>
+
+---
+
+### Button - Hold to Action
+
+import Btn05 from "@/components/lokalhost_io/buttons/btn-05";
+
+<Preview link="buttons/btn-05">
+    <Btn05 />
+</Preview>
+
+---
+
+### Button - Welcome
+
+import Btn13 from "@/components/lokalhost_io/buttons/btn-13";
+
+<Preview link="buttons/btn-13">
+    <Btn13 />
+</Preview>
+
+---
+
+### Button - Processing
+
+import Btn07 from "@/components/lokalhost_io/buttons/btn-07";
+
+<Preview link="buttons/btn-07">
+    <Btn07 />
+</Preview>
+
+---
+
+### Button - Share
+
+import Btn08 from "@/components/lokalhost_io/buttons/btn-08";
+
+<Preview link="buttons/btn-08">
+    <Btn08 />
+</Preview>
+
+---
+
+### Button - Action
+
+import Btn09 from "@/components/lokalhost_io/buttons/btn-09";
+import { Command } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+<Preview link="buttons/btn-09">
+    <Btn09>
+        <Command
+            className={cn(
+                "w-4 h-4",
+                "text-zinc-600 dark:text-zinc-400",
+                "transition-all duration-300",
+                "group-hover:scale-110",
+                "group-hover:rotate-[-4deg]",
+                "group-active:scale-95"
+            )}
+        />
+        <span className="ml-2 text-sm text-zinc-600 dark:text-zinc-400">
+            CMD + K
+        </span>
+    </Btn09>
+</Preview>
+
+---
+
+### Button - Shadow
+
+import Btn10 from "@/components/lokalhost_io/buttons/btn-10";
+
+<Preview link="buttons/btn-10">
+    <Btn10 />
+</Preview>
+
+---
+
+### Button - Gradiant Underline
+
+import Btn11 from "@/components/lokalhost_io/buttons/btn-11";
+
+<Preview link="buttons/btn-11">
+    <Btn11 />
+</Preview>

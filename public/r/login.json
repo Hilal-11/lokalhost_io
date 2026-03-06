@@ -1,0 +1,18 @@
+{
+  "name": "login",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "textarea"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "import React from 'react'\r\n\r\nfunction login() {\r\n  return (\r\n    <div>\r\n      <h1>Login from lokalhost.io</h1>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default login\r\n",
+      "path": "/components/lokalhost_io/forms/login.tsx",
+      "target": "/components/lokalhost_io/login.tsx"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "footer-01",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "textarea"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "import React from 'react'\r\n\r\nfunction footer() {\r\n  return (\r\n    <div className='flex justify-center items-center w-full h-full'>\r\n      <h1 className='text-3xl font-sans font-bold'>Footers from lokalhost.io</h1>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default footer\r\n",
+      "path": "/components/lokalhost_io/footers/footer-01.tsx",
+      "target": "/components/lokalhost_io/footer-01.tsx"
+    }
+  ]
+}

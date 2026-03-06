@@ -1,0 +1,187 @@
+---
+title: CLI Setup
+description: How to use the localhost.io CLI to manage components.
+icon: Terminal
+---
+
+# CLI Reference
+
+The **localhost.io** ecosystem is powered by the **shadcn CLI registry system**.
+
+This CLI allows you to:
+- Initialize your project with best-practice defaults
+- Add production-ready components directly into your codebase
+- Automatically install required dependencies
+- Preview and explore components before installation
+
+All actions are performed **directly from your terminal**, keeping your workflow fast and predictable.
+
+## init
+
+The `init` command prepares your project to work with the localhost.io registry.
+
+You should run this command **once per project**, before adding any components.
+
+### What `init` does
+
+Running `init` will automatically:
+
+- Create a `components.json` configuration file
+- Install required base dependencies
+- Add the `cn` utility function
+- Configure Tailwind CSS for component usage
+- Set up CSS variables for theming
+- Prepare registry support for localhost.io components
+
+This ensures all components work consistently across your application.
+
+---
+
+### Run the init command
+
+Choose your package manager:
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+    ```bash
+    npx shadcn@latest init
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx shadcn@latest init
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    npx shadcn@latest init
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun shadcn@latest init
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+
+
+## add
+
+The `add` command installs **localhost.io components** directly into your project.
+
+Each component is:
+- Copied into your source code
+- Fully editable
+- Automatically wired with required dependencies
+
+This command also installs **related libraries** (such as Motion, GSAP, or utility packages) when required.
+
+---
+
+### Add a component
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+  <Tab value="npm">
+    ```bash
+    npx shadcn@latest add https://localhost.io/r/button.json
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx shadcn@latest add https://localhost.io/r/button.json
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    npx shadcn@latest add https://localhost.io/r/button.json
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx --bun shadcn@latest add https://localhost.io/r/button.json
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## How the localhost.io CLI works
+
+Unlike traditional UI libraries, the CLI does **not** install components as hidden dependencies.
+
+Instead, it:
+- Copies component source code into your project
+- Keeps everything fully editable
+- Avoids runtime lock-in
+- Makes debugging and customization simple
+
+You always **own the code**.
+
+---
+
+
+### During initialization
+
+The CLI may prompt you to choose:
+- Your framework (Next.js, monorepo, etc.)
+- Base color palette
+- Whether to use CSS variables
+- Whether to use a `src/` directory
+
+> 💡 **Tip:** The default options are recommended for most projects.
+
+---
+
+### Init options
+
+| Option | Description |
+| :--- | :--- |
+| `-t, --template` | Choose a project template (`next`, `next-monorepo`). |
+| `-b, --base-color` | Set the base color palette (`zinc`, `slate`, `stone`, etc.). |
+| `-y, --yes` | Skip confirmation prompts (default: true). |
+| `-c, --cwd` | Specify a working directory for initialization. |
+
+---
+
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+### What happens when you add a component
+
+- Component files are copied into your project
+- Dependencies are installed automatically
+- Tailwind styles are applied
+- The component is ready to use immediately
+
+No extra configuration is required.
+
+---
+
+### Add options
+
+| Option | Description |
+| :--- | :--- |
+| `-o, --overwrite` | Overwrite existing files if they already exist. |
+| `-a, --all` | Add all available components from the registry. |
+| `-p, --path` | Specify a custom destination path for components. |
+
+---
+
+## view
+
+The `view` command lets you **preview components before installing them**.
+
+This is useful when you want to:
+- Inspect component structure
+- Review dependencies
+- Understand what will be added to your project
+
+---
+
+### View a component
+
+```bash
+npx shadcn@latest view button

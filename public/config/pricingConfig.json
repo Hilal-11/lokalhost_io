@@ -1,0 +1,68 @@
+[
+  {
+    "id": "monthly-access",
+    "plan": "Monthly Access",
+    "planDescription": "Unlock all premium web and mobile components. Access all templates, advanced themes, and regular updates building high-quality apps.",
+    "subscription_amount": 99,
+    "save_price": "Save 20% with monthly plan",
+    "save_price_value": "149",
+    "features": [
+      "Access to 60+ Component Blocks — Create beautiful websites with premium components",
+      "Access to 12+ Templates — Speed up landing page creation with hassle-free editing",
+      "1 year of updates and new \"features\"",
+      "Copy prompt for all Component Blocks that work well with Lovable, Bolt, V0 and other \"popular\" frameworks",
+      "Access to private Discord community for support and collaboration",
+      "48 hours turnaround time for dedicated support",
+      "Copy and paste, no complexity",
+      "Built with Next.js, React, TypeScript, Tailwind CSS and Framer Motion",
+      "Ready-to-use components that save development time"
+    ],
+    "butttonContent": "Try for Free",
+    "popular": false
+  },
+  {
+    "id": "anual-access",
+    "plan": "Annual Access",
+    "save_price": "Save 30% with annual plan",
+    "planDescription": "Unlock all premium web and mobile components. Access all templates, advanced themes, and regular updates building high-quality apps.",
+    "subscription_amount": 199,
+    "save_price_value": "249",
+    "features": [
+      "Access to 60+ Component Blocks — Create beautiful websites with premium components",
+      "Access to 12+ Templates — Speed up landing page creation with hassle-free editing",
+      "1 year of updates and new \"features\"",
+      "Copy prompt for all Component Blocks that work well with Lovable, Bolt, V0 and other \"popular\" frameworks",
+      "Access to private Discord community for support and collaboration",
+      "48 hours turnaround time for dedicated support",
+      "Copy and paste, no complexity",
+      "Built with Next.js, React, TypeScript, Tailwind CSS and Framer Motion",
+      "Ready-to-use components that save development time",
+      "Fully responsive and customizable components",
+      "Cancel subscription anytime"
+    ],
+    "butttonContent": "Get premium",
+    "popular": true
+  },
+  {
+    "id": "lifetime-access",
+    "plan": "Lifetime Access",
+    "planDescription": "Get everything in Pro plus team collaboration, private access, and priority support. Perfect for companies for building",
+    "subscription_amount": 299,
+    "save_price": "Best Value - One-time payment",
+    "save_price_value": "499",
+    "features": [
+      "Access to 60+ Component Blocks — Create beautiful websites with premium components",
+      "Access to 12+ Templates — Speed up landing page creation with hassle-free editing",
+      "Lifetime updates for all templates and Component Blocks",
+      "Lifetime access to all new templates and Component Blocks as they're released",
+      "Access to private Discord community for support and collaboration",
+      "48 hours turnaround time for dedicated support",
+      "Copy prompt for all Component Blocks that work well with Lovable, Bolt, V0 and other \"popular\" frameworks",
+      "Copy and paste, no complexity",
+      "Built with Next.js, React, TypeScript, Tailwind CSS and Framer Motion",
+      "Ready-to-use components that save development time"
+    ],
+    "butttonContent": "Unlock the dreams",
+    "popular": false
+  }
+]

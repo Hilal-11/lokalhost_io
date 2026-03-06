@@ -1,0 +1,155 @@
+{
+    "footer_heading": "At Lokalhost.io, we provide developers, startups, and creative teams with high-quality templates, components, UI kits, and design resources. Our mission is to help you build faster, optimize workflows, and ship polished products effortlessly while staying focused on what truly matters—your ideas.",
+    "creator_name": "@HILAL",
+    "link":"",
+    "footerServicesItems":[
+        
+        {
+            "id": "services",
+            "service_title": "Services",
+            "services": [
+                { "service": "Web Components", "navigateTo": "/docs" },
+                { "service": "Templates", "navigateTo": "/templates" },
+                { "service": "Designs and UI Kits", "navigateTo": "/designs" },
+                { "service": "Backgrounds Patterns", "navigateTo": "/backgrounds" },
+                { "service": "Mobile UI Kits", "navigateTo": "/mobile" },
+                { "service": "Mobile Apps", "navigateTo": "/mobile" },
+                { "service": "Mobile Dev Elements", "navigateTo": "/mobile" },
+                { "service": "Authentication Kits", "navigateTo": "/authDocs" },
+                { "service": "Full-Stack Starter Kits", "navigateTo": "/coming-soon" },
+                { "service": "SaaS Boilerplates", "navigateTo": "/coming-soon" },
+                { "service": "Freelancing Work", "navigateTo": "/custom-work" },
+                { "service": "Custom Work Request", "navigateTo": "/custom-work"},
+                { "service": "Premium Admin Dashboards", "navigateTo": "/coming-soon" },
+                { "service": "AI UI Components", "navigateTo": "/coming-soon" },
+                { "service": "AI Chatbot Integration Kits", "navigateTo": "/coming-soon" },
+                { "service": "API Starter Backends", "navigateTo": "/coming-soon" }
+            ] 
+        },
+
+        {
+            "id": "pages",
+            "service_title": "Pages",
+            "services": [
+                { "service": "Home", "navigateTo": "/" },
+                { "service": "Docs", "navigateTo": "/docs" },
+                { "service": "Components", "navigateTo": "/docs" },
+                { "service": "Templates", "navigateTo": "/pricing" },
+                { "service": "Design kits", "navigateTo": "/designs" },
+                { "service": "Mobile Apps", "navigateTo": "/mobile" },
+                { "service": "Mobile UI Blocks", "navigateTo": "/mobile" },
+                { "service": "Backgrounds", "navigateTo": "/backgrounds" },
+                { "service": "Custom Work", "navigateTo": "/custom-work" },
+                { "service": "Team & About", "navigateTo": "/about" },
+                { "service": "Pricing", "navigateTo": "/pricing" },
+                { "service": "Report Bug", "navigateTo": "/" },
+                { "service": "Feedback", "navigateTo": "/" },
+                { "service": "About Developer", "navigateTo": "https://hila-11.com" }
+            ] 
+        },
+
+        {
+            "id": "web-components",
+            "service_title": "Web Components",
+            "services": [
+            { "service": "Button", "navigateTo": "/components/button" },
+                { "service": "Card", "navigateTo": "/components/card" },
+                { "service": "Modal", "navigateTo": "/components/modal" },
+                { "service": "Tooltip", "navigateTo": "/components/tooltip" },
+                { "service": "Avatar", "navigateTo": "/components/avatar" },
+                { "service": "Input", "navigateTo": "/components/input" },
+                { "service": "Dropdown", "navigateTo": "/components/dropdown" },
+                { "service": "Toast", "navigateTo": "/components/toast" },
+                { "service": "Badge", "navigateTo": "/components/badge" },
+                { "service": "Checkbox", "navigateTo": "/components/checkbox" },
+                { "service": "Switch", "navigateTo": "/components/switch" },
+                { "service": "Tabs", "navigateTo": "/components/tabs" },
+                { "service": "Accordion", "navigateTo": "/components/accordion" },
+                { "service": "Progress", "navigateTo": "/components/progress" },
+                { "service": "Spinner", "navigateTo": "/components/spinner" },
+                { "service": "Pagination", "navigateTo": "/components/pagination" },
+                { "service": "Select", "navigateTo": "/components/select" },
+                { "service": "Date Picker", "navigateTo": "/components/date-picker" }
+            ] 
+        },
+
+        {
+            "id": "web-templates",
+            "service_title": "Web Templates",
+            "services": [
+            { "service": "Landing", "navigateTo": "/templates/landing" },
+                { "service": "Dashboard", "navigateTo": "/templates/dashboard" },
+                { "service": "E-commerce", "navigateTo": "/templates/ecommerce" },
+                { "service": "Blog", "navigateTo": "/templates/blog" },
+                { "service": "Portfolio", "navigateTo": "/templates/portfolio" },
+                { "service": "SaaS", "navigateTo": "/templates/saas" },
+                { "service": "Admin Panel", "navigateTo": "/templates/admin" },
+                { "service": "Docs Site", "navigateTo": "/templates/docs" },
+                { "service": "Marketing Site", "navigateTo": "/templates/marketing" },
+                { "service": "SaaS Landing", "navigateTo": "/templates/saas-landing" },
+                { "service": "Portfolio Pro", "navigateTo": "/templates/portfolio-pro" },
+                { "service": "Restaurant", "navigateTo": "/templates/restaurant" },
+                { "service": "E-commerce Pro", "navigateTo": "/templates/ecommerce-pro" },
+                { "service": "Marketplace", "navigateTo": "/templates/marketplace" },
+                { "service": "Support Portal", "navigateTo": "/templates/support" },
+                { "service": "Admin Dashboard Pro", "navigateTo": "/templates/admin-pro" },
+                { "service": "Checkout Flow", "navigateTo": "/templates/checkout" },
+                { "service": "Auth Flow", "navigateTo": "/templates/auth-flow" },
+                { "service": "Coming Soon", "navigateTo": "/templates/coming-soon" }
+            ] 
+        },
+
+
+        {
+            "id": "mobile-apps",
+            "service_title": "Mobile Apps",
+            "services": [
+            { "service": "Business App", "navigateTo": "/mobile/business" },
+                { "service": "Health & Wellness", "navigateTo": "/mobile/health" },
+                { "service": "Education / Learning", "navigateTo": "/mobile/education" },
+                { "service": "E-commerce App", "navigateTo": "/mobile/ecommerce" },
+                { "service": "Food Delivery", "navigateTo": "/mobile/food-delivery" },
+                { "service": "Fitness Tracker", "navigateTo": "/mobile/fitness" },
+                { "service": "Telemedicine", "navigateTo": "/mobile/telemedicine" },
+                { "service": "Booking & Reservations", "navigateTo": "/mobile/booking" },
+                { "service": "Social Network", "navigateTo": "/mobile/social" },
+                { "service": "Chat & Messaging", "navigateTo": "/mobile/chat" },
+                { "service": "Finance & Budget", "navigateTo": "/mobile/finance" },
+                { "service": "Travel Guide", "navigateTo": "/mobile/travel" },
+                { "service": "News Reader", "navigateTo": "/mobile/news" },
+                { "service": "Music Streaming", "navigateTo": "/mobile/music" },
+                { "service": "Podcast Player", "navigateTo": "/mobile/podcast" },
+                { "service": "Event Ticketing", "navigateTo": "/mobile/events" },
+                { "service": "Video Streaming", "navigateTo": "/mobile/video" }
+            ] 
+        },
+
+
+
+        {
+            "id": "mobile-ui-blocks",
+            "service_title": "Mobile UI Blocks",
+            "services": [
+            { "service": "Auth Form", "navigateTo": "/blocks/auth-form" },
+                { "service": "Profile Card", "navigateTo": "/blocks/profile-card" },
+                { "service": "Chat UI", "navigateTo": "/blocks/chat-ui" },
+                { "service": "Feed Item", "navigateTo": "/blocks/feed-item" },
+                { "service": "Settings List", "navigateTo": "/blocks/settings-list" },
+                { "service": "Onboarding Steps", "navigateTo": "/blocks/onboarding" },
+                { "service": "Bottom Sheet", "navigateTo": "/blocks/bottom-sheet" },
+                { "service": "Floating Action", "navigateTo": "/blocks/fab" },
+                { "service": "Tab Bar", "navigateTo": "/blocks/tab-bar" },
+                { "service": "Notification Center", "navigateTo": "/blocks/notification-center" },
+                { "service": "Search Bar", "navigateTo": "/blocks/search-bar" },
+                { "service": "Carousel", "navigateTo": "/blocks/carousel" },
+                { "service": "Form Elements", "navigateTo": "/blocks/forms" },
+                { "service": "Ratings", "navigateTo": "/blocks/ratings" },
+                { "service": "Empty State", "navigateTo": "/blocks/empty-state" },
+                { "service": "Skeleton Loader", "navigateTo": "/blocks/skeleton" },
+                { "service": "Bottom Navigation", "navigateTo": "/blocks/bottom-navigation" },
+                { "service": "Segmented Control", "navigateTo": "/blocks/segmented-control" },
+                { "service": "Media Player", "navigateTo": "/blocks/media-player" }
+            ] 
+        }
+    ]
+}
