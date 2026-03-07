@@ -72,7 +72,8 @@ const Login = () => {
         setInvalidCreds({ email: data?.message, password: data?.message });
         return;
       }
-      router.push("/");
+    await router.push("/");
+    router.refresh();
     } catch (err) {
       console.log(err.message);
     } finally {

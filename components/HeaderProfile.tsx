@@ -13,8 +13,11 @@ import { MdLogout } from "react-icons/md"
 import { LuLayoutDashboard, LuUser } from "react-icons/lu"
 import { RiMoonLine } from "react-icons/ri"
 
-
-function HeaderProfile({ user, userEmail }: { user: string; userEmail: string }) {
+interface HeaderClientProps {
+  user: string | null;
+  userEmail: string | null;
+} 
+function HeaderProfile({ user, userEmail }: HeaderClientProps) {
   const [open, setOpen]           = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
 

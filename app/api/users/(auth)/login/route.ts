@@ -31,11 +31,16 @@ export const POST = async (request: NextRequest) => {
         }
 
         // Generate JWT Token
+
         const token = jwt.sign(
-            { id: user._id, username: user.username, email: user.email },
+            { 
+                userId: user._id,
+                username: user.username,        // or user.username
+                email: user.email,
+            },
             process.env.JWT_SECRET!,
-            { expiresIn: "1d" }
-        )
+            { expiresIn: '7d' }
+            );
 
         const { password: _, ...userData } = user.toObject();
 
