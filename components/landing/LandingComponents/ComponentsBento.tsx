@@ -16,12 +16,67 @@ import { OrbitingCircles } from '@/components/ui/orbiting-circles'
 import { SiShadcnui, SiReact, SiNextdotjs, SiTypescript } from 'react-icons/si'
 import { AnimatedBeam } from '@/components/ui/animated-beam'
 import { ComponentsMarquee } from '../MicroComponents/templatesScrolling'
-import { TerminalDemo } from './FeaturesBento'
+import {
+  AnimatedSpan,
+  Terminal,
+  TypingAnimation,
+} from "@/components/ui/terminal"
+
 import { StripedPattern } from '../../magicui/striped-pattern'
 
 /* ─────────────────────────────────────────────
    Re-usable: Tilt Card with cursor spotlight
 ───────────────────────────────────────────── */
+
+
+
+export function CLIInstallationSetup() {
+  return (
+<Terminal className="flex justify-start text-start">
+  <TypingAnimation className='text-lg font-bold font-mono'>&gt; npm add lokalhost@latest init</TypingAnimation>
+
+  <AnimatedSpan className="text-green-500">
+    ✔ Resolving package registry.
+  </AnimatedSpan>
+
+  <AnimatedSpan className="text-green-500">
+    ✔ Downloading lokalhost@latest.
+  </AnimatedSpan>
+
+  <AnimatedSpan className="text-green-500">
+    ✔ Extracting package files.
+  </AnimatedSpan>
+
+  <AnimatedSpan className="text-green-500">
+    ✔ Running preflight checks.
+  </AnimatedSpan>
+
+  <AnimatedSpan className="text-green-500">
+    ✔ Detecting project environment.
+  </AnimatedSpan>
+
+  <AnimatedSpan className="text-green-500">
+    ✔ Verifying framework. Found Next.js.
+  </AnimatedSpan>
+
+  <AnimatedSpan className="text-green-500">
+    ✔ Checking TypeScript configuration.
+  </AnimatedSpan>
+
+  <AnimatedSpan className="text-green-500">
+    ✔ Validating Tailwind CSS setup.
+  </AnimatedSpan>
+
+  <AnimatedSpan className="text-green-500">
+    ✔ Validating import aliases.
+  </AnimatedSpan>
+</Terminal>
+  )
+}
+
+
+
+
 function TiltCard({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const x = useMotionValue(0)
@@ -539,7 +594,7 @@ function ComponentsBento() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="pt-3 relative z-10"
               >
-                <TerminalDemo />
+                <CLIInstallationSetup />
               </motion.div>
             </TiltCard>
           </motion.div>

@@ -230,7 +230,7 @@ function MainInstallationSetupAndCLIGuide() {
             </div>
 
             {/* Copy Button */}
-            <div className='flex justify-center items-center cursor-pointer' onClick={() => copyCode(currentExample.code)}>
+            <div className='flex justify-center items-center cursor-pointer'>
               <button className='w-10 h-10 rounded-sm border shadow-inner bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-xl text-neutral-700 dark:text-neutral-300 cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors'>
                 {isCopied ? <IoIosDoneAll className="text-emerald-500" /> : <FiCopy />}
               </button>
