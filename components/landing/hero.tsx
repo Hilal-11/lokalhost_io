@@ -12,7 +12,7 @@ import TemplatesShowcaseBento from "./LandingComponents/TemplatesShowcaseBento";
 import { IoMdSend } from "react-icons/io";
 import TailoredSignal from "./MicroComponents/TailoredSignal";
 import { MarqueeTemplates } from "./MicroComponents/templatesScrolling";
-import FeaturesBento from "./LandingComponents/FeaturesBento";
+// import FeaturesBento from "./LandingComponents/FeaturesBento";
 import ComponentsBento from "./LandingComponents/ComponentsBento"
 import DesignsBento from "./LandingComponents/DesignsBento"
 import nProgress from "nprogress";
@@ -195,7 +195,7 @@ export function HeroSection() {
             })}
     </div>
 
-        {/* <MainInstallationSetupAndCLIGuide /> */}
+        <MainInstallationSetupAndCLIGuide />
         <div className="w-full h-auto mt-10 mb-10">
           <MarqueeTemplates/>
         </div>
@@ -203,9 +203,6 @@ export function HeroSection() {
         <TemplatesBlockList/>
         <LandingPagesShowcase />
         <MobileAppsAndUIBlocks />
-        <div className="mt-16 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
-          <FeaturesBento />
-        </div>
         <div className="mt-20 relative overflow-hidden w-full h-auto border-t border-l border-r border-dashed">
           <ComponentsBento/>
         </div> 
