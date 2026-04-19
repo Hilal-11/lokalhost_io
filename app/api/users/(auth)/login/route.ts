@@ -50,7 +50,7 @@ export const POST = async (request: NextRequest) => {
             status: 200,
         })
         response.cookies.set("token", token, {
-            httpOnly: true,
+            httpOnly: false,
             sameSite: "lax", // or "none" if cross-origin (with secure)
             path: "/", // important
         })

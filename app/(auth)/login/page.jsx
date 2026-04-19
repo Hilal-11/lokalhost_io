@@ -9,6 +9,8 @@ import { PiTerminalFill } from "react-icons/pi";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Spinner } from "@/components/ui/spinner";
 
+import { useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 export const dynamic = "force-static";
 
 // reusable field block
@@ -39,6 +41,9 @@ const Login = () => {
   const [showPw, setShowPw]             = useState(false);
   const [errors, setErrors]             = useState({ email: "", password: "" });
   const router = useRouter();
+  const searchParams = useSearchParams();                    // ← add this
+  const redirectTo = searchParams.get("redirect") || "/";
+  console.log("redirectTo:", redirectTo); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,8 +77,9 @@ const Login = () => {
         setInvalidCreds({ email: data?.message, password: data?.message });
         return;
       }
-    await router.push("/");
-    router.refresh();
+        // This line — does it actually run?
+      router.push(redirectTo);
+      router.refresh();
     } catch (err) {
       console.log(err.message);
     } finally {
