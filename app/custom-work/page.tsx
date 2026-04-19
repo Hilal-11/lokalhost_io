@@ -1,1071 +1,781 @@
-'use client'
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
-import { IoMdSend, IoMdClose, IoMdRocket } from 'react-icons/io'
-import { FaReact, FaNodeJs, FaMobile, FaCloud, FaCode, FaPalette, FaCheckCircle } from 'react-icons/fa'
-import { SiNextdotjs, SiFlutter, SiReact, SiTailwindcss, SiMongodb, SiPostgresql } from 'react-icons/si'
-import { MdWeb } from 'react-icons/md'
-import { toast, Toaster } from 'sonner';
-import { FaClock, FaEnvelope, FaRocket, FaShieldAlt } from 'react-icons/fa';
-import { Spinner } from "@/components/ui/spinner"
+"use client"
+import { useEffect, useState } from 'react'
+import AnnoncementBadge from '@/components/landing/AnnoncementBadge'
+import { IoChatbubblesOutline, IoClose } from "react-icons/io5";
+import { SiFoodpanda } from "react-icons/si";
+import { cn } from  "@/lib/utils"
+import Link from 'next/link';
+import { motion , AnimatePresence} from "motion/react"
+import { ScheduleCallModal } from '@/components/schedule-call/Schedulecallmodal';
 
 
-interface IResponse {
-    id: string
-    name: string
-    email: string
-    company: string
-    phone: string
-    message: string
-    serviceType: string
-    timeline: string
-  }
-interface IFormData {
-    name: string
-    email: string
-    company: string
-    phone: string
-    serviceType: string
-    projectDescription: string
-    timeline: string
-    referenceUrls: string
-    additionalInfo: string
-
+interface AuthState {
+  isLoggedIn: boolean;
+  user: { name?: string; email?: string } | null;
+  loading: boolean;
 }
-function CustomWorkPage() {
-  
-  const [selectedService, setSelectedService] = useState<IServices | null>(null)
-  const [selectedTimeline, setSelectedTimeline] = useState('')
-  const [responseData , setResponseData] = useState<IResponse | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [step, setStep] = useState(1)
-  
-  const [formData, setFormData] = useState<IFormData>({
-    name: '',
-    email: '',
-    company: '',
-    phone: '',
-    serviceType: '',
-    projectDescription: '',
-    timeline: '',
-    referenceUrls: '',
-    additionalInfo: ''
-  })
 
-  interface IServices {
-    id: string
-    icon: React.ReactNode
-    title: string
-    shortDesc: string
-    description: string
-    features: string[]
-    techStack: string[]
-    startingPrice: string
-    timeline: string
-    color: string
-  }
-  const services: IServices[] = [
+
+const CUSTOM_WORK_FAQ: IFaq = {
+  id: 'custom-work',
+  title: 'Custom Work FAQ',
+  questions: [
     {
-      id: 'web-apps',
-      icon: <MdWeb className="text-3xl" />,
-      title: 'Web Applications',
-      shortDesc: 'Full-stack web applications built with modern technologies',
-      description: 'Custom web applications tailored to your business needs. From dashboards and admin panels to complex enterprise solutions, we build scalable, secure, and performant web apps using cutting-edge technologies like React, Next.js, Node.js, and more.',
-      features: [
-        'Responsive design for all devices',
-        'RESTful API development',
-        'Database design & integration',
-        'Authentication & authorization',
-        'Real-time features with WebSockets',
-        'Cloud deployment & hosting',
-        'Performance optimization',
-        'SEO optimization'
+      question: 'What services do you offer under custom work?',
+      answer: 'We offer a range of custom development services including UI/UX design, web application development, mobile app development, and end-to-end SaaS product development. We work closely with our clients to understand their unique needs and deliver tailored solutions that drive results.',
+      links: [
+        { label: 'Learn more about our services', url: '/services' },
+        { label: 'Contact us for a consultation', url: '/contact' },
       ],
-      techStack: ['React', 'Next.js', 'Node.js', 'Express', 'MongoDB', 'PostgreSQL', 'Tailwind CSS'],
-      startingPrice: '$5,000',
-      timeline: '4-12 weeks',
-      color: 'from-blue-500 to-cyan-500'
+    },
+    { 
+      question: 'How do I get started with a custom project?',
+      answer: 'Getting started is easy! Simply reach out to us through our contact form or book a call with our team. We will discuss your project requirements, goals, and timeline to determine the best approach for your custom solution.',
+      links: [
+        { label: 'Book a call', url: '/contact' },
+      ],
     },
     {
-      id: 'saas',
-      icon: <FaCloud className="text-3xl" />,
-      title: 'SaaS Products',
-      shortDesc: 'Complete SaaS platforms from concept to launch',
-      description: 'End-to-end SaaS development including multi-tenancy architecture, subscription management, payment integration, and more. We help you build, launch, and scale your SaaS product with best practices and proven technologies.',
-      features: [
-        'Multi-tenant architecture',
-        'Subscription & billing integration',
-        'User management & roles',
-        'Analytics & reporting dashboard',
-        'Email & notification system',
-        'API & webhook support',
-        'Automated backups & recovery',
-        'Scalable infrastructure'
+      question: 'What is the typical timeline for a custom project?',
+      answer: 'The timeline for a custom project can vary greatly depending on the scope and complexity of the work. After our initial consultation, we will provide you with a detailed project plan and timeline. We strive to deliver high-quality results in a timely manner while ensuring clear communication throughout the process.',
+      links: [
+        { label: 'Learn more about our timeline', url: '/timeline' },
       ],
-      techStack: ['React', 'Next.js', 'Node.js', 'Stripe', 'AWS', 'Redis', 'Prisma'],
-      startingPrice: '$15,000',
-      timeline: '8-16 weeks',
-      color: 'from-purple-500 to-pink-500'
     },
     {
-      id: 'mobile-apps',
-      icon: <FaMobile className="text-3xl" />,
-      title: 'Mobile Applications',
-      shortDesc: 'Cross-platform mobile apps with React Native & Flutter',
-      description: 'Native-quality mobile applications that work seamlessly on both iOS and Android. Using React Native and Flutter, we build performant cross-platform apps with a single codebase, reducing development time and costs.',
-      features: [
-        'iOS & Android compatibility',
-        'Native performance & UX',
-        'Push notifications',
-        'Offline functionality',
-        'In-app purchases',
-        'Social media integration',
-        'Geolocation services',
-        'App store deployment'
+      question: 'What is the pricing structure for custom work?',
+      answer: 'Our pricing for custom work is based on the specific requirements of each project. We offer competitive rates and will provide you with a detailed quote after our initial consultation. We believe in transparency and will work with you to find a solution that fits your budget.',
+      links: [
+        { label: 'Learn more about our pricing', url: '/pricing' },
       ],
-      techStack: ['React Native', 'Flutter', 'Firebase', 'Redux', 'Native Modules'],
-      startingPrice: '$8,000',
-      timeline: '6-14 weeks',
-      color: 'from-green-500 to-emerald-500'
     },
-  ]
-  interface ITimeLine {
-    value: string
-    label: string
-    icon: React.ReactNode
-  }
-  const timelineOptions: ITimeLine[] = [
-    { value: 'asap', label: 'ASAP (1-2 weeks)', icon: '⚡' },
-    { value: '1-month', label: '1 Month', icon: '📅' },
-    { value: '2-3-months', label: '2-3 Months', icon: '📆' },
-    { value: '3-6-months', label: '3-6 Months', icon: '🗓️' },
-    { value: 'flexible', label: 'Flexible Timeline', icon: '🌊' }
+    
+    {
+      question: 'Do you offer ongoing support and maintenance for custom projects?',
+      answer: 'Yes, we offer ongoing support and maintenance services for all custom projects. We understand that your needs may evolve over time, and we are here to ensure that your solution continues to perform optimally. Our support packages can be tailored to meet your specific requirements.',
+      links: [
+        { label: 'Learn more about our support services', url: '/support' },
+      ],
+    },
+  ],
+}
+const CUSTOM_WORK_FAQ2: IFaq = {
+  id: 'custom-work',
+  title: 'Custom Work FAQ',
+  questions: [
+    {
+      question: 'What services do you offer under custom work?',
+      answer: 'We offer a range of custom development services including UI/UX design, web application development, mobile app development, and end-to-end SaaS product development. We work closely with our clients to understand their unique needs and deliver tailored solutions that drive results.',
+      links: [
+        { label: 'Learn more about our services', url: '/services' },
+        { label: 'Contact us for a consultation', url: '/contact' },
+      ],
+    },
+    { 
+      question: 'How do I get started with a custom project?',
+      answer: 'Getting started is easy! Simply reach out to us through our contact form or book a call with our team. We will discuss your project requirements, goals, and timeline to determine the best approach for your custom solution.',
+      links: [
+        { label: 'Book a call', url: '/contact' },
+      ],
+    },
+    {
+      question: 'What is the typical timeline for a custom project?',
+      answer: 'The timeline for a custom project can vary greatly depending on the scope and complexity of the work. After our initial consultation, we will provide you with a detailed project plan and timeline. We strive to deliver high-quality results in a timely manner while ensuring clear communication throughout the process.',
+      links: [
+        { label: 'Learn more about our timeline', url: '/timeline' },
+      ],
+    },
+  ],
+}
+
+function page() {
+
+  const [state, setState] = useState<AuthState>({
+  isLoggedIn: false,
+  user: null,
+  loading: true,
+});
+
+
+  // Check every possible storage
+  
+  console.log("localStorage token:", localStorage.getItem("token"))
+  console.log("sessionStorage token:", sessionStorage.getItem("token"))
+  console.log("all localStorage:", {...localStorage})
+  
+  const [scheduleCallOpen, setScheduleCallOpen] = useState(false)
+
+  const HEADLINES = [
+    { pre: 'We Build ',   hi: 'UI Blocks & Components',    post: '\nfor web apps that impress.'         },
+    { pre: 'We Craft ',   hi: 'Custom Mobile Apps',         post: '\nthat users actually love.'          },
+    { pre: 'We Ship ',    hi: 'End-to-End SaaS Products',   post: '\nfrom zero to launch.'               },
+    { pre: 'We Design ',  hi: 'Landing Pages & Templates',  post: '\nthat convert & captivate.'          },
+    { pre: 'We Deliver ', hi: 'Custom-Built Solutions',     post: '\nfor businesses that mean it.'       },
   ]
 
-  const handleInputChange = (e:any) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+  const [idx, setIdx] = useState(0)
+  const [visible, setVisible] = useState(true)
 
-  const handleServiceSelect = (service:any) => {
-    setSelectedService(service)
-    setFormData({
-      ...formData,
-      serviceType: service.title
-    })
-  }
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setVisible(false)
+      setTimeout(() => {
+        setIdx(i => (i + 1) % HEADLINES.length)
+        setVisible(true)
+      }, 350)
+    }, 3200)
+    return () => clearInterval(timer)
+  }, [])
 
- const handleSubmit = async (e:any) => {
-    e.preventDefault()
-    setLoading(true)
-    console.log('Project request submitted:', formData)
-      // api call for backend to entry in database
-    if(step === 3) {
-      try {
-        const response = await fetch('/api/custom-work', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        })
-        const result = await response.json()
 
-        // Backend-level failure
-        if (!response.ok || !result.success) {
-          throw new Error(result.message || 'Request failed')
-        }
-        // ✅ Success
-        toast.success(result.message)
-        setResponseData(result.data)
-        setStep(4)
-        setFormData({
-          name: '',
-          email: '',
-          company: '',
-          phone: '',
-          serviceType: '',
-          projectDescription: '',
-          timeline: '',
-          referenceUrls: '',
-          additionalInfo: '',
-        })
-      } catch (error: any) {
-        toast.error(error.message || 'Something went wrong. Please try again.')
+  useEffect(() => {
+    try {
+      // Read from cookie instead of localStorage
+      const match = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="));
+      const token = match ? match.split("=")[1] : null;
+
+      if (!token) {
+        setState({ isLoggedIn: false, user: null, loading: false });
+        return;
       }
-      finally{
-        setLoading(false)
+
+      // Decode JWT payload
+      const payload = JSON.parse(atob(token.split(".")[1]));
+
+      // Check expiry
+      const isExpired = payload.exp && payload.exp * 1000 < Date.now();
+      if (isExpired) {
+        setState({ isLoggedIn: false, user: null, loading: false });
+        return;
       }
+
+      setState({
+        isLoggedIn: true,
+        user: { name: payload.name, email: payload.email },
+        loading: false,
+      });
+    } catch {
+      setState({ isLoggedIn: false, user: null, loading: false });
     }
-  }
+  }, []);
 
-  const nextStep = () => {
-    if (step < 3) setStep(step + 1)
-  }
+  console.log("Auth state:", state)
 
-  const prevStep = () => {
-    if (step > 1) setStep(step - 1)
-  }
+  const { pre, hi, post } = HEADLINES[idx]
+  const [firstLine, ...rest] = (pre + '⁀' + post).split('\n')
+  const [beforeHi, afterHi] = firstLine.split('⁀')
+
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Animated Grid Background */}
-      <div className="fixed inset-0 -z-10">
-        <div 
-          className="absolute inset-0 opacity-30 dark:opacity-20"
-          style={{
-            backgroundSize: '80px 80px',
-            maskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black 20%, transparent 80%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black 20%, transparent 80%)'
-          }}
-        />
-      </div>
+    <div>
+      {/* Heading */}
+      <div className='relative w-full container max-w-[1580px] h-auto pt-14 mx-auto'>
 
-      {/* Main Content */}
-      <div className="w-full container max-w-[1580px] h-auto mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <Toaster position='top-right'/>
-        {/* Hero Section */}
-<div className="mb-20">
-  <div className="border border-dashed p-8 md:p-12 lg:p-16">
-    <div className="grid lg:grid-cols-2 gap-12 items-center">
-      
-      {/* Left Side - Content */}
-      <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        className="space-y-8"
-      >
-        <div className="space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="px-4 py-2 bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 text-xs font-sans font-semibold rounded-full border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 inline-block">
-              Custom Development Services
-            </span>
-          </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl md:text-5xl lg:text-5xl font-bold font-sans leading-tight"
-          >
-            Let's Build Something{' '}
-              Amazing
-            Together
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-base md:text-[17px] text-gray-600 dark:text-gray-300 font-sans font-medium leading-relaxed"
-          >
-            From web applications to mobile apps, SaaS platforms to custom solutions - we turn your ideas into reality with cutting-edge technology and exceptional design.
-          </motion.p>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="space-y-4"
-        >
-          <div className="flex items-center gap-3 text-sm font-sans font-medium">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center flex-shrink-0">
-              <FaCheckCircle className="text-white text-sm" />
-            </div>
-            <span className="text-gray-700 dark:text-gray-200 text-sm">100+ Projects Delivered Successfully</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm font-sans font-medium">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center flex-shrink-0">
-              <FaCheckCircle className="text-white text-sm" />
-            </div>
-            <span className="text-gray-700 dark:text-gray-200 text-sm">5+ Years of Expert Experience</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm font-sans font-medium">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center flex-shrink-0">
-              <FaCheckCircle className="text-white text-sm" />
-            </div>
-            <span className="text-gray-700 dark:text-gray-200 text-sm">24-48 Hour Response Time Guarantee</span>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-wrap gap-4 pt-4"
-        >
-          <motion.button
-            transition={{ duration: 0.28, ease: "easeInOut" }}
-            whileHover={{ y: -3 }}
-            whileTap={{ y: -4 }}
-            className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-50 dark:border-neutral-400 relative overflow-hidden cursor-pointer text-sm font-sans font-medium px-8 py-2 rounded-md bg-neutral-100 bg-gradient-to-t from-[#f5f5f5] to-[#d4d4d4] dark:text-neutral-900 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-2"
-          >
-            <span><IoMdRocket className="text-lg text-neutral-700" /></span>
-            Start Your Project
-          </motion.button>
-          <motion.button
-            transition={{ duration: 0.28, ease: "easeInOut" }}
-            whileHover={{ y: -3 }}
-            whileTap={{ y: -4 }}
-            className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer text-sm font-sans font-medium px-8 py-2 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
-          >
-            View Our Work
-          </motion.button>
-        </motion.div>
-      </motion.div>
-
-      {/* Right Side - Image/Video Placeholder */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8 }}
-        className="relative"
-      >
-        {/* Placeholder Container - Add your image or video here */}
-        <div className="relative aspect-square lg:aspect-auto lg:h-[500px] rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
-          
-          {/* Background Decorative Elements */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
-          
-          {/* Placeholder Content - Replace this entire div with your image/video */}
-          <div className="relative z-10 text-center p-8">
-            <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-              <svg className="w-10 h-10 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <p className="text-gray-500 dark:text-gray-400 font-sans font-medium text-sm">
-              Add your image or video here
-            </p>
-            <p className="text-gray-400 dark:text-gray-500 font-sans text-xs mt-2">
-              Replace this placeholder with your media content
-            </p>
-          </div>
-
-        </div>
-
-        {/* Decorative Glow Effect */}
-        <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-3xl blur-3xl -z-10" />
-      </motion.div>
-
-    </div>
-  </div>
-</div>
-
-        {/* Services Grid */}
-        <div className="mb-20">
-          <div className="border border-dashed p-6 md:p-10">
-            <div className="mb-10">
-              <h2 className="text-2xl md:text-4xl font-bold font-sans mb-3">Our Services</h2>
-              <p className="text-gray-600 dark:text-gray-300 font-sans font-medium text-sm md:text-base">
-                Choose the service that fits your needs, or let us know if you need something custom
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((service, index) => (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="border border-dashed p-6 hover:shadow-2xl transition-all duration-300 group cursor-pointer relative overflow-hidden"
-                  onClick={() => handleServiceSelect(service)}
-                >
-                  {/* Gradient overlay on hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-                  
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 bg-gradient-to-t from-[#262626] to-[#525252] rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform text-neutral-200">
-                      {service.icon}
-                    </div>
-                    
-                    <h3 className="text-xl font-bold font-sans mb-2">
-                      {service.title}
-                    </h3>
-                    
-                    <p className="text-gray-600 dark:text-gray-300 font-sans font-medium text-sm mb-4">
-                      {service.shortDesc}
-                    </p>
-
-                    {/* <div className="flex items-center justify-between mb-4 text-xs font-sans font-medium">
-                      <span className="text-gray-500 dark:text-gray-400">Starting at</span>
-                      <span className="font-bold text-base">{service.startingPrice}</span>
-                    </div> */}
-
-                    <div className="flex items-center justify-between mb-6 text-xs font-sans font-medium">
-                      <span className="text-gray-500 dark:text-gray-400">Timeline</span>
-                      <span className="font-bold">{service.timeline}</span>
-                    </div>
-
-                    <motion.button
-                      whileHover={{ y: -2 }}
-                      whileTap={{ y: 0 }}
-                      className="w-full transition-all duration-300 flex items-center justify-center gap-2 border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer text-sm font-sans font-medium px-4 py-2.5 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
-                    >
-                      Get Started
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </motion.button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Tech Stack Section */}
-        <div className="mb-20">
-          <div className="border border-dashed p-8 md:p-12">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl md:text-4xl font-bold font-sans mb-3">Technologies We Master</h2>
-              <p className="text-gray-600 dark:text-gray-300 font-sans font-medium text-sm">
-                Modern tech stack for cutting-edge solutions
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-              {[
-                { icon: <FaReact />, name: 'React' },
-                { icon: <SiNextdotjs />, name: 'Next.js' },
-                { icon: <FaNodeJs />, name: 'Node.js' },
-                { icon: <SiReact />, name: 'React Native' },
-                { icon: <SiFlutter />, name: 'Flutter' },
-                { icon: <SiTailwindcss />, name: 'Tailwind' },
-                { icon: <SiMongodb />, name: 'MongoDB' },
-                { icon: <SiPostgresql />, name: 'PostgreSQL' },
-                { icon: <FaCloud />, name: 'AWS' },
-                { icon: <FaMobile />, name: 'Mobile' },
-                { icon: <FaCode />, name: 'TypeScript' },
-                { icon: <FaPalette />, name: 'Figma' }
-              ].map((tech, index) => (
-                <motion.div
-                  key={tech.name}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3}}
-                  className="flex flex-col items-center gap-2 p-4 border border-dashed hover:shadow-lg transition-all duration-300 group"
-                >
-                  <div className="text-4xl group-hover:scale-110 transition-transform">
-                    {tech.icon}
-                  </div>
-                  <span className="text-xs font-sans font-medium">{tech.name}</span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div>
-          <div className="border border-dashed p-8 md:p-12 lg:p-16">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold font-sans">
-                Ready to Start Your Project?
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300 font-sans font-medium text-sm md:text-base">
-                Let's discuss your project requirements and turn your vision into reality. We offer free consultations to understand your needs and provide accurate estimates.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4 pt-4">
-                <motion.button
-                  onClick={() => handleServiceSelect(services[3])}
-                  transition={{ duration: 0.28, ease: "easeInOut" }}
-                  whileHover={{ y: -3 }}
-                  whileTap={{ y: -4 }}
-                  className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-50 dark:border-neutral-400 relative overflow-hidden cursor-pointer text-sm font-sans font-medium px-8 py-3 rounded-md bg-neutral-100 bg-gradient-to-t from-[#f5f5f5] to-[#d4d4d4] dark:text-neutral-900 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-2"
-                >
-                  <span><IoMdRocket className="text-lg text-neutral-700" /></span>
-                  Start a Project
-                </motion.button>
-                <motion.button
-                  transition={{ duration: 0.28, ease: "easeInOut" }}
-                  whileHover={{ y: -3 }}
-                  whileTap={{ y: -4 }}
-                  className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer text-sm font-sans font-medium px-8 py-3 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
-                >
-                  Schedule a Call
-                </motion.button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      {/* Enhanced Project Request Modal */}
       <AnimatePresence>
-        {selectedService && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => {
-              setSelectedService(null)
-              setStep(1)
-            }}
-          >
+        {scheduleCallOpen && (
+          <>
+            {/* Backdrop blur overlay */}
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="bg-white dark:bg-slate-900 border border-dashed max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-lg shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Header */}
-              <div className="sticky top-0 bg-white dark:bg-slate-900 border-b border-dashed p-6 flex items-center justify-between z-10">
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${selectedService.color} rounded-xl flex items-center justify-center text-white`}>
-                    {selectedService.icon}
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold font-sans">{selectedService.title}</h2>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 font-sans font-medium">
-                      Step {step} of 3 - Let's build something amazing
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    setSelectedService(null)
-                    setStep(1)
-                  }}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-                >
-                  <IoMdClose className="text-2xl" />
-                </button>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="px-6 pt-4">
-                <div className="flex items-center gap-2">
-                  {[1, 2, 3, 4].map((s) => (
-                    <div key={s} className="flex-1">
-                      <div className={`h-2 rounded-full transition-all duration-300 ${
-                        s <= step 
-                          ? 'bg-gradient-to-r from-[#262626] to-[#525252]' 
-                          : 'bg-gray-200 dark:bg-gray-700'
-                      }`} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Form Content */}
-              <form onSubmit={handleSubmit} className="p-6">
-                {/* Step 1: Service Details & Basic Info */}
-                {step === 1 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="space-y-6"
-                  >
-                    <div>
-                      <h3 className="text-xl font-bold font-sans mb-4">Service Overview</h3>
-                      <div className="bg-gray-50 dark:bg-slate-800 p-6 rounded-lg border border-dashed space-y-4">
-                        <p className="text-sm font-sans font-medium text-gray-600 dark:text-gray-300">
-                          {selectedService.description}
-                        </p>
-                        
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div>
-                            <h4 className="font-sans font-bold text-sm mb-2">Key Features:</h4>
-                            <ul className="space-y-1">
-                              {selectedService.features.slice(0, 4).map((feature, idx) => (
-                                <li key={idx} className="text-sm font-sans font-medium text-gray-600 dark:text-gray-300 flex items-start gap-2">
-                                  <FaCheckCircle className="text-green-500 mt-0.5 flex-shrink-0" />
-                                  <span>{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className="font-sans font-bold text-sm mb-2">Tech Stack:</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {selectedService.techStack.map((tech, idx) => (
-                                <span key={idx} className="px-3 py-1 bg-white dark:bg-slate-700 text-xs font-sans font-medium rounded-full border border-dashed">
-                                  {tech}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-sans font-medium mb-2">Full Name *</label>
-                        <input
-                          type="text"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          required
-                          placeholder="John Doe"
-                          className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-sans font-medium mb-2">Email Address *</label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          required
-                          placeholder="john@company.com"
-                          className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-sans font-medium mb-2">Company Name</label>
-                        <input
-                          type="text"
-                          name="company"
-                          value={formData.company}
-                          onChange={handleInputChange}
-                          placeholder="Your Company"
-                          className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-sans font-medium mb-2">Phone Number</label>
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          placeholder="+1 (555) 000-0000"
-                          className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
-                        />
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Step 2: Project Details */}
-                {step === 2 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="space-y-6"
-                  >
-                    <div>
-                      <h3 className="text-xl font-bold font-sans mb-4">Tell Us About Your Project</h3>
-                      
-                      <div className="space-y-6">
-                        <div>
-                          <label className="block text-sm font-sans font-medium mb-2">Project Description *</label>
-                          <textarea
-                            name="projectDescription"
-                            value={formData.projectDescription}
-                            onChange={handleInputChange}
-                            required
-                            rows={6}
-                            placeholder="Describe your project, goals, target audience, and any specific requirements..."
-                            className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-sans font-medium mb-3">Project Timeline *</label>
-                          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {timelineOptions.map((option) => (
-                              <motion.div
-                                key={option.value}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => {
-                                  setSelectedTimeline(option.value)
-                                  setFormData({ ...formData, timeline: option.value })
-                                }}
-                                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                                  selectedTimeline === option.value
-                                    ? 'border-neutral-500 bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200'
-                                    : 'border-dashed hover:border-neutral-400'
-                                }`}
-                              >
-                                <div className="text-2xl mb-1">{option.icon}</div>
-                                <div className="text-sm font-sans font-medium">{option.label}</div>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Step 3: Additional Details */}
-                {step === 3 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="space-y-6"
-                  >
-                    <div>
-                      <h3 className="text-xl font-bold font-sans mb-4">Final Details</h3>
-                      
-                      <div className="space-y-6">
-                        <div>
-                          <label className="block text-sm font-sans font-medium mb-2">Reference URLs or Inspirations</label>
-                          <textarea
-                            name="referenceUrls"
-                            value={formData.referenceUrls}
-                            onChange={handleInputChange}
-                            rows={3}
-                            placeholder="Share links to websites, apps, or designs that inspire you (one per line)..."
-                            className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-sans font-medium mb-2">Additional Information</label>
-                          <textarea
-                            name="additionalInfo"
-                            value={formData.additionalInfo}
-                            onChange={handleInputChange}
-                            rows={4}
-                            placeholder="Any other details, specific requirements, or questions you have..."
-                            className="w-full px-4 py-2.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-600"
-                          />
-                        </div>
-
-                        {/* Summary */}
-                        <div className="bg-gray-50 dark:bg-slate-800 p-6 rounded-lg border border-dashed">
-                          <h4 className="font-sans font-bold mb-4">Project Summary</h4>
-                          <div className="space-y-2 text-sm font-sans font-medium">
-                            <div className="flex justify-between">
-                              <span className="text-gray-600 dark:text-gray-400">Service:</span>
-                              <span className="font-bold">{selectedService.title}</span>
-                            </div>
-            
-                            <div className="flex justify-between">
-                              <span className="text-gray-600 dark:text-gray-400">Timeline:</span>
-                              <span className="font-bold">{timelineOptions.find(t => t.value === formData.timeline)?.label || 'Not selected'}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600 dark:text-gray-400">Contact:</span>
-                              <span className="font-bold">{formData.email || 'Not provided'}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {step === 4 && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="space-y-8 py-8"
-                  >
-                    {/* Success Animation */}
-                    <div className="flex flex-col items-center justify-center space-y-6">
-                      {/* Animated Success Icon */}
-                      <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ duration: 0.6, type: "spring", stiffness: 200 }}
-                        className="relative"
-                      >
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-2xl">
-                          <motion.div
-                            initial={{ pathLength: 0 }}
-                            animate={{ pathLength: 1 }}
-                            transition={{ duration: 0.6, ease: "easeOut" }}
-                          >
-                            <FaCheckCircle className="text-white text-5xl" />
-                          </motion.div>
-                        </div>
-                        
-                        {/* Celebration Confetti Effect */}
-                        <motion.div
-                          initial={{ scale: 0, opacity: 1 }}
-                          animate={{ scale: 3, opacity: 0 }}
-                          transition={{duration: 1 }}
-                          className="absolute inset-0 rounded-full bg-green-400/30 blur-xl"
-                        />
-                      </motion.div>
-
-                      {/* Success Message */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="text-center space-y-3"
-                      >
-                        <h2 className="text-3xl md:text-4xl font-bold font-sans bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent">
-                          🎉 Request Submitted Successfully!
-                        </h2>
-                        <p className="text-lg font-sans font-medium text-gray-600 dark:text-gray-300 max-w-md mx-auto">
-                          Thank you for choosing us! We've received your project details.
-                        </p>
-                      </motion.div>
-
-                      {/* Info Cards */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-full max-w-2xl grid md:grid-cols-2 gap-4"
-                      >
-                        {/* Response Time Card */}
-                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 p-6 rounded-xl border border-blue-200 dark:border-blue-800 shadow-sm">
-                          <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-lg bg-blue-500 flex items-center justify-center flex-shrink-0">
-                              <FaClock className="text-white text-xl" />
-                            </div>
-                            <div>
-                              <h4 className="font-sans font-bold text-sm mb-1 text-gray-900 dark:text-white">
-                                We'll Respond Within
-                              </h4>
-                              <p className="text-2xl font-bold font-sans text-blue-600 dark:text-blue-400">
-                                24 Hours
-                              </p>
-                              <p className="text-xs font-sans text-gray-600 dark:text-gray-400 mt-1">
-                                Usually much faster!
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Email Confirmation Card */}
-                        <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 p-6 rounded-xl border border-purple-200 dark:border-purple-800 shadow-sm">
-                          <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-lg bg-purple-500 flex items-center justify-center flex-shrink-0">
-                              <FaEnvelope className="text-white text-xl" />
-                            </div>
-                            <div>
-                              <h4 className="font-sans font-bold text-sm mb-1 text-gray-900 dark:text-white">
-                                Check Your Email
-                              </h4>
-                              <p className="text-sm font-sans font-medium text-gray-700 dark:text-gray-300 break-all">
-                                {formData.email}
-                              </p>
-                              <p className="text-xs font-sans text-gray-600 dark:text-gray-400 mt-1">
-                                Confirmation sent
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-
-                      {/* Project Summary */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-full max-w-2xl bg-white dark:bg-slate-800 p-6 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 shadow-sm"
-                      >
-                        <h4 className="font-sans font-bold text-lg mb-4 flex items-center gap-2">
-                          <FaRocket className="text-yellow-500" />
-                          Your Project Summary
-                        </h4>
-                        <div className="space-y-3">
-                          <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
-                            <span className="text-sm font-sans font-medium text-gray-600 dark:text-gray-400">Service</span>
-                            <span className="text-sm font-sans font-bold text-gray-900 dark:text-white">{responseData?.serviceType}</span>
-                          </div>
-                          <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
-                            <span className="text-sm font-sans font-medium text-gray-600 dark:text-gray-400">Usre Email</span>
-                            <span className="text-sm font-sans font-bold text-gray-900 dark:text-white">{responseData?.email}</span>
-                          </div>
-                          <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
-                            <span className="text-sm font-sans font-medium text-gray-600 dark:text-gray-400">Contact Person</span>
-                            <span className="text-sm font-sans font-bold text-gray-900 dark:text-white">{responseData?.phone}</span>
-                          </div>
-                          <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700">
-                            <span className="text-sm font-sans font-medium text-gray-600 dark:text-gray-400">Timeline</span>
-                            <span className="text-sm font-sans font-bold text-gray-900 dark:text-white">
-                              {responseData?.timeline || 'Not specified'}
-                            </span>
-                          </div>
-                          
-                          <div className="flex justify-between items-center py-2">
-                            <span className="text-sm font-sans font-medium text-gray-600 dark:text-gray-400">Request ID</span>
-                            <span className="text-sm font-mono font-bold text-primary">
-                              {responseData?.id}
-                            </span>
-                          </div>
-                        </div>
-                      </motion.div>
-
-                      {/* Next Steps */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="w-full max-w-2xl"
-                      >
-                        <h4 className="font-sans font-bold text-center mb-4">What Happens Next?</h4>
-                        <div className="grid md:grid-cols-3 gap-4">
-                          <div className="text-center p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                            <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2 font-bold">
-                              1
-                            </div>
-                            <p className="text-xs font-sans font-medium text-gray-600 dark:text-gray-300">
-                              We review your requirements
-                            </p>
-                          </div>
-                          <div className="text-center p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                            <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2 font-bold">
-                              2
-                            </div>
-                            <p className="text-xs font-sans font-medium text-gray-600 dark:text-gray-300">
-                              Our team reaches out to you
-                            </p>
-                          </div>
-                          <div className="text-center p-4 bg-gray-50 dark:bg-slate-800 rounded-lg">
-                            <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2 font-bold">
-                              3
-                            </div>
-                            <p className="text-xs font-sans font-medium text-gray-600 dark:text-gray-300">
-                              We discuss and start your project
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-
-                      {/* Action Buttons */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="flex flex-col sm:flex-row gap-4 pt-4"
-                      >
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => {
-                            // Reset form or navigate to home
-                            setStep(1)
-                           setFormData({
-                            name: '', 
-                            email: '', 
-                            company: '', 
-                            phone: '',
-                            serviceType: '',
-                            projectDescription: '', 
-                            timeline: '',
-                            referenceUrls: '', 
-                            additionalInfo: ''
-                          })
-                          }}
-                          className="px-8 py-3 bg-gradient-to-r from-neutral-800 to-neutral-900 hover:from-neutral-700 hover:to-neutral-800 text-white font-sans font-semibold rounded-lg shadow-lg transition-all duration-200"
-                        >
-                          Submit Another Request
-                        </motion.button>
-                        
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => window.location.href = '/'}
-                          className="px-8 py-3 bg-white dark:bg-slate-800 border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-sans font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
-                        >
-                          Return to Home
-                        </motion.button>
-                      </motion.div>
-
-                      {/* Social Proof / Trust Badge */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="flex items-center gap-2 text-sm font-sans text-gray-500 dark:text-gray-400"
-                      >
-                        <FaShieldAlt className="text-green-500" />
-                        <span>Your information is secure and will never be shared</span>
-                      </motion.div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Navigation Buttons */}
-                <div className="flex justify-between gap-4 pt-6 border-t border-dashed mt-6">
-                  {step > 1 && (
-                    <motion.button
-                      type="button"
-                      onClick={prevStep}
-                      transition={{ duration: 0.28, ease: "easeInOut" }}
-                      whileHover={{ y: -3 }}
-                      whileTap={{ y: -4 }}
-                      className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer text-sm font-sans font-medium px-6 py-2.5 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
-                    >
-                      ← Previous
-                    </motion.button>
-                  )}
-                  
-                  <div className="flex gap-4 ml-auto">
-                    <motion.button
-                      type="button"
-                      onClick={() => {
-                        setSelectedService(null)
-                        setStep(1)
-                      }}
-                      transition={{ duration: 0.28, ease: "easeInOut" }}
-                      whileHover={{ y: -3 }}
-                      whileTap={{ y: -4 }}
-                      className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer text-sm font-sans font-medium px-6 py-2.5 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
-                    >
-                      Cancel
-                    </motion.button>
-
-                    {step < 3 && (
-                      <motion.button
-                        type="button"
-                        onClick={nextStep}
-                        transition={{ duration: 0.28, ease: "easeInOut" }}
-                        whileHover={{ y: -3 }}
-                        whileTap={{ y: -4 }}
-                        className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-50 dark:border-neutral-400 relative overflow-hidden cursor-pointer text-sm font-sans font-medium px-6 py-2.5 rounded-md bg-neutral-100 bg-gradient-to-t from-[#f5f5f5] to-[#d4d4d4] dark:text-neutral-900 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"
-                      >
-                        Next Step →
-                      </motion.button>
-                    )}
-                    {
-                      step === 3 && (
-                        <motion.button
-                        type="submit"
-                        transition={{ duration: 0.28, ease: "easeInOut" }}
-                        whileHover={{ y: -3 }}
-                        whileTap={{ y: -4 }}
-                        className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-50 dark:border-neutral-400 relative overflow-hidden cursor-pointer text-sm font-sans font-medium px-6 py-2.5 rounded-md bg-neutral-100 bg-gradient-to-t from-[#f5f5f5] to-[#d4d4d4] dark:text-neutral-900 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center gap-2"
-                      >
-                        { loading ? (<Spinner />) : (<IoMdSend className="text-lg text-neutral-700" />) }
-                        Submit Project Request
-                      </motion.button>
-                      )
-                    }
-                  </div>
-                </div>
-              </form>
-            </motion.div>
-          </motion.div>
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="fixed inset-0 z-40 bg-white/30 dark:bg-black/50 backdrop-blur-xs"
+              onClick={() => setScheduleCallOpen(false)}
+            />
+            <ScheduleCallModal
+              scheduleCallOpen={scheduleCallOpen}
+              setScheduleCallOpen={setScheduleCallOpen}
+              state={state}
+            />
+          </>
         )}
       </AnimatePresence>
+
+
+        <div>
+            <AnnoncementBadge aboutBadge='Custom Work Build someting lets talk!' />
+        </div>
+        <div className="w-full mx-auto text-center pt-10 px-4 lg:px-10">
+      <div
+        className="transition-all duration-300 ease-in-out"
+        style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(10px)' }}
+      >
+        <h1 className="font-sans font-bold text-4xl lg:text-5xl text-neutral-800 dark:text-neutral-200 leading-[1.2] tracking-tight">
+          {beforeHi}
+          <span className="relative inline">
+            <span className="relative z-10">{hi}</span>
+            <span className="absolute bottom-0.5 left-0 w-full h-[3px] rounded-full bg-gradient-to-r from-blue-400/60 to-cyan-400/60" />
+          </span>
+          {afterHi}
+          {rest.length > 0 && (
+            <><br /><span className="text-neutral-500 dark:text-neutral-400">{rest.join(' ')}</span></>
+          )}
+        </h1>
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex items-center justify-center gap-1.5 mt-4">
+        {HEADLINES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIdx(i)}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === idx ? 'w-4 bg-neutral-500' : 'w-1.5 bg-neutral-300 dark:bg-neutral-600'
+            }`}
+          />
+        ))}
+      </div>
+
+      <p className="lg:px-0 mx-auto py-4 font-sans font-medium text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-sm lg:max-w-none">
+        A curated library of production-ready templates, UI blocks, SaaS starters &amp; landing pages — built for teams that ship.
+      </p>
+        </div>
+        <div className="w-full mx-auto flex flex-wrap justify-center items-center pb-5 gap-3 pt-4">
+            <button
+              onClick={() => setScheduleCallOpen(true)}
+              className={cn(
+                "group relative flex justify-between items-center gap-2 px-3 w-[180px] h-[46px] rounded-lg text-sm font-sans font-semibold overflow-hidden",
+                "border border-orange-300/60",
+                "bg-gradient-to-r from-[#F6D5F7] to-[#FBE9D7]",
+                "text-neutral-700",
+                "shadow-sm hover:shadow-md hover:brightness-105",
+                "hover:-translate-y-0.5 active:scale-[0.98]",
+                "transition-all duration-200"
+              )}
+            >
+              <span className={cn(
+                "border shadow-sm rounded-sm h-8 w-8 flex justify-center items-center flex-shrink-0",
+                "bg-gradient-to-b from-neutral-700 to-neutral-900 dark:from-neutral-800 dark:to-neutral-950",
+                "border-t border-l border-r border-neutral-800 dark:border-neutral-700 text-neutral-100",
+                "transition-all duration-300 ease-in-out",
+                "group-hover:translate-x-[128px] group-hover:rotate-[360deg]"
+              )}>
+                <IoChatbubblesOutline className="w-4 h-4" />
+              </span>
+              <span className={cn(
+                "transition-all duration-300 ease-in-out",
+                "group-hover:-translate-x-20"
+              )}>
+                Book a call
+              </span>
+                        </button>
+
+            {/* Button 2 — text slides right, icon rolls left */}
+            <Link href="https://www.instagram.com/hilal_11_n" target='_blank'
+              className={cn(
+                "group relative flex justify-between items-center gap-2 px-3 w-[180px] h-[46px] rounded-lg text-sm font-sans font-semibold overflow-hidden",
+                "border-t border-l border-r border-neutral-800 dark:border-neutral-700",
+                "bg-gradient-to-b from-neutral-700 to-neutral-900 dark:from-neutral-800 dark:to-neutral-950",
+                "text-neutral-100",
+                "shadow-[0_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]",
+                "hover:shadow-[0_4px_16px_rgba(0,0,0,0.25)]",
+                "hover:-translate-y-0.5 active:scale-[0.98]",
+                "transition-all duration-200"
+              )}
+            >
+              <span className={cn(
+                "transition-all duration-300 ease-in-out",
+                "group-hover:translate-x-14"
+              )}>
+                Chat with hilal
+              </span>
+              <span className={cn(
+                "border shadow-sm rounded-sm h-8 w-8 flex justify-center items-center flex-shrink-0",
+                "bg-gradient-to-r from-[#F6D5F7] to-[#FBE9D7] text-neutral-900",
+                "transition-all duration-300 ease-in-out",
+                "group-hover:-translate-x-[128px] group-hover:rotate-[-360deg]"
+              )}>
+                <SiFoodpanda className="w-3.5 h-3.5" />
+              </span>
+            </Link>
+        </div>
+        </div>
+        <div className='pt-5 container'>
+          <ScrollBasedVelocityImagesDemo />
+        </div>
+        <div>
+        </div>
+        <div className='w-full container max-w-[1580px] h-full pt-8 pb-8 lg:pt-6 mx-auto'>
+            <div className='w-full mx-auto py-20 pb-5 flex flex-col items-center justify-center px-5 lg:px-20 '>
+                <h1 className='text-center font-sans font-bold text-2xl lg:text-4xl text-neutral-800 dark:text-neutral-200 pb-2'>
+                  Frequently Asked Questions about Lokalhost.io custom work!
+                </h1>
+                <p className='text-center font-sans font-medium text-sm text-neutral-700 dark:text-neutral-300'>
+                  Find answers to common questions about our services, features, and how Lokalhost.io can benefit you.
+                </p>
+            </div>
+            <div className='grid md:grid-cols-2 lg:grid-cols-2 grid-cols-1 pt-16 px-6 gap-6 lg:gap-16'>
+              <FaqBlock faq={CUSTOM_WORK_FAQ} sectionTitle="Custom Work" />
+              <FaqBlock faq={CUSTOM_WORK_FAQ2}/>
+            </div>
+        </div>
+        <div>
+          <CustomWorkCTA />
+        </div>
     </div>
   )
 }
 
-export default CustomWorkPage
+export default page
+
+
+
+import { ScrollVelocityContainer , ScrollVelocityRow } from '@/components/ui/scroll-based-velocity'
+import Image from 'next/image'
+const IMAGES_ROW_A = [
+  "/templates/hero-block-1-light.webp",
+  "/templates/hero-block-2-light.webp",
+  "/templates/hero-block-3-light.webp",
+  "/templates/hero-block-4-light.webp",
+  "/templates/hero-block-5-light.webp",
+
+]
+const IMAGES_ROW_B = [
+  "/templates/hero-block-6-light.webp",
+  "/templates/hero-block-7-light.webp",
+  "/templates/hero-block-8-light.webp",
+  "/templates/hero-block-9-light.webp",
+  "/templates/hero-block-10-light.webp",
+]
+export function ScrollBasedVelocityImagesDemo() {
+  return (
+    <div className="relative flex w-full flex-col gap-4 items-center justify-center overflow-hidden py-8">
+      <ScrollVelocityContainer className="w-full">
+        <ScrollVelocityRow baseVelocity={6} direction={1} className="py-4 flex gap-4">
+          {IMAGES_ROW_A.map((src, idx) => (
+            <Image
+              key={idx}
+              src={`${src}`}
+              alt="Unsplash sample"
+              width={340}
+              height={260}
+              loading="lazy"
+              decoding="async"
+              className="mx-4 max-h-[200px] inline-block rounded-lg object-cover shadow-sm"
+            />
+          ))}
+        </ScrollVelocityRow>
+        <ScrollVelocityRow baseVelocity={6} direction={-1} className="py-4 flex gap-4 ">
+          {IMAGES_ROW_B.map((src, idx) => (
+            <Image
+              key={idx}
+              src={`${src}`}
+              alt="Unsplash sample"
+               width={340}
+              height={260}
+              loading="lazy"
+              decoding="async"
+              className="mx-4 max-h-[200px] inline-block rounded-lg object-cover shadow-sm"
+            />
+          ))}
+        </ScrollVelocityRow>
+      </ScrollVelocityContainer>
+
+      <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r"></div>
+      <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l"></div>
+    </div>
+  )
+}
+
+
+import { PlusIcon } from 'lucide-react'
+import * as AccordionPrimitive from '@radix-ui/react-accordion'
+import { PiTerminalFill } from "react-icons/pi"
+import { LuExternalLink } from "react-icons/lu"
+import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion'
+
+interface Link {
+  label: string
+  url: string
+}
+
+interface Question {
+  question: string
+  answer: string
+  links?: Link[]
+}
+
+interface IFaq {
+  id: string
+  title: string
+  questions: Question[]
+}
+
+/* ─────────────────────────────────────────────
+   Shared trigger classname
+───────────────────────────────────────────── */
+const triggerClass =
+  'focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-center justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&>svg>path:last-child]:origin-center [&>svg>path:last-child]:transition-all [&>svg>path:last-child]:duration-200 [&[data-state=open]>svg]:rotate-180 [&[data-state=open]>svg>path:last-child]:rotate-90 [&[data-state=open]>svg>path:last-child]:opacity-0'
+
+/* ─────────────────────────────────────────────
+   Link chips rendered below each answer
+───────────────────────────────────────────── */
+function AnswerLinks({ links }: { links?: Link[] }) {
+  if (!links || links.length === 0) return null
+  return (
+    <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-dashed border-neutral-200 dark:border-neutral-800">
+      {links.map(({ label, url }) => (
+        <a
+          key={url}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-[11px] font-mono font-medium px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:border-neutral-400 dark:hover:border-neutral-500 transition-colors duration-150"
+        >
+          {label}
+          <LuExternalLink className="text-[10px] opacity-60" />
+        </a>
+      ))}
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   Shared FAQ accordion block
+───────────────────────────────────────────── */
+function FaqBlock({
+  faq,
+  sectionTitle,
+  defaultOpen = false,
+}: {
+  faq?: IFaq
+  sectionTitle?: string
+  defaultOpen?: boolean
+}) {
+  if (!faq) return null
+  return (
+    <Accordion
+      type="single"
+      collapsible
+      className="w-full"
+      defaultValue={defaultOpen ? 'item-1' : undefined}
+    >
+      <div className="pb-3 flex items-center gap-2">
+        <h2 className="font-sans font-bold text-[18px] lg:text-lg text-neutral-800 dark:text-neutral-200">
+          {sectionTitle}
+        </h2>
+      </div>
+
+      {faq.questions?.map((item, index) => (
+        <AccordionItem key={index} value={`item-${index + 1}`}>
+          <AccordionPrimitive.Header className="flex items-center gap-2">
+            <span className="text-neutral-600 dark:text-neutral-600 text-xs flex-shrink-0">
+              <PiTerminalFill />
+            </span>
+            <AccordionPrimitive.Trigger
+              data-slot="accordion-trigger"
+              className={triggerClass}
+            >
+              {item.question}
+              <PlusIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 transition-transform duration-200" />
+            </AccordionPrimitive.Trigger>
+          </AccordionPrimitive.Header>
+
+          <AccordionContent className="text-muted-foreground pl-5">
+            <p className="text-sm leading-relaxed">{item.answer}</p>
+            <AnswerLinks links={item.links} />
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  )
+}
+
+
+
+
+
+
+
+
+
+import React from "react";
+import { HiArrowRight, HiLightningBolt } from "react-icons/hi";
+import { StripedPattern } from "@/components/magicui/striped-pattern";
+// ─── Corner bracket decoration ────────────────────────────────────────────────
+function CornerBracket({ className = "" }: { className?: string }) {
+  return (
+    <span className={`absolute w-3 h-3 ${className}`}>
+      <span className="absolute top-0 left-0 w-full h-px bg-neutral-400 dark:bg-neutral-600" />
+      <span className="absolute top-0 left-0 w-px h-full bg-neutral-400 dark:bg-neutral-600" />
+    </span>
+  );
+}
+function CornerBracketInvert({ className = "" }: { className?: string }) {
+  return (
+    <span className={`absolute w-3 h-3 ${className}`}>
+      <span className="absolute bottom-0 right-0 w-full h-px bg-neutral-400 dark:bg-neutral-600" />
+      <span className="absolute bottom-0 right-0 w-px h-full bg-neutral-400 dark:bg-neutral-600" />
+    </span>
+  );
+}
+
+// ─── Stat pill ────────────────────────────────────────────────────────────────
+function StatPill({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-neutral-200 dark:border-neutral-800 bg-white/60 dark:bg-neutral-950/60 backdrop-blur-sm">
+      <span className="w-1 h-1 rounded-full bg-emerald-400" />
+      <span className="text-[10px] font-mono font-semibold text-neutral-500 dark:text-neutral-500 uppercase tracking-widest">
+        {label}
+      </span>
+      <span className="text-[11px] font-mono font-bold text-neutral-800 dark:text-neutral-200">
+        {value}
+      </span>
+    </div>
+  );
+}
+
+// ─── Main CTA ─────────────────────────────────────────────────────────────────
+function CustomWorkCTA() {
+  return (
+    <div className="w-full container max-w-[1580px] mx-auto py-20 px-4">
+      <div
+        className={cn(
+            "relative overflow-hidden rounded-2xl",
+            "bg-neutral-50 dark:bg-neutral-900",
+            "border border-neutral-200/60 dark:border-neutral-800/60",
+            "shadow-[0px_0px_0px_1px_rgba(0,0,0,0.04),0px_2px_4px_rgba(0,0,0,0.04),0px_8px_16px_-4px_rgba(0,0,0,0.06),0px_24px_40px_-8px_rgba(0,0,0,0.08)]",
+            "dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.04),0px_8px_32px_-4px_rgba(0,0,0,0.4)]",
+            "lg:min-h-[380px]"
+        )}
+        >
+        {/* ── Background grid pattern ── */}
+        <div
+          className="absolute inset-0 opacity-[0.025] dark:opacity-[0.04]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0,0,0,0.8) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0,0,0,0.8) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+          }}
+        />
+
+        {/* ── Subtle radial glow center-left ── */}
+        <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-neutral-200 dark:bg-neutral-700/30 blur-[80px] opacity-40 dark:opacity-20 pointer-events-none" />
+
+        {/* ── Corner brackets ── */}
+        <CornerBracket className="top-4 left-4" />
+        <CornerBracket className="top-4 right-4 rotate-90" />
+        <CornerBracketInvert className="bottom-4 left-4 rotate-[270deg]" />
+        <CornerBracketInvert className="bottom-4 right-4" />
+
+        {/* ── Inner grid ── */}
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-0 lg:min-h-[380px]">
+
+          {/* ════ LEFT: Copy + CTAs ════════════════════════════════════════ */}
+          <div className="flex flex-col justify-center gap-7 px-8 py-12 lg:px-12 lg:py-14">
+
+            {/* Badge */}
+            <div className="flex items-center gap-2 w-fit">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-950 shadow-sm">
+                <HiLightningBolt className="w-3 h-3 text-amber-500" />
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+                  Available for work
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              </div>
+            </div>
+
+            {/* Headline */}
+            <div className="flex flex-col gap-3">
+              <h2 className="text-3xl lg:text-[2.6rem] font-sans font-bold leading-[1.15] tracking-tight text-neutral-900 dark:text-neutral-100">
+                Need something{" "}
+                <span className="relative inline-block">
+                  <span className="relative z-10">custom built?</span>
+                  {/* underline accent */}
+                  <span className="absolute bottom-0.5 left-0 w-full h-[3px] rounded-full bg-gradient-to-r from-neutral-400 to-neutral-300 dark:from-neutral-500 dark:to-neutral-700" />
+                </span>
+              </h2>
+              <p className="text-sm font-sans font-medium text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-[400px]">
+                I'm available for client work — UI systems, full-stack apps, backend
+                services, and scalable production solutions. Let's build something great.
+              </p>
+            </div>
+
+            {/* CTAs */}
+            <div className="flex items-center flex-wrap gap-3">
+
+              {/* Primary — dark */}
+              <button
+                className={cn(
+                  "group relative flex justify-between items-center gap-2 px-3 w-[180px] h-[46px] rounded-lg text-sm font-sans font-semibold overflow-hidden",
+                  "border border-orange-300/60",
+                  "bg-gradient-to-r from-[#F6D5F7] to-[#FBE9D7]",
+                  "text-neutral-700",
+                  "shadow-sm hover:shadow-md hover:brightness-105",
+                  "hover:-translate-y-0.5 active:scale-[0.98]",
+                  "transition-all duration-200"
+                )}
+              >
+                <span className={cn(
+                  "border shadow-sm rounded-sm h-8 w-8 flex justify-center items-center flex-shrink-0",
+                  "bg-gradient-to-b from-neutral-700 to-neutral-900 dark:from-neutral-800 dark:to-neutral-950",
+                  "border-t border-l border-r border-neutral-800 dark:border-neutral-700 text-neutral-100",
+                  "transition-all duration-300 ease-in-out",
+                  "group-hover:translate-x-[128px] group-hover:rotate-[360deg]"
+                )}>
+                  <IoChatbubblesOutline className="w-4 h-4" />
+                </span>
+                <span className={cn(
+                  "transition-all duration-300 ease-in-out",
+                  "group-hover:-translate-x-20"
+                )}>
+                  Book a call
+                </span>
+                          </button>
+
+              {/* Button 2 — text slides right, icon rolls left */}
+              <Link href="https://www.instagram.com/hilal_11_n" target='_blank'
+                className={cn(
+                  "group relative flex justify-between items-center gap-2 px-3 w-[180px] h-[46px] rounded-lg text-sm font-sans font-semibold overflow-hidden",
+                  "border-t border-l border-r border-neutral-800 dark:border-neutral-700",
+                  "bg-gradient-to-b from-neutral-700 to-neutral-900 dark:from-neutral-800 dark:to-neutral-950",
+                  "text-neutral-100",
+                  "shadow-[0_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]",
+                  "hover:shadow-[0_4px_16px_rgba(0,0,0,0.25)]",
+                  "hover:-translate-y-0.5 active:scale-[0.98]",
+                  "transition-all duration-200"
+                )}
+              >
+                <span className={cn(
+                  "transition-all duration-300 ease-in-out",
+                  "group-hover:translate-x-14"
+                )}>
+                  Chat with hilal
+                </span>
+                <span className={cn(
+                  "border shadow-sm rounded-sm h-8 w-8 flex justify-center items-center flex-shrink-0",
+                  "bg-gradient-to-r from-[#F6D5F7] to-[#FBE9D7] text-neutral-900",
+                  "transition-all duration-300 ease-in-out",
+                  "group-hover:-translate-x-[128px] group-hover:rotate-[-360deg]"
+                )}>
+                  <SiFoodpanda className="w-3.5 h-3.5" />
+                </span>
+              </Link>
+            </div>
+
+          </div>
+
+          {/* ════ RIGHT: Terminal icon visual ════════════════════════════ */}
+          <div className="relative flex items-center justify-center overflow-hidden lg:border-l border-t lg:border-t-0 border-neutral-200/60 dark:border-neutral-800/60 min-h-[240px] lg:min-h-0">
+
+            {/* Radial bg glow behind icon */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-72 h-72 rounded-full bg-neutral-200 dark:bg-neutral-700/20 blur-[60px] opacity-60 dark:opacity-30" />
+            </div>
+
+            {/* Striped pattern (your existing component) */}
+            <StripedPattern
+              direction="left"
+              className="absolute inset-0 mask-l-from-50% mask-l-to-80% mask-t-from-20% to-90% opacity-30"
+            />
+
+            {/* Concentric rings */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {[180, 240, 300].map((size, i) => (
+                <span
+                  key={size}
+                  className="absolute rounded-full border border-dashed border-neutral-300 dark:border-neutral-700/60"
+                  style={{
+                    width: size,
+                    height: size,
+                    opacity: 1 - i * 0.25,
+                    animation: `spin ${20 + i * 8}s linear infinite ${i % 2 === 0 ? "" : "reverse"}`,
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Terminal icon */}
+            <div className="relative z-10 flex items-center justify-center">
+              {/* outer glow box */}
+              <div className={cn(
+                "relative flex items-center justify-center",
+                "w-36 h-36 lg:w-44 lg:h-44 rounded-3xl",
+                "bg-white dark:bg-neutral-950",
+                "border border-neutral-200 dark:border-neutral-800",
+                "shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8)]",
+                "dark:shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.04)]"
+                )}>
+                {/* inner shine */}
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-white/80 to-transparent dark:from-white/[0.03] dark:to-transparent pointer-events-none" />
+
+                <PiTerminalFill className="w-20 h-20 lg:w-24 lg:h-24 text-neutral-800 dark:text-neutral-200 relative z-10" />
+
+                {/* blinking cursor dot bottom-right */}
+                <span className="absolute bottom-4 right-4 flex items-center gap-1">
+                  <span className="w-1 h-4 rounded-sm bg-neutral-800 dark:bg-neutral-300 animate-pulse" />
+                </span>
+              </div>
+
+              {/* floating label chips */}
+              <div
+                className={cn(
+                  "absolute -top-3 -right-6",
+                  "flex items-center gap-1.5 px-2.5 py-1 rounded-full",
+                  "bg-neutral-900 dark:bg-neutral-100",
+                  "shadow-md"
+                )}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[9px] font-mono font-bold text-neutral-100 dark:text-neutral-900 uppercase tracking-widest">
+                  Open for work
+                </span>
+              </div>
+
+              <div
+                className={cn(
+                  "absolute -bottom-3 -left-6",
+                  "flex items-center gap-1.5 px-2.5 py-1 rounded-full",
+                  "border border-neutral-200 dark:border-neutral-800",
+                  "bg-white dark:bg-neutral-950",
+                  "shadow-md"
+                )}
+              >
+                <span className="text-[9px] font-mono font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-widest">
+                  lokalhost.io
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* ── Bottom status bar ─────────────────────────────────────────────── */}
+        <div className="relative z-10 border-t border-neutral-200/60 dark:border-neutral-800/60 px-8 lg:px-12 py-3 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
+            {["UI Systems", "Full-Stack", "Backend", "Open Source"].map((tag) => (
+              <span
+                key={tag}
+                className="text-[10px] font-mono font-medium text-neutral-400 dark:text-neutral-600 uppercase tracking-widest"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[10px] font-mono font-medium text-neutral-400 dark:text-neutral-600">
+              Currently available
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      {/* ── spin keyframe (add to global CSS or tailwind config instead) ── */}
+      <style jsx>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
