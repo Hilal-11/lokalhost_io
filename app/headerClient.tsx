@@ -1,11 +1,7 @@
 "use client"
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Link from "next/link";
-
 import NProgress from 'nprogress'
-
-
-
 import { PiTerminalFill } from "react-icons/pi";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { IoMenu } from "react-icons/io5";
