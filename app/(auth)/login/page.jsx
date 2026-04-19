@@ -10,10 +10,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Spinner } from "@/components/ui/spinner";
 
 import { useSearchParams } from "next/navigation";
-import { usePathname } from "next/navigation";
-export const dynamic = "force-static";
 
-// reusable field block
 const Field = ({ label, id, error, children }) => (
   <div className="flex flex-col gap-1.5">
     <label
