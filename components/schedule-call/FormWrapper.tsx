@@ -37,7 +37,7 @@ export function FormWrapper({ user }: Props) {
   const [submitted, setSubmitted] = useState(false);
   const [draftSaved, setDraftSaved] = useState(false);
   const [direction, setDirection] = useState<1 | -1>(1);
-  const saveTimer = useRef<ReturnType<typeof setTimeout>>();
+const saveTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const form = useForm<FullFormData>({
     resolver: zodResolver(fullFormSchema),

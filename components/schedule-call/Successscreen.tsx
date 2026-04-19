@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FullFormData } from "@/lib/Schema";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Check, ArrowRight, CalendarDays, Banknote, Monitor, User2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -83,19 +83,17 @@ function AnimatedTick() {
   );
 }
 
-// Staggered container for children
-const container = {
+const container: Variants = {
   hidden: {},
   show: {
     transition: { staggerChildren: 0.07, delayChildren: 0.45 },
   },
-};
+}
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 14 },
   show: { opacity: 1, y: 0, transition: { ease: "easeOut", duration: 0.35 } },
-};
-
+}
 export function SuccessScreen({ data, onReset }: Props) {
   const [showConfetti, setShowConfetti] = useState(false);
   const rows = summaryRows(data).filter((r) => r.value);

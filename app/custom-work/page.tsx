@@ -7,16 +7,21 @@ import { cn } from  "@/lib/utils"
 import Link from 'next/link';
 import { motion , AnimatePresence} from "motion/react"
 import { ScheduleCallModal } from '@/components/schedule-call/Schedulecallmodal';
-
+import ScrollBasedVelocityImagesDemo from '@/components/landing/ScrollBasedOnVelocity';
 
 interface AuthState {
   isLoggedIn: boolean;
   user: { name?: string; email?: string } | null;
   loading: boolean;
 }
-
-
-const CUSTOM_WORK_FAQ: IFaq = {
+  const HEADLINES = [
+    { pre: 'We Build ',   hi: 'UI Blocks & Components',    post: '\nfor web apps that impress.'         },
+    { pre: 'We Craft ',   hi: 'Custom Mobile Apps',         post: '\nthat users actually love.'          },
+    { pre: 'We Ship ',    hi: 'End-to-End SaaS Products',   post: '\nfrom zero to launch.'               },
+    { pre: 'We Design ',  hi: 'Landing Pages & Templates',  post: '\nthat convert & captivate.'          },
+    { pre: 'We Deliver ', hi: 'Custom-Built Solutions',     post: '\nfor businesses that mean it.'       },
+  ]
+  const CUSTOM_WORK_FAQ: IFaq = {
   id: 'custom-work',
   title: 'Custom Work FAQ',
   questions: [
@@ -58,63 +63,50 @@ const CUSTOM_WORK_FAQ: IFaq = {
       ],
     },
   ],
-}
-const CUSTOM_WORK_FAQ2: IFaq = {
-  id: 'custom-work',
-  title: 'Custom Work FAQ',
-  questions: [
-    {
-      question: 'What services do you offer under custom work?',
-      answer: 'We offer a range of custom development services including UI/UX design, web application development, mobile app development, and end-to-end SaaS product development. We work closely with our clients to understand their unique needs and deliver tailored solutions that drive results.',
-      links: [
-        { label: 'Learn more about our services', url: '/services' },
-        { label: 'Contact us for a consultation', url: '/contact' },
-      ],
-    },
-    { 
-      question: 'How do I get started with a custom project?',
-      answer: 'Getting started is easy! Simply reach out to us through our contact form or book a call with our team. We will discuss your project requirements, goals, and timeline to determine the best approach for your custom solution.',
-      links: [
-        { label: 'Book a call', url: '/contact' },
-      ],
-    },
-    {
-      question: 'What is the typical timeline for a custom project?',
-      answer: 'The timeline for a custom project can vary greatly depending on the scope and complexity of the work. After our initial consultation, we will provide you with a detailed project plan and timeline. We strive to deliver high-quality results in a timely manner while ensuring clear communication throughout the process.',
-      links: [
-        { label: 'Learn more about our timeline', url: '/timeline' },
-      ],
-    },
-  ],
-}
+  }
+  const CUSTOM_WORK_FAQ2: IFaq = {
+    id: 'custom-work',
+    title: 'Custom Work FAQ',
+    questions: [
+      {
+        question: 'What services do you offer under custom work?',
+        answer: 'We offer a range of custom development services including UI/UX design, web application development, mobile app development, and end-to-end SaaS product development. We work closely with our clients to understand their unique needs and deliver tailored solutions that drive results.',
+        links: [
+          { label: 'Learn more about our services', url: '/services' },
+          { label: 'Contact us for a consultation', url: '/contact' },
+        ],
+      },
+      { 
+        question: 'How do I get started with a custom project?',
+        answer: 'Getting started is easy! Simply reach out to us through our contact form or book a call with our team. We will discuss your project requirements, goals, and timeline to determine the best approach for your custom solution.',
+        links: [
+          { label: 'Book a call', url: '/contact' },
+        ],
+      },
+      {
+        question: 'What is the typical timeline for a custom project?',
+        answer: 'The timeline for a custom project can vary greatly depending on the scope and complexity of the work. After our initial consultation, we will provide you with a detailed project plan and timeline. We strive to deliver high-quality results in a timely manner while ensuring clear communication throughout the process.',
+        links: [
+          { label: 'Learn more about our timeline', url: '/timeline' },
+        ],
+      },
+    ],
+  }
 
-function page() {
 
+
+function Page() {
+
+
+  const [scheduleCallOpen, setScheduleCallOpen] = useState(false)
+  const [idx, setIdx] = useState(0)
+  const [visible, setVisible] = useState(true)
   const [state, setState] = useState<AuthState>({
   isLoggedIn: false,
   user: null,
   loading: true,
 });
 
-
-  // Check every possible storage
-  
-  console.log("localStorage token:", localStorage.getItem("token"))
-  console.log("sessionStorage token:", sessionStorage.getItem("token"))
-  console.log("all localStorage:", {...localStorage})
-  
-  const [scheduleCallOpen, setScheduleCallOpen] = useState(false)
-
-  const HEADLINES = [
-    { pre: 'We Build ',   hi: 'UI Blocks & Components',    post: '\nfor web apps that impress.'         },
-    { pre: 'We Craft ',   hi: 'Custom Mobile Apps',         post: '\nthat users actually love.'          },
-    { pre: 'We Ship ',    hi: 'End-to-End SaaS Products',   post: '\nfrom zero to launch.'               },
-    { pre: 'We Design ',  hi: 'Landing Pages & Templates',  post: '\nthat convert & captivate.'          },
-    { pre: 'We Deliver ', hi: 'Custom-Built Solutions',     post: '\nfor businesses that mean it.'       },
-  ]
-
-  const [idx, setIdx] = useState(0)
-  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -161,7 +153,6 @@ function page() {
     }
   }, []);
 
-  console.log("Auth state:", state)
 
   const { pre, hi, post } = HEADLINES[idx]
   const [firstLine, ...rest] = (pre + '⁀' + post).split('\n')
@@ -320,66 +311,9 @@ function page() {
   )
 }
 
-export default page
+export default Page
 
 
-
-import { ScrollVelocityContainer , ScrollVelocityRow } from '@/components/ui/scroll-based-velocity'
-import Image from 'next/image'
-const IMAGES_ROW_A = [
-  "/templates/hero-block-1-light.webp",
-  "/templates/hero-block-2-light.webp",
-  "/templates/hero-block-3-light.webp",
-  "/templates/hero-block-4-light.webp",
-  "/templates/hero-block-5-light.webp",
-
-]
-const IMAGES_ROW_B = [
-  "/templates/hero-block-6-light.webp",
-  "/templates/hero-block-7-light.webp",
-  "/templates/hero-block-8-light.webp",
-  "/templates/hero-block-9-light.webp",
-  "/templates/hero-block-10-light.webp",
-]
-export function ScrollBasedVelocityImagesDemo() {
-  return (
-    <div className="relative flex w-full flex-col gap-4 items-center justify-center overflow-hidden py-8">
-      <ScrollVelocityContainer className="w-full">
-        <ScrollVelocityRow baseVelocity={6} direction={1} className="py-4 flex gap-4">
-          {IMAGES_ROW_A.map((src, idx) => (
-            <Image
-              key={idx}
-              src={`${src}`}
-              alt="Unsplash sample"
-              width={340}
-              height={260}
-              loading="lazy"
-              decoding="async"
-              className="mx-4 max-h-[200px] inline-block rounded-lg object-cover shadow-sm"
-            />
-          ))}
-        </ScrollVelocityRow>
-        <ScrollVelocityRow baseVelocity={6} direction={-1} className="py-4 flex gap-4 ">
-          {IMAGES_ROW_B.map((src, idx) => (
-            <Image
-              key={idx}
-              src={`${src}`}
-              alt="Unsplash sample"
-               width={340}
-              height={260}
-              loading="lazy"
-              decoding="async"
-              className="mx-4 max-h-[200px] inline-block rounded-lg object-cover shadow-sm"
-            />
-          ))}
-        </ScrollVelocityRow>
-      </ScrollVelocityContainer>
-
-      <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r"></div>
-      <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l"></div>
-    </div>
-  )
-}
 
 
 import { PlusIcon } from 'lucide-react'
