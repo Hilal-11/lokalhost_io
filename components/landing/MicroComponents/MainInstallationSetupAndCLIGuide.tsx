@@ -8,7 +8,10 @@ import { FiCopy, FiDownload, FiPackage, FiSmartphone } from "react-icons/fi"
 import { toast } from 'sonner'
 import { IoIosDoneAll } from "react-icons/io"
 import { SiReact, SiFlutter } from "react-icons/si"
-
+import {  useRef, useEffect } from 'react'
+import {  FiCheck } from 'react-icons/fi'
+import { SiNpm, SiPnpm, SiYarn } from 'react-icons/si'
+import { PiCatBold } from "react-icons/pi";
 type TabType = 'components' | 'templates' | 'mobile-react' | 'mobile-flutter'
 
 interface CodeExample {
@@ -231,7 +234,7 @@ function MainInstallationSetupAndCLIGuide() {
 
             {/* Copy Button */}
             <div className='flex justify-center items-center cursor-pointer'>
-              <button className='w-10 h-10 rounded-sm border shadow-inner bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-xl text-neutral-700 dark:text-neutral-300 cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors'>
+              <button className='w-8 h-8 p-1 rounded-sm border shadow-inner bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-xl text-neutral-700 dark:text-neutral-300 cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors'>
                 {isCopied ? <IoIosDoneAll className="text-emerald-500" /> : <FiCopy />}
               </button>
             </div>
@@ -246,62 +249,83 @@ function MainInstallationSetupAndCLIGuide() {
         </div>
       </div>
 
-{/* Bottom Section - CLI Command */}
-
+      {/* Bottom Section - CLI Command */}
         {/* Command Container */}
-        <div className='w-full lg:w-[95%] mx-auto border grid lg:grid-cols-5 md:flex-row items-start md:items-center justify-between gap-4 lg:p-2 lg:px-5 rounded-sm'>
-          
-          {/* Left - Context */}
-          <div className='col-span-2 hidden lg:flex'>
-            <div className='flex items-center gap-3 mb-2'>
-              <div className='w-10 h-10 rounded-lg bg-gradient-to-br from-neutral-100 to-neutral-200 dark:from-neutral-800 dark:to-neutral-900 flex items-center justify-center shadow-inner'>
-                <PiTerminalFill className='text-neutral-700 dark:text-neutral-300 text-xl' />
+        <div className='w-full mx-auto mt-4'>
+          <div className='relative rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900'>
+
+            {/* Top accent line */}
+            <div className='absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent' />
+
+            <div className='grid grid-cols-1 lg:grid-cols-3 min-h-[62px]'>
+
+              {/* Left — full width on mobile, 30% on sm+ */}
+              <div className='flex items-center gap-2.5 px-4 py-3 bg-neutral-50 dark:bg-neutral-900 border-b sm:border-b-0 sm:border-r border-neutral-200 dark:border-neutral-800'>
+                <div className='w-7 h-7 rounded-md bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center shrink-0'>
+                  <PiTerminalFill className='text-neutral-600 dark:text-neutral-400 text-sm' />
+                </div>
+                <div className='min-w-0 flex-1'>
+                  <p className='text-xs font-semibold text-neutral-800 dark:text-neutral-200 leading-tight truncate'>
+                    CLI Installation
+                  </p>
+                  <p className='text-[10px] text-neutral-400 dark:text-neutral-600 mt-0.5 leading-tight'>
+                    Add via command line
+                  </p>
+                </div>
+                <span className='shrink-0 inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-full border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-500'>
+                  <span className='w-1.5 h-1.5 rounded-full bg-red-500' />
+                  Beta
+                </span>
               </div>
-              <div>
-                <h3 className='text-base font-semibold text-neutral-900 dark:text-neutral-100 leading-tight text-left'>
-                  CLI Installation
-                </h3>
-                <p className='text-xs text-neutral-500 dark:text-neutral-500 mt-0.5'>
-                  Add components via command line
-                </p>
+
+              {/* Right — full width on mobile, 70% on sm+ */}
+              <div className='lg:col-span-2 w-full flex items-center gap-2 px-4 py-3 bg-white dark:bg-neutral-950 min-w-0'>
+
+                {/* $ prompt */}
+                <span className='text-neutral-300 dark:text-neutral-700 font-mono text-xs select-none shrink-0'>$</span>
+
+                {/* Horizontally scrollable command */}
+                <div className='flex-1 overflow-x-auto min-w-0 scrollbar-none justify-end text-end'>
+                  <code className='font-mono text-[13px] sm:text-sm text-neutral-500 dark:text-neutral-400 whitespace-nowrap block'>
+                    npx shadcn@latest add https://lokalhost.io/registry/[component].json
+                  </code>
+                </div>
+
+                {/* Divider */}
+                <div className='h-4 w-px bg-neutral-200 dark:bg-neutral-800 shrink-0' />
+
+                {/* Copy button */}
+                {/* <button
+                  onClick={() => copyCode('npx shadcn@latest add https://lokalhost.io/registry/bento-grid.json', true)}
+                  className={cn(
+                    "shrink-0 flex gap-2 justify-between items-center cursor-pointer",
+                    "border-t border-l border-r border-neutral-800 dark:border-neutral-700",
+                    "rounded-md py-2 px-2 whitespace-nowrap",
+                    "font-sans font-medium text-xs text-neutral-100",
+                    "bg-gradient-to-b from-neutral-700 to-neutral-900 dark:from-neutral-800 dark:to-neutral-950",
+                    "shadow-[0px_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]",
+                    "hover:shadow-[0px_3px_10px_rgba(0,0,0,0.25)]",
+                    "transition-shadow duration-200 active:scale-95",
+                  )}
+                >
+                  {copiedCommand ? (
+                    <>
+                      <IoIosDoneAll className='text-sm text-emerald-400' />
+                      <span></span>
+                    </>
+                  ) : (
+                    <>
+                      <FiCopy className='text-sm' />
+                      <span></span>
+                    </>
+                  )}
+                </button> */}
+                <CopyCommandButton registryUrl='https://lokalhost.io/registry/bento-grid.json' />
+
               </div>
+
+
             </div>
-          </div>
-
-          {/* Right - Command & Copy */}
-          <div className='lg:col-span-3 flex items-left gap-3 w-full md:w-auto overflow-auto'>
-            
-            {/* Command Box */}
-            <div className='flex-1 bg-neutral-50 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 px-4 py-3 shadow-inner text-left  overflow-auto'>
-              <code className='font-mono text-xs md:text-sm text-neutral-700 dark:text-neutral-300 break-all text-left whitespace-nowrap overflow-x-auto'>
-                npx shadcn@latest add https://lokallhost.io.com/registry/[component].json
-              </code>
-            </div>
-
-            {/* Copy Button */}
-            <button
-              onClick={() => copyCode('npx shadcn@latest add https://lokallhost.io.com/registry/bento-grid.json', true)}
-              className={cn(
-                'flex-shrink-0 flex items-center gap-2 px-3 py-1 rounded-lg font-medium text-sm transition-all',
-                'border border-neutral-200 dark:border-neutral-700',
-                'bg-white dark:bg-neutral-900',
-                'hover:border-neutral-300 dark:hover:border-neutral-600',
-                'shadow-sm hover:shadow-md',
-                'active:scale-95',
-                'hidden lg:flex'
-              )}
-            >
-              {copiedCommand ? (
-                <>
-                  <IoIosDoneAll className="text-emerald-500 text-lg" />
-                </>
-              ) : (
-                <>
-                  <FiCopy className='text-neutral-600 dark:text-neutral-400 text-lg' />
-                </>
-              )}
-            </button>
-
           </div>
         </div>
 
@@ -310,3 +334,198 @@ function MainInstallationSetupAndCLIGuide() {
 }
 
 export default MainInstallationSetupAndCLIGuide
+
+
+
+
+
+
+
+
+type PM = 'npm' | 'pnpm' | 'yarn' | 'bun'
+
+interface PackageManager {
+  id: PM
+  label: string
+  icon: React.ReactNode
+  prefix: string
+  color: string
+}
+
+const PACKAGE_MANAGERS: PackageManager[] = [
+  {
+    id: 'npm',
+    label: 'npm',
+    icon: <SiNpm />,
+    prefix: 'npx shadcn@latest add',
+    color: 'text-red-500',
+  },
+  {
+    id: 'pnpm',
+    label: 'pnpm',
+    icon: <SiPnpm />,
+    prefix: 'pnpm dlx shadcn@latest add',
+    color: 'text-yellow-500',
+  },
+  {
+    id: 'yarn',
+    label: 'yarn',
+    icon: <SiYarn />,
+    prefix: 'npx shadcn@latest add',
+    color: 'text-blue-400',
+  },
+  {
+    id: 'bun',
+    label: 'bun',
+    icon: <PiCatBold />,
+    prefix: 'bunx --bun shadcn@latest add',
+    color: 'text-orange-400',
+  },
+]
+
+interface CopyCommandButtonProps {
+  registryUrl: string // e.g. https://lokalhost.io/registry/bento-grid.json
+}
+
+export function CopyCommandButton({ registryUrl }: CopyCommandButtonProps) {
+  const [open, setOpen] = useState(false)
+  const [copied, setCopied] = useState<PM | null>(null)
+  const ref = useRef<HTMLDivElement>(null)
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const handleCopy = (pm: PackageManager) => {
+    const command = `${pm.prefix} ${registryUrl}`
+    navigator.clipboard.writeText(command).then(() => {
+      setCopied(pm.id)
+      toast.success(`Copied ${pm.label} command`)
+      setTimeout(() => {
+        setCopied(null)
+        setOpen(false)
+      }, 2000)
+    })
+  }
+
+  return (
+    <div className='relative shrink-0 z-50' ref={ref}>
+
+      {/* Trigger */}
+      <button
+        onClick={() => setOpen(prev => !prev)}
+        className={cn(
+          "shrink-0 flex items-center gap-1.5 cursor-pointer z-50",
+          "border-t border-l border-r border-neutral-800 dark:border-neutral-700",
+          "rounded-md py-2 px-2.5 whitespace-nowrap",
+          "font-sans font-medium text-xs text-neutral-100",
+          "bg-gradient-to-b from-neutral-700 to-neutral-900 dark:from-neutral-800 dark:to-neutral-950",
+          "shadow-[0px_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]",
+          "hover:shadow-[0px_3px_10px_rgba(0,0,0,0.25)]",
+          "transition-all duration-200 active:scale-95",
+          open && "shadow-[0px_3px_10px_rgba(0,0,0,0.25)]"
+        )}
+      >
+        {copied ? (
+          <FiCheck className='text-sm text-emerald-400' />
+        ) : (
+          <FiCopy className='text-sm' />
+        )}
+        <span className='hidden sm:inline text-xs'>Copy</span>
+        {/* Tiny chevron */}
+        <svg
+          className={cn(
+            'w-2.5 h-2.5 text-neutral-500 transition-transform duration-200',
+            open && 'rotate-180'
+          )}
+          fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}
+        >
+          <path strokeLinecap='round' strokeLinejoin='round' d='M19 9l-7 7-7-7' />
+        </svg>
+      </button>
+
+      {/* Floating Dropdown */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 8 }}
+            transition={{ duration: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            style={{ transformOrigin: 'bottom right' }}
+            className={cn(
+              'absolute bottom-[calc(100%+8px)] right-0 z-50',
+              'w-[200px]',
+              'rounded-xl overflow-hidden',
+              'border border-neutral-200 dark:border-neutral-800',
+              'bg-white dark:bg-neutral-900',
+              'shadow-[0_4px_24px_rgba(0,0,0,0.10),0_1px_4px_rgba(0,0,0,0.06)]',
+              'dark:shadow-[0_4px_32px_rgba(0,0,0,0.6)]',
+            )}
+          >
+            {/* Header */}
+            <div className='flex items-center justify-between px-3 pt-2.5 pb-2 border-b border-neutral-100 dark:border-neutral-800'>
+              <span className='text-[10px] font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-600'>
+                Copy as
+              </span>
+              <FiCopy className='text-[10px] text-neutral-300 dark:text-neutral-700' />
+            </div>
+
+            {/* Options */}
+            <div className='p-1.5 flex flex-col gap-0.5'>
+              {PACKAGE_MANAGERS.map((pm, i) => (
+                <motion.button
+                  key={pm.id}
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.04, duration: 0.15 }}
+                  onClick={() => handleCopy(pm)}
+                  className={cn(
+                    'z-50 w-full flex items-center gap-2.5 px-2.5 py-1 rounded-sm',
+                    'text-left transition-all duration-100 group cursor-pointer',
+                    'hover:bg-neutral-100 hover:shadow-sm dark:hover:bg-neutral-800',
+                    copied === pm.id && 'bg-emerald-50 dark:bg-emerald-950/40'
+                  )}
+                >
+                  {/* Icon */}
+                  <span className={cn(
+                    'text-base shrink-0 transition-colors',
+                    copied === pm.id ? 'text-emerald-500' : pm.color
+                  )}>
+                    {pm.icon}
+                  </span>
+
+                  {/* Label */}
+                  <div className='flex-1 min-w-0'>
+                    <p className='text-xs font-semibold text-neutral-800 dark:text-neutral-200'>
+                      {pm.label}
+                    </p>
+                    <p className='text-[10px] text-neutral-400 dark:text-neutral-600 font-mono truncate'>
+                      {pm.prefix}
+                    </p>
+                  </div>
+
+                  {/* State icon */}
+                  <span className='shrink-0 text-xs'>
+                    {copied === pm.id ? (
+                      <FiCheck className='text-emerald-500' />
+                    ) : (
+                      <FiCopy className='text-neutral-300 dark:text-neutral-700 group-hover:text-neutral-400 dark:group-hover:text-neutral-500 transition-colors' />
+                    )}
+                  </span>
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
