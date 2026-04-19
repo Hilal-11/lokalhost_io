@@ -12,24 +12,22 @@
             "page": "Figma Designs",
             "link": "/designs"
         },
+
         {
-            "page": "Pricing",
-            "link": "/pricing"
+            "page": "Custom Work",
+            "link": "/custom-work"
         }
 
     ],
     "dropdown_pages": [
         {
-            "page": "About",
-            "link": "/about"
+            "page": "Pricing",
+            "link": "/pricing"
         },
-        {
+         {
             "page": "Blogs",
             "link": "/blogs"
-        },
-        {
-            "page": "Custom Work",
-            "link": "/custom-work"
         }
+
     ]
 }
