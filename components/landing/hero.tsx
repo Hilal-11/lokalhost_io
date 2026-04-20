@@ -5,7 +5,6 @@ import { motion } from "motion/react"
 import AnnoncementBadge from "./AnnoncementBadge";
 import { cn } from "@/lib/utils";
 import {  useTheme } from "next-themes"
-import Link from "next/link";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import { ContainerTextFlip } from "./animate_hero_tags"
 import TemplatesShowcaseBento from "./LandingComponents/TemplatesShowcaseBento";
@@ -20,6 +19,7 @@ import ComponentsShowcase, { TemplatesBlockList } from "./LandingComponents/Comp
 import LandingPagesShowcase from "./LandingComponents/LandingPagesShowcase";
 import MobileAppsAndUIBlocks from "./LandingComponents/MobileAppaAndUIBlocks"; 
 import MainInstallationSetupAndCLIGuide from "./MicroComponents/MainInstallationSetupAndCLIGuide";
+import Link from "next/link";
 interface IServiceType {
     button_name: string,
     button_link: string
@@ -43,7 +43,8 @@ export interface ITemplate {
 export function HeroSection() {
 
   const { theme } = useTheme();
-
+ 
+  const MotionLink = motion.create(Link)
 
    const handleLinkClick = () => {
       nProgress.start()
@@ -85,19 +86,21 @@ export function HeroSection() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 pt-8">
-          <motion.button
+          <MotionLink
+            href="/templates"
             transition={{ duration: 0.28 , ease: "easeInOut"}}
             whileHover={{ y: -3 }}
             whileTap={{ y: -4 }}
             onClick={handleLinkClick}
-          className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-50 dark:border-neutral-400 relative overflow-hidden cursor-pointer font-sans font-medium px-10 py-2 rounded-lg bg-neutral-100 bg-gradient-to-t from-[#f5f5f5] to-[#d4d4d4] dark:text-neutral-900 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-2"><span><IoMdSend className="text-lg text-neutral-700"/></span>Explore Templets</motion.button>
-          <motion.button
+          className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-50 dark:border-neutral-400 relative overflow-hidden cursor-pointer font-sans font-medium pl-1 pr-2 w-[200px] py-px h-10 rounded-lg bg-neutral-100 bg-gradient-to-t from-[#f5f5f5] to-[#d4d4d4] dark:text-neutral-900 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center justify-between gap-2"><span className="ring-1 ring-neutral-400 rounded-sm shadow-xs bg-neutral-100 dark:bg-neutral-900 w-8 h-8 flex justify-center items-center"><IoMdSend className="text-lg text-neutral-700 "/></span>Explore Templets</MotionLink>
+          <MotionLink
+              href="/custom-work"
               transition={{ duration: 0.28 , ease: "easeInOut"}}
               whileHover={{ y: -3}}
               whileTap={{ y: -4 }}
               onClick={handleLinkClick}
-          className="border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer font-sans font-medium px-10 py-2 rounded-lg bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]">Components Documentation
-          </motion.button>
+          className="flex justify-between items-center border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer font-sans font-medium pl-1 pr-2 w-[230px] py-px h-10 rounded-lg bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"><span className="ring-1 ring-neutral-400 rounded-sm shadow-xs bg-neutral-100 dark:bg-neutral-900 w-8 h-8"><img src="/hilal.jpg" alt="" className="rounded-sm" /></span>let's build something
+          </MotionLink>
           
         </div>
       </div>
@@ -554,7 +557,7 @@ const SERVICES = [
     id: "components",
     name: "Web Components",
     disc: "Production-ready React & Next.js components. Drop in, customize, ship.",
-    link: "/docs/components",
+    link: "/docs",
     primaryBtn: "Start Building",
     secondaryBtn: "Components",
     Shader: ShaderComponents,
