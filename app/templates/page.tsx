@@ -163,7 +163,8 @@ function Templates(){
 
     const router = useRouter();
     const pathname = usePathname();
-    const handleOpen = (e: React.MouseEvent<HTMLButtonElement>, templeteId: string) => {
+    
+    const handleOpen = (e: React.MouseEvent<HTMLElement>, templeteId: string) => {
         if (!state.isLoggedIn) {
             router.push(`/login?redirect=${encodeURIComponent(pathname)}`); // ← fixed
             return;
