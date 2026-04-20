@@ -202,9 +202,6 @@ function Header({ isLoggedIn, USER, USEREMAIL }: HeaderClientProps) {
                   <span className="text-zinc-300 dark:text-zinc-700"></span>
                   {/* <HeaderPro /> */}
 
-                  <div className="flex items-center gap-3">
-                      <Link prefetch={true} onClick={handleLinkClick} href="/signup" className="flex gap-1 border-t-[1px] border-l-[1px] border-r-[1px] border-neutral-950 dark:border-neutral-800 w-full whitespace-nowrap relative cursor-pointer font-sans font-medium rounded-md text-xs px-4 h-8 pb-px bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] items-center justify-center gap-2">{isLoggedIn ? "Start Building" : "Signup"}{isLoggedIn && <span className="text-xl"><HiArrowNarrowRight /></span>}</Link>
-                  </div>
                  {isLoggedIn && USER !== null && USEREMAIL !== null && (
                     <HeaderProfile user={USER} userEmail={USEREMAIL} />
                   )}
