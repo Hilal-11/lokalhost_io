@@ -12,6 +12,7 @@ import {  useRef, useEffect } from 'react'
 import {  FiCheck } from 'react-icons/fi'
 import { SiNpm, SiPnpm, SiYarn } from 'react-icons/si'
 import { PiCatBold } from "react-icons/pi";
+import { SoonV2 } from '@/components/landing/MicroComponents/ComingSoon'
 type TabType = 'components' | 'templates' | 'mobile-react' | 'mobile-flutter'
 
 interface CodeExample {
@@ -241,8 +242,8 @@ function MainInstallationSetupAndCLIGuide() {
           </div>
 
           {/* Code Content */}
-          <div>
-            Hello world
+          <div className="flex justify-center items-center h-full">
+            <SoonV2 />
           </div>
 
 
