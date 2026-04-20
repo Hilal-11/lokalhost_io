@@ -17,6 +17,7 @@ export function SearchingMain() {
   const [filteredItems, setFilteredItems] = useState([...MAIN_PAGE_SEARCHING_CONFIG])
   const [open, setOpen] = useState(false)
   const [focused, setFocused] = useState(false)
+   const [activeIdx, setActiveIdx] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleSearching = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,6 +44,16 @@ export function SearchingMain() {
     NProgress.start()
     setOpen(false)
   }
+    const handleKey = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault()
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault()
+      setActiveIdx((i) => Math.max(i - 1, 0))
+    } else if (e.key === "Enter") {
+      setOpen(false)
+    }
+  }
 
   const displayItems = filteredItems.length > 0 ? filteredItems : MAIN_PAGE_SEARCHING_CONFIG
   const isFiltering = searchQuery.length > 0
@@ -50,14 +61,20 @@ export function SearchingMain() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {/* ── Trigger button ── */}
-      <DialogTrigger asChild>
+    <DialogTrigger asChild>
         <motion.button
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className="group flex items-center gap-1.5 bg-neutral-50 dark:bg-neutral-900 px-2 h-8 rounded-sm shadow-sm border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-200"
+          className="group flex items-center justify-between gap-1.5 bg-neutral-50 dark:bg-neutral-900 w-44 px-1 h-8 rounded-sm shadow-sm border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-200"
         >
-          <IoSearchSharp className="text-[15px] text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-colors duration-200" />
+          <div className="flex items-center gap-1">
+            <IoSearchSharp className="text-[15px] text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-colors duration-200" />
+            <span className="text-xs text-neutral-400 dark:text-neutral-500">Search</span>
+          </div>
+          <kbd className="ml-1 text-[10px] font-mono text-neutral-400 dark:text-neutral-600 border border-neutral-200 dark:border-neutral-700 rounded px-1 py-px bg-white dark:bg-neutral-950">
+            ⌘K
+          </kbd>
         </motion.button>
       </DialogTrigger>
 
