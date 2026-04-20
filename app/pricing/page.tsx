@@ -3,7 +3,6 @@ import { PricingFAQ } from './FAQ';
 import { StripedPattern } from "@/components/magicui/striped-pattern"
 import CTA from '@/components/landing/CTA';
 import WebComponents from './PricingModels/WebComponents';
-export const dynamic = 'force-static';
 
 
 function Pricing() {
