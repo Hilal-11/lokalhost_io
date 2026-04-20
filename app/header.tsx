@@ -14,7 +14,7 @@ export default async function Header() {
     try {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
       const { payload } = await jwtVerify(token, secret);
-      
+      console.log("Decoded JWT payload:", payload);
       user = (payload.username as string) || null;
       userEmail = (payload.email as string) || null;
       
@@ -25,9 +25,9 @@ export default async function Header() {
 
   return (
     <HeaderClient 
-      isLoggedIn={!!token && !!user} 
-      USER={user} 
-      USEREMAIL={userEmail} 
+      isLoggedIn={!!user} 
+      user={user} 
+      userEmail={userEmail} 
     />
   );
 }

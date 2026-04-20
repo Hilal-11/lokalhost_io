@@ -26,18 +26,18 @@ import { HiArrowNarrowRight } from "react-icons/hi";
 
 interface HeaderClientProps {
   isLoggedIn: boolean;
-  USER: string | null;
-  USEREMAIL: string | null;
+  user: string | null;
+  userEmail: string | null;
 }
 
-function Header({ isLoggedIn, USER, USEREMAIL }: HeaderClientProps) {
+function Header({ isLoggedIn, user, userEmail }: HeaderClientProps) {
   // const token = cookies().get("token")?.value;
   // const isAuthenticate = !!token;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showservices, setShowServices] = useState(true)
 
-  const [user, setUser] = useState("");
-  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userEmail2, setUserEmail2] = useState("");
   const [showFeedback, setShowFeedback] = useState(false)
   const feedbackRef = useRef<HTMLDivElement | null>(null);
 
@@ -51,8 +51,8 @@ function Header({ isLoggedIn, USER, USEREMAIL }: HeaderClientProps) {
         }
       });
       const data = await res.json();
-      setUser(data.user.username);
-      setUserEmail(data.user.email);
+      setUserName(data.user.username);
+      setUserEmail2(data.user.email);
     }catch(error){
       console.log(error);
     }
@@ -202,8 +202,8 @@ function Header({ isLoggedIn, USER, USEREMAIL }: HeaderClientProps) {
                   <span className="text-zinc-300 dark:text-zinc-700"></span>
                   {/* <HeaderPro /> */}
 
-                 {isLoggedIn && USER !== null && USEREMAIL !== null && (
-                    <HeaderProfile user={USER} userEmail={USEREMAIL} />
+                 {isLoggedIn && user !== null && userEmail !== null && (
+                    <HeaderProfile user={user} userEmail={userEmail} />
                   )}
                 </div>
 

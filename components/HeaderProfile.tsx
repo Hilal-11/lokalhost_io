@@ -49,30 +49,24 @@ function HeaderProfile({ user, userEmail }: HeaderClientProps) {
       <DropdownMenu open={open} onOpenChange={setOpen}>
 
         {/* ── Avatar trigger ── */}
-        <DropdownMenuTrigger asChild>
-          <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.93 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
-            className="relative cursor-pointer flex items-center justify-center w-[28px] h-[28px] lg:w-[32px] lg:h-[32px] rounded-md overflow-hidden bg-gradient-to-t from-neutral-900 to-neutral-600 dark:from-neutral-100 dark:to-neutral-300 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.08),0px_2px_4px_rgba(0,0,0,0.12)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600"
-          >
-            {/* shimmer sweep on hover */}
-            <motion.span
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full"
-              animate={open ? { x: "100%" } : { x: "-100%" }}
-              transition={{ duration: 0.5 }}
-            />
-            <span className="relative z-10 text-[13px] font-bold font-sans text-white dark:text-black tracking-tight select-none">
-              {initials}
-            </span>
-
-            {/* online dot */}
-            <motion.span
-              initial={{ scale: 0 }}
-              className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-400 border border-white dark:border-neutral-950"
-            />
-          </motion.button>
-        </DropdownMenuTrigger>
+       <DropdownMenuTrigger asChild>
+        <motion.button
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.93 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          className="group relative cursor-pointer flex items-center justify-center w-[28px] h-[28px] lg:w-[32px] lg:h-[32px] rounded-md overflow-hidden bg-gradient-to-t from-neutral-900 to-neutral-600 dark:from-neutral-100 dark:to-neutral-300 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.08),0px_2px_4px_rgba(0,0,0,0.12)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600"
+        >
+          <motion.span
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+            initial={{ x: "-100%" }}
+            animate={{ x: open ? "100%" : "-100%" }}
+            transition={{ duration: 0.5 }}
+          />
+          <span className="relative z-10 text-[13px] font-bold font-sans text-white dark:text-black tracking-tight select-none">
+            {initials}
+          </span>
+        </motion.button>
+      </DropdownMenuTrigger>
 
         {/* ── Dropdown content ── */}
         <DropdownMenuContent
@@ -115,7 +109,7 @@ function HeaderProfile({ user, userEmail }: HeaderClientProps) {
                       <p className="font-sans font-semibold text-sm text-neutral-800 dark:text-neutral-200 truncate leading-tight">
                         {user}
                       </p>
-                      <p className="font-sans font-medium text-[11px] text-neutral-400 dark:text-neutral-600 truncate mt-0.5">
+                      <p className="font-sans font-medium text-[11px] text-neutral-400 dark:text-neutral-500 truncate mt-0.5">
                         {userEmail}
                       </p>
                     </div>
