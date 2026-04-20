@@ -66,7 +66,7 @@ export function SearchingMain() {
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className="group flex items-center justify-between gap-1.5 bg-neutral-50 dark:bg-neutral-900 w-44 px-1 h-8 rounded-sm shadow-sm border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-200"
+          className="group flex items-center justify-between gap-1.5 bg-neutral-50 dark:bg-neutral-900 w-28 lg:w-44 px-1 h-8 rounded-sm shadow-sm border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-200"
         >
           <div className="flex items-center gap-1">
             <IoSearchSharp className="text-[15px] text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-colors duration-200" />
