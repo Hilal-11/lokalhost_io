@@ -48,6 +48,18 @@ export function SoonV1() {
   );
 }
 
+export function SoonV2() {
+  return (
+    <>
+      <style>{styles}</style>
+      <span className="relative left-1 -top-2 inline-flex items-center px-10 py-3  rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 font-mono text-[10px] tracking-[0.2em] uppercase select-none">
+      <span className="soon-shimmer font-bold">coming soon</span>
+      </span>
+    </>
+  );
+}
+
+
 export function ComingSoon() {
   return (
     <>
