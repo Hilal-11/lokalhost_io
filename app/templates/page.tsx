@@ -35,6 +35,7 @@ import { LuLayoutTemplate } from 'react-icons/lu'
 
 import { SortTemplates } from "./sortTemplates";
 import CTA from "@/components/landing/CTA";
+import { usePathname } from "next/navigation";
 const techStackImages = [
     react,
     next,
@@ -43,6 +44,13 @@ const techStackImages = [
     ts,
     js,
 ]
+
+interface AuthState {
+  isLoggedIn: boolean;
+  user: { name?: string; email?: string } | null;
+  loading: boolean;
+}
+
 function Templates(){
     const convex = useConvex();
     
@@ -59,7 +67,12 @@ function Templates(){
     const [focused, setFocused]             = useState(false)
     const inputRef = useRef<HTMLInputElement>(null)
     const [activeFilter, setActiveFilter] = useState<'All' | 'Free' | 'Premium'>('All');
-
+    
+    const [state, setState] = useState<AuthState>({
+        isLoggedIn: false,
+        user: null,
+        loading: true,
+    });
 
     const filteredTemplates = templates?.filter((template) => {
         if (activeFilter === 'All') return true
@@ -73,6 +86,44 @@ function Templates(){
         const q = searchQuery.toLowerCase().trim()
         setFilteredItems(q ? templates.filter(({ projectName }) => projectName.toLowerCase().includes(q)) : templates)
     }, [searchQuery, templates])
+
+
+
+    
+    useEffect(() => {
+        try {
+        // Read from cookie instead of localStorage
+        const match = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("token="));
+        const token = match ? match.split("=")[1] : null;
+
+        if (!token) {
+            setState({ isLoggedIn: false, user: null, loading: false });
+            return;
+        }
+
+        // Decode JWT payload
+        const payload = JSON.parse(atob(token.split(".")[1]));
+
+        // Check expiry
+        const isExpired = payload.exp && payload.exp * 1000 < Date.now();
+        if (isExpired) {
+            setState({ isLoggedIn: false, user: null, loading: false });
+            return;
+        }
+
+        setState({
+            isLoggedIn: true,
+            user: { name: payload.name, email: payload.email },
+            loading: false,
+        });
+        } catch {
+        setState({ isLoggedIn: false, user: null, loading: false });
+        }
+    }, []);
+
+
 
     useEffect(() => {
         if (!open) return
@@ -110,9 +161,20 @@ function Templates(){
         document.addEventListener("mouseup", onMouseUp);
     };
 
-    
-
     const router = useRouter();
+    const pathname = usePathname();
+    const handleOpen = (e: React.MouseEvent<HTMLButtonElement>, templeteId: string) => {
+        if (!state.isLoggedIn) {
+            router.push(`/login?redirect=${encodeURIComponent(pathname)}`); // ← fixed
+            return;
+        }
+        if (state.isLoggedIn === true) {
+            e.stopPropagation();
+            router.push(`/templates/template/${templeteId}`);
+        };
+    };
+
+
     return (
         <div className="relative w-full container max-w-[1580px]">
             <div className="container pt-14 w-full h-auto">
@@ -350,17 +412,11 @@ function Templates(){
                                                         ))}
                                 </div>
                                 <div className="flex w-full justify-start items-center pt-4">
-                                    <button onClick={(e) => {
-  e.stopPropagation();
-  router.push(`/templates/template/${templete._id}`);
-}} className="px-8 py-[6px] cursor-pointer border-t border-l border-r border-neutral-800 rounded-lg whitespace-nowrap font-sans font-medium text-sm text-neutral-200 dark:text-neutral-200 bg-gradient-to-t from-[#262626] to-[#525252] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex gap-2 items-center">View Template <span className="text-lg"><HiArrowNarrowRight /></span> </button>
+                                    <button onClick={(e) => handleOpen(e, templete._id)} className="px-8 py-[6px] cursor-pointer border-t border-l border-r border-neutral-800 rounded-lg whitespace-nowrap font-sans font-medium text-sm text-neutral-200 dark:text-neutral-200 bg-gradient-to-t from-[#262626] to-[#525252] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex gap-2 items-center">View Template <span className="text-lg"><HiArrowNarrowRight /></span> </button>
                                 </div>
                                 
                             </div>
-                            <div onClick={(e) => {
-  e.stopPropagation();
-  router.push(`/templates/template/${templete._id}`);
-}} className="cursor-pointer xl:w-[70%] lg:w-[60%] md:w-[50%] px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 mask-l-from-80% to-100% p-14 relative group transition duration-300">
+                            <div onClick={(e) => handleOpen(e, templete._id)} className="cursor-pointer xl:w-[70%] lg:w-[60%] md:w-[50%] px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 mask-l-from-80% to-100% p-14 relative group transition duration-300">
                                 <div className="z-40 hidden absolute top-1 right-1 group-hover:block transition duration-300">
                                     <HoverExternalIcon />
                                 </div>                        

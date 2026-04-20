@@ -28,7 +28,7 @@ interface Props {
 
 export function ScheduleCallModal({ scheduleCallOpen, setScheduleCallOpen, state }: Props) {
   const router = useRouter();
-   const pathname = usePathname();
+  const pathname = usePathname();
   const handleOpen = () => {
       if (state.loading) return;
 

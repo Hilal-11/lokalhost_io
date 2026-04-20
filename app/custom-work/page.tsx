@@ -102,10 +102,10 @@ function Page() {
   const [idx, setIdx] = useState(0)
   const [visible, setVisible] = useState(true)
   const [state, setState] = useState<AuthState>({
-  isLoggedIn: false,
-  user: null,
-  loading: true,
-});
+    isLoggedIn: false,
+    user: null,
+    loading: true,
+  });
 
 
   useEffect(() => {
