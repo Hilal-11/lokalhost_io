@@ -119,3 +119,32 @@ export function TemplatesList() {
     </div>
   )
 }
+
+
+
+
+
+import { ScrollVelocityContainer , ScrollVelocityRow } from '@/components/ui/scroll-based-velocity'
+const IMAGES_ROW_A = templatesImages.slice(0, templatesImages.length / 2)
+const IMAGES_ROW_B = templatesImages.slice(0, templatesImages.length / 2)
+export function ScrollBasedTemplates() {
+  return (
+    <div className="relative flex w-full flex-col gap-4 items-center justify-center overflow-hidden py-8">
+      <ScrollVelocityContainer className="w-full flex flex-col gap-4 items-center justify-center overflow-hidden ">
+        <ScrollVelocityRow baseVelocity={6} direction={1} className="flex gap-4">
+          {IMAGES_ROW_A.map((src, idx) => (
+           <img key={idx} alt="Error" src={src.image} className="mx-3 w-auto h-[250px] object-cover object-center rounded-sm border" />
+          ))}
+        </ScrollVelocityRow>
+        <ScrollVelocityRow baseVelocity={6} direction={-1} className="flex gap-4">
+          {IMAGES_ROW_B.map((src, idx) => (
+            <img key={idx} alt="Error" src={src.image} className="mx-2 w-auto h-[250px] object-cover object-center rounded-sm border" />
+          ))}
+        </ScrollVelocityRow>
+      </ScrollVelocityContainer>
+
+      <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r"></div>
+      <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l"></div>
+    </div>
+  )
+}

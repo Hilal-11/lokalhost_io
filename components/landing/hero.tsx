@@ -10,7 +10,7 @@ import { ContainerTextFlip } from "./animate_hero_tags"
 import TemplatesShowcaseBento from "./LandingComponents/TemplatesShowcaseBento";
 import { IoMdSend } from "react-icons/io";
 import TailoredSignal from "./MicroComponents/TailoredSignal";
-import { MarqueeTemplates } from "./MicroComponents/templatesScrolling";
+import { MarqueeTemplates , ScrollBasedTemplates } from "./MicroComponents/templatesScrolling";
 // import FeaturesBento from "./LandingComponents/FeaturesBento";
 import ComponentsBento from "./LandingComponents/ComponentsBento"
 import DesignsBento from "./LandingComponents/DesignsBento"
@@ -344,7 +344,7 @@ const iconVariants: Variants = {
 
         <MainInstallationSetupAndCLIGuide />
         <div className="w-full h-auto mt-10 mb-10">
-          <MarqueeTemplates/>
+          <ScrollBasedTemplates/>
         </div>
         <ComponentsShowcase/>
         <TemplatesBlockList/>
