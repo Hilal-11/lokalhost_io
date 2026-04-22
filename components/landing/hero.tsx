@@ -20,6 +20,11 @@ import LandingPagesShowcase from "./LandingComponents/LandingPagesShowcase";
 import MobileAppsAndUIBlocks from "./LandingComponents/MobileAppaAndUIBlocks"; 
 import MainInstallationSetupAndCLIGuide from "./MicroComponents/MainInstallationSetupAndCLIGuide";
 import Link from "next/link";
+import { AnimatePresence } from "motion/react";
+import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { TbWorldWww } from "react-icons/tb";
+import  { Variants } from "motion/react";
 interface IServiceType {
     button_name: string,
     button_link: string
@@ -43,12 +48,55 @@ export interface ITemplate {
 export function HeroSection() {
 
   const { theme } = useTheme();
- 
+  const [avatarHovered, setAvatarHovered] = useState(false);
   const MotionLink = motion.create(Link)
 
    const handleLinkClick = () => {
       nProgress.start()
     }
+
+const iconTree = [
+  // Row 1 — base of tree (first to appear)
+  [
+    { icon: FaGithub,   href: "#", label: "GitHub"    },
+    { icon: FaLinkedin, href: "#", label: "LinkedIn"  },
+  ],
+  // Row 2 — middle branches
+  [
+    { icon: FaInstagram, href: "#", label: "Instagram" },
+    { icon: FaXTwitter,  href: "#", label: "X"         },
+  ],
+  // Row 3 — apex (last to appear)
+  [
+    { icon: TbWorldWww, href: "#", label: "Website" },
+  ],
+];
+
+// Row delays: bottom → top (tree growth feel)
+const rowDelays = [0, 0.1, 0.19];
+
+const iconVariants: Variants = {
+  hidden: { 
+    opacity: 0, 
+    scale: 0.2, 
+    y: 10, 
+    filter: "blur(6px)" 
+  },
+  visible: (delay: number) => ({
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { type: "spring" as const, stiffness: 420, damping: 22, delay },
+  }),
+  exit: (delay: number) => ({
+    opacity: 0,
+    scale: 0.3,
+    y: 8,
+    filter: "blur(4px)",
+    transition: { duration: 0.13, ease: "easeIn" as const, delay: delay * 0.3 },
+  }),
+};
 
   return (
     <div className="w-full container max-w-[1580px] h-auto mx-auto py-8 lg:py-16 flex flex-col items-center justify-center text-center gap-6">
@@ -86,6 +134,8 @@ export function HeroSection() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 pt-8">
+
+          
           <MotionLink
             href="/templates"
             transition={{ duration: 0.28 , ease: "easeInOut"}}
@@ -99,7 +149,101 @@ export function HeroSection() {
               whileHover={{ y: -3}}
               whileTap={{ y: -4 }}
               onClick={handleLinkClick}
-          className="flex justify-between items-center border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer font-sans font-medium pl-1 pr-2 w-[230px] py-px h-10 rounded-lg bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"><span className="ring-1 ring-neutral-400 rounded-sm shadow-xs bg-neutral-100 dark:bg-neutral-900 w-8 h-8"><img src="/hilal.jpg" alt="" className="rounded-sm" /></span>let's build something
+          className="flex justify-between items-center border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer font-sans font-medium pl-1 pr-2 w-[230px] py-px h-10 rounded-lg bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]">
+            
+             {/* ── Avatar span — hover triggers tree ── */}
+        <span
+          className="flex-shrink-0 relative"
+          style={{ overflow: "visible" }}
+          onMouseEnter={() => setAvatarHovered(true)}
+          onMouseLeave={() => setAvatarHovered(false)}
+        >
+          {/* Avatar */}
+          <span className="ring-1 ring-neutral-400 rounded-sm shadow-xs bg-neutral-100 dark:bg-neutral-900 w-8 h-8 block">
+            <img src="/hilal.jpg" alt="" className="rounded-sm w-full h-full object-cover" />
+          </span>
+
+          {/* ── Icon tree box ── */}
+          <AnimatePresence>
+            {avatarHovered && (
+              <motion.div
+                className="absolute bottom-[calc(100%+10px)] left-1/2 z-50"
+                style={{ x: "-50%" }}
+                initial={{ opacity: 0, y: 12, scale: 0.88 }}
+                animate={{ opacity: 1, y: 0,  scale: 1 }}
+                exit={{    opacity: 0, y: 8,  scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 380, damping: 26 }}
+              >
+                {/* Glass-dark card */}
+               <div
+  className="relative flex flex-col items-center gap-px
+             bg-neutral-100 dark:bg-neutral-950
+             border border-neutral-200 dark:border-neutral-700/80
+             dark:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.03)]
+             overflow-visible px-2 rounded-sm shadow-sm" 
+  
+>
+
+
+  {/* Inner padding wrapper so grid pattern shows at edges */}
+  <div className="flex items-center gap-1.5 px-2.5 pt-2.5 pb-2">
+
+    {iconTree.map((row, rowIdx) => (
+      <div key={rowIdx} className="flex gap-1.5">
+        {row.map(({ icon: Icon, href, label }, colIdx) => (
+          <motion.a
+            key={label}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={label}
+            title={label}
+            custom={rowDelays[rowIdx] + colIdx * 0.045}
+            variants={iconVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            whileHover={{
+              scale: 1.1,
+              y: -2,
+              transition: { type: "spring", stiffness: 480, damping: 20 },
+            }}
+            whileTap={{ scale: 0.88 }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-9 h-9
+                       bg-neutral-50 dark:bg-neutral-900
+                       border border-neutral-200 dark:border-neutral-700/70
+                       hover:bg-neutral-100 dark:hover:bg-neutral-800
+                       hover:border-neutral-300 dark:hover:border-neutral-600
+                       text-neutral-600 dark:text-neutral-300
+                       hover:text-neutral-900 dark:hover:text-neutral-100
+                       flex items-center justify-center
+                       shadow-[0_1px_3px_rgba(0,0,0,0.08)] dark:shadow-[0_1px_4px_rgba(0,0,0,0.35)]
+                       rounded-sm"
+          >
+            <Icon size={15} />
+          </motion.a>
+        ))}
+      </div>
+    ))}
+
+  </div>
+
+  {/* Arrow pointer — theme-aware */}
+  <div className="absolute top-full left-1/2 -translate-x-1/2 w-3 overflow-hidden flex justify-center">
+    <div className="w-2 h-2 rotate-45 translate-y-[-5px]
+                    bg-white dark:bg-neutral-950
+                    border-r border-b
+                    border-neutral-200 dark:border-neutral-700/80" />
+  </div>
+</div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </span>
+            let's build something
+
+
           </MotionLink>
           
         </div>
