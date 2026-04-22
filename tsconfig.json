@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["video.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/success/page.jsx", "app/page.jsx", "components/landing/ShowcaseCodeBlock.js", "components/landing/showcaseCodeBlock.jsx", "content/authdocs/changeCurrrentPassword.mdx", "app/actions/auth.js", "lib/definitions.js", "app/(auth)/signup/page.jsx", "app/(auth)/login/page.jsx"],
+  "exclude": ["node_modules"]
+}

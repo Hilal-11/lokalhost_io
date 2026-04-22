@@ -1,0 +1,19 @@
+{
+  "name": "buttonX",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react",
+    "motion"
+  ],
+  "registryDependencies": [
+    "textarea"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "import React from 'react'\r\nimport { PiTerminalFill } from \"react-icons/pi\";\r\n\r\nfunction ButtonX() {\r\n  return (\r\n    <div>\r\n      <button className='relative cursor-pointer font-sans font-medium px-10 py-2 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-3 '><span className=\"text-2xl\"><PiTerminalFill /></span>Lokalhost.io</button>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default ButtonX\r\n",
+      "path": "/components/lokalhost_io/buttons/buttonX.tsx",
+      "target": "/components/lokalhost_io/buttonX.tsx"
+    }
+  ]
+}

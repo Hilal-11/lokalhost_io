@@ -1,0 +1,29 @@
+{
+    "title": "Components",
+    "description": "The headless library",
+    "icon": "Dna",
+    "root": true,
+    "defaultOpen": true,
+    "pages": [
+        "---Overview---",
+        "index",
+        "cli",
+        "---Authentication---",
+        "Authentication/production_ready_auth_kits.mdx",
+        "Authentication/custom_auth.mdx",
+        "Authentication/role_permission_based_auth.mdx",
+        "Authentication/passwordless_auth.mdx",
+        "Authentication/session_based_auth.mdx",
+        "Authentication/Oauth_social_logins.mdx",
+        "Authentication/multifactor_auth.mdx",
+        "Authentication/biometric_authentication.mdx",
+        "---Auth Components---",
+        "components/Signup.mdx",
+        "components/Login.mdx",
+        "components/Logout.mdx",
+        "components/OTP_Verification.mdx",
+        "components/User_Profile.mdx"
+
+
+    ]
+}

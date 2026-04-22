@@ -1,0 +1,43 @@
+[
+  {
+    "suggestion": "Components",
+    "suggestion_to": "/components",
+    "icon": "GrCubes"
+  },
+  {
+    "suggestion": "Templates",
+    "suggestion_to": "/templates",
+    "icon": "MdViewQuilt"
+  },
+  {
+    "suggestion": "Designs",
+    "suggestion_to": "/designs",
+    "icon": "TbBrandAuth0"
+  },
+  {
+    "suggestion": "Authentication kits",
+    "suggestion_to": "/authdocs",
+    "icon": "LiaIconsSolid"
+  },
+  {
+    "suggestion": "SASS starter kits",
+    "suggestion_to": "/sass-kits",
+    "icon": "LuFigma"
+  },
+  {
+    "suggestion": "Mobile UI Elements",
+    "suggestion_to": "/mobile-elements",
+    "icon": "PiCubeDuotone"
+  },
+  {
+    "suggestion": "Mobile Applications",
+    "suggestion_to": "/mobile-apps",
+    "icon": "PiCubeDuotone"
+  },
+  {
+    "suggestion": "Team",
+    "suggestion_to": "/team",
+    "icon": "RiTeamLine"
+  }
+]
+

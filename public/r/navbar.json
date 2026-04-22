@@ -1,0 +1,19 @@
+{
+  "name": "navbar",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react",
+    "motion"
+  ],
+  "registryDependencies": [
+    "textarea"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "import React from 'react'\r\n\r\nfunction Navbar() {\r\n  return (\r\n    <div className='flex justify-center items-center w-full h-full'>\r\n      <h1 className='text-3xl font-sans font-bold'>Navbars from lokalhost.io</h1>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default Navbar\r\n",
+      "path": "/components/lokalhost_io/navbars/navbar.tsx",
+      "target": "/components/lokalhost_io/navbar.tsx"
+    }
+  ]
+}

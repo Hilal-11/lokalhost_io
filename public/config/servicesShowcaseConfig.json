@@ -1,0 +1,86 @@
+
+[
+  {
+    "id": 1,
+    "service": "Web Components",
+    "discription": "Production ready funationsl web components for react/nextjs application.",
+    "tech_bages" : ["React", "Next.Js" , "Typescript"],
+    "link": "/docs",
+    "icon": "GrCubes",
+    "image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1767535126/Screenshot_2026-01-04_192534_ayj4if.png"
+
+  },
+  {
+    "id": 2,
+    "service": "Web Templates",
+    "discription": "Modern Web Templates for personal, professional, business or anything.",
+    "tech_bages" : ["React/Next.js" , "Tailwind/Motion" , "Typescript"],
+    "link": "/templatess",
+    "icon": "MdViewQuilt",
+    "image": "https://cdn.dribbble.com/userupload/18345302/file/original-cd77993b9bf19501994e8099f6bfe59c.jpg",
+    "templates_list_1": [
+      {
+
+        "id": "jd743wehqr6b3qxpd0gdxhh50x7xpxk2",
+        "template_image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760680292/Screenshot_2025-08-14_010122_dqcw04.png",
+        "template_url": "https://start-up-seven-iota.vercel.app/",
+        "template_name": "Agency Templete PrimeDeck"
+    },
+    {
+        "id": "jd7e2jfhf8sz24xfgpech0hzzs7xpbqm",
+        "template_image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760680174/Screenshot_2025-08-03_230537_f6popm.png",
+        "template_url": "https://portfolio-templete-five.vercel.app/",
+        "template_name": "Your Portfolio"
+    },
+    {
+        "id": "jd72kqr9k6104ynps1vkfedfxd7xpcgy",
+        "template_image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760680072/IMG-20251009-WA0001_idp5je.jpg",
+        "template_url": "https://portfolix-two.vercel.app/",
+        "template_name": "Minimal Portfolio for everyone"
+    }
+    
+    ],
+    "templates_list_2": [
+      {
+          "id": "jd72kqr9k6104ynps1vkfedfxd7xpcgy",
+          "template_image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760680072/IMG-20251009-WA0001_idp5je.jpg",
+          "template_url": "https://portfolio-pro-seven.vercel.app/",
+          "template_name": "Minimal Portfolio for everyone"
+      },
+      {
+          "id": "dummy_template_1",
+          "template_image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760680291/Screenshot_2025-08-14_010221_gfq5nj.png",
+          "template_url": "https://portfolio-pro-seven.vercel.app/",
+          "template_name": "Developer Profile"
+      },
+      {
+          "id": "dummy_template_2",
+          "template_image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760680065/IMG-20251008-WA0006_qk7ywz.jpg",
+          "template_url": "https://portfolio-pro-seven.vercel.app/",
+          "template_name": "Agency Templete PrimeDeck"
+      }
+
+    ]
+  },
+  {
+    "id": 3,
+    "service": "Mobile Appications",
+    "discription": "Production ready funationsl web components for react/nextjs application.",
+    "tech_bages" : ["React Native", "Flutter", "Typescript"],
+    "link": "/mobile-apps",
+    "icon": "IoPhonePortraitOutline",
+    "image": "https://cdn.dribbble.com/userupload/43067054/file/original-8fdd2826c28645b40c13bc6426fce4a5.jpg"
+
+  },
+  {
+    "id": 4,
+    "service": "UI Design Kits",
+    "discription": "Production ready funationsl web components for react/nextjs application.",
+    "tech_bages" : ["Figma" , "Frammer" , "Designs"],
+    "link": "/designs",
+    "icon": "LuFigma",
+    "image": "https://cdn.dribbble.com/userupload/42728462/file/original-77d7c731d90840391841a852b1f347a0.png"
+
+  }
+
+]

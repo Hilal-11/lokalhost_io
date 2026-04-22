@@ -1,0 +1,15 @@
+{
+  "name": "bento",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "import React from 'react'\r\n\r\nfunction Bento() {\r\n  return (\r\n    <div className='flex justify-center items-center w-full h-full'>\r\n      <h1 className='text-3xl font-sans font-bold'>Bentos Grids from lokalhost.io</h1>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default Bento\r\n",
+      "path": "/components/lokalhost_io/bentos/bento.tsx",
+      "target": "/components/lokalhost_io/bento.tsx"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "pricing",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "textarea",
+    "tooltip"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "import React from 'react'\r\n\r\nfunction Pricing() {\r\n  return (\r\n    <div className='flex justify-center items-center w-full h-full'>\r\n      <h1 className='text-3xl font-sans font-bold'>Pricing Models from lokalhost.io</h1>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default Pricing\r\n",
+      "path": "/components/lokalhost_io/pricing/pricing-01.tsx",
+      "target": "/components/lokalhost_io/pricing-01.tsx"
+    }
+  ]
+}

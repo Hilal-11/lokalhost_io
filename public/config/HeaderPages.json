@@ -1,0 +1,33 @@
+{
+    "header_pages": [
+        {
+            "page": "Components",
+            "link": "/docs"
+        },
+        {
+            "page": "Templates",
+            "link": "/templates"
+        },
+        {
+            "page": "Figma Designs",
+            "link": "/designs"
+        },
+
+        {
+            "page": "Custom Work",
+            "link": "/custom-work"
+        }
+
+    ],
+    "dropdown_pages": [
+        {
+            "page": "Pricing",
+            "link": "/pricing"
+        },
+         {
+            "page": "Blogs",
+            "link": "/blogs"
+        }
+
+    ]
+}
