@@ -61,4 +61,28 @@ export const component: Registry = [
             },
         ],
     },
+    {
+        name: "Model Picker",
+        type: "registry:component",
+        dependencies: [],
+        registryDependencies: [],
+        files: [
+            {
+                path: "components/lokalhost_io/micro-ai-components/model-picker.tsx",
+                type: "registry:component",
+            },
+        ],
+    },
+    {
+        name: "Model Picker",
+        type: "registry:component",
+        dependencies: [],
+        registryDependencies: [],
+        files: [
+            {
+                path: "components/lokalhost_io/micro-ai-components/models-selector.tsx",
+                type: "registry:component",
+            },
+        ],
+    },
 ];

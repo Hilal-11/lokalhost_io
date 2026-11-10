@@ -17,6 +17,9 @@
         "---AI Micro Components---",
         "/components/micro-ai-components/install-command",
         "/components/micro-ai-components/copy-page-markdown",
+        "/components/micro-ai-components/model-picker",
+        "/components/micro-ai-components/models-selector",
+
 
 
         "---AI Landing---",

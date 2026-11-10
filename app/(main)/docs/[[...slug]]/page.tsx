@@ -21,7 +21,7 @@ export default async function Page(props: {
     const MDX = page.data.body;
 
     return (
-        <div className="min-h-screen bg-white dark:bg-black pb-20 xl:px-10 lg:px-10">
+        <div className="min-h-screen bg-white dark:bg-black px-0 pb-20 xl:px-10 lg:px-10">
             <DocsPage
                 toc={page.data.toc}
                 full={page.data.full}

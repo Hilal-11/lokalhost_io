@@ -1,6 +1,6 @@
 
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { cn } from "@/lib/utils";
 import { FaApple } from "react-icons/fa";
 import { DiWindows } from "react-icons/di";
@@ -13,6 +13,9 @@ import CodeBlock from "@/components/lokalhost_io/code-blocks/code-block";
 import Image from 'next/image';
 import { RiGrokAiFill } from 'react-icons/ri';
 import CopyPageMarkdown from '@/components/lokalhost_io/micro-ai-components/copy-page-markdown';
+import { ModelPicker , defaultModels } from '@/components/lokalhost_io/micro-ai-components/model-picker';
+import ComposerActions from "@/components/lokalhost_io/micro-ai-components/ComposerActions"
+import ModelsSelector from "@/components/lokalhost_io/micro-ai-components/models-selector"
 
 const DownloadButton = () => (
   <div className="flex flex-col gap-2.5 w-full px-4 justify-center items-center">
@@ -102,64 +105,32 @@ const CopyPageMarkdownsComponent = () => (
     />
 );
 
-const SkeletonModal = () => (
-  <div className="flex flex-col w-full px-4">
-    <div className="w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-lg overflow-hidden">
-      <div className="px-4 py-3 border-b border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
-        <div className="h-2 w-1/3 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-        <div className="w-4 h-4 rounded-full bg-neutral-200 dark:bg-neutral-800" />
-      </div>
-      <div className="px-4 py-3 flex flex-col gap-2">
-        <div className="h-1.5 w-full rounded-full bg-neutral-100 dark:bg-neutral-800/60" />
-        <div className="h-1.5 w-4/5 rounded-full bg-neutral-100 dark:bg-neutral-800/60" />
-        <div className="h-1.5 w-2/3 rounded-full bg-neutral-100 dark:bg-neutral-800/60" />
-      </div>
-      <div className="px-4 pb-3 flex gap-2 justify-end">
-        <div className="h-6 w-14 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700" />
-        <div className="h-6 w-14 rounded-md bg-neutral-800 dark:bg-neutral-600" />
-      </div>
-    </div>
-  </div>
-);
+export const ModelPickerComponent = () => {
+  const [selectedId, setSelectedId] = useState("gpt-5-2")
+    return(
+      <ModelPicker
+        models={defaultModels}
+        selectedModelId={selectedId}
+        onSelectModel={(model) => setSelectedId(model.id)}
+      />
+  )
+}
 
-const SkeletonNavbar = () => (
-  <div className="flex flex-col gap-3 w-full px-2">
-    <div className="w-full rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 px-4 py-2.5 flex items-center justify-between shadow-sm">
-      <div className="flex items-center gap-2">
-        <div className="w-5 h-5 rounded-md bg-neutral-800 dark:bg-neutral-600" />
-        <div className="h-2 w-16 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-      </div>
-      <div className="hidden md:flex gap-3">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="h-1.5 w-8 rounded-full bg-neutral-200 dark:bg-neutral-800" />
-        ))}
-      </div>
-      <div className="h-6 w-16 rounded-full bg-neutral-800 dark:bg-neutral-700" />
-    </div>
-    <div className="flex flex-col gap-1.5 px-2">
-      <div className="h-1.5 w-2/5 rounded-full bg-neutral-200 dark:bg-neutral-800" />
-      <div className="h-1.5 w-3/5 rounded-full bg-neutral-100 dark:bg-neutral-800/50" />
-    </div>
+const ModelPickerComponent2 = () => (
+  <div className="flex justify-center items-center">
+    <Image className="relative top-20 w-full h-full object-contain" src={'/components-images/model-picker.png'} alt={"model picker Component"} width={300} height={400}/>
   </div>
-);
+)
 
-const SkeletonBadge = () => (
-  <div className="flex flex-col gap-3 w-full items-center px-4">
-    <div className="flex flex-wrap gap-2 justify-center">
-      {["rounded-full bg-neutral-800 dark:bg-neutral-700 w-16", "rounded-full bg-neutral-200 dark:bg-neutral-800 w-20", "rounded-full bg-neutral-300 dark:bg-neutral-800 w-14"].map((cls, i) => (
-        <div key={i} className={`h-5 ${cls}`} />
-      ))}
-    </div>
-    <div className="flex flex-wrap gap-2 justify-center">
-      {["rounded-md bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700 w-24", "rounded-md bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700 w-16"].map((cls, i) => (
-        <div key={i} className={`h-6 ${cls}`} />
-      ))}
-    </div>
-    <div className="flex gap-1.5 flex-wrap justify-center">
-      {[12, 16, 10, 14].map((w, i) => (
-        <div key={i} className="h-4 rounded-full bg-neutral-200 dark:bg-neutral-800" style={{ width: `${w * 4}px` }} />
-      ))}
-    </div>
+const ComposerActionsComponent = () => (
+  <div className="flex justify-center items-center">
+    <Image className="relative top-18 w-full h-full object-contain" src={'/components-images/composer.png'} alt={"Composer Component"} width={300} height={400}/>
+  </div>
+)
+
+const ModelsSelectorComponent = () => (
+  <div className="flex justify-center items-center w-full h-full ">
+    <ModelsSelector />
   </div>
 );
 
@@ -245,9 +216,9 @@ const SKELETONS = [
   { component: CodeBlockComponent,   label: "Code-Block" , link: "docs/components/code-blocks/code-block"    },
   { component: InstallCommandComponent,    label: "Install Command" , link: "docs/components/micro-ai-components/install-command"     },
   { component: CopyPageMarkdownsComponent,   label: "Copy page markdown" , link: "docs/components/micro-ai-components/copy-page-markdown"    },
-  { component: SkeletonModal,   label: "Modal" , link: "/"    },
-  { component: SkeletonNavbar,  label: "Navbar" , link: "/"   },
-  { component: SkeletonBadge,   label: "Badge" , link: "/"    },
+  { component: ModelPickerComponent2,   label: "Model Picker" , link: "docs/components/micro-ai-components/model-picker"    },
+  { component: ComposerActionsComponent,  label: "Composer Actions model" , link: "docs/components/micro-ai-components/ComposerActions"   },
+  { component: ModelsSelectorComponent,   label: "Model Selector" , link: "docs/components/micro-ai-components/models-selector"    },
   { component: SkeletonToast,   label: "Toast" , link: "/"    },
   { component: SkeletonPricing, label: "Pricing", link: "/"   },
   { component: SkeletonAvatar,  label: "Avatar", link: "/"    },

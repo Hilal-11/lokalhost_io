@@ -1,0 +1,42 @@
+---
+title: Model Picker
+description: Model Picker of Lokalhost.io
+icon: " "
+---
+### Component Preview - Preview
+import { ModelPicker , defaultModels } from "@/components/lokalhost_io/micro-ai-components/model-picker";
+import { ModelPickerComponent } from "../../componentsAll.tsx"
+
+
+<Preview link="micro-ai-components/model-picker" isBlock={true} language="tsx" code={`
+    <ModelPicker
+        models={defaultModels}
+        selectedModelId={selectedId}
+        onSelectModel={(model) => setSelectedId(model.id)}
+    />
+`}>
+    <ModelPickerComponent />
+</Preview>
+
+### Manual Installation 
+import ManualInstallation from "@/components/mdx/manual-installation";
+
+<ManualInstallation
+  dependencies="clsx tailwind-merge react-icons shaki"
+  utilsCode={`import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/model-picker.tsx"
+  componentCode={``}
+/>
+
+### Props
+import PropsTable from "@/components/mdx/props-table";
+import {aiModelProps, modelPickerProps} from "./model-picker-props";
+
+<PropsTable rows={aiModelProps} />
+<PropsTable rows={modelPickerProps} />
+

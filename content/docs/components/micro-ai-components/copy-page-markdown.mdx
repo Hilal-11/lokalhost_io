@@ -4,8 +4,10 @@ description: Install command of Lokalhost.io AI SDK
 icon: " "
 ---
 ### Component Preview - Preview
+
 import CopyPageMarkdown from "@/components/lokalhost_io/micro-ai-components/copy-page-markdown";
 import { RiGrokAiFill } from "react-icons/ri";
+import { FiCopy } from "react-icons/fi";
 
 <Preview link="micro-ai-components/copy-page-markdown" isBlock={true} language="tsx" code={`
 <CopyPageMarkdowns
@@ -22,7 +24,55 @@ import { RiGrokAiFill } from "react-icons/ri";
     ]}
 />
 `}>
-    <CopyPageMarkdown/>
+    {/* Default — no props, relies on window.location.href fallback */}
+<CopyPageMarkdown />
+
+{/* Explicit pageUrl only */}
+<CopyPageMarkdown pageUrl="https://lokalhost.io/docs/components/copy-page-markdown" />
+
+{/* markdown + pageUrl together */}
+<CopyPageMarkdown
+  pageUrl="https://lokalhost.io/docs/components/copy-page-markdown"
+  markdown={`# Copy Page Markdown\n\nA dropdown for copying/viewing this page as markdown.`}
+/>
+
+{/* githubUrl adds an "Open in GitHub" item */}
+<CopyPageMarkdown
+  pageUrl="https://lokalhost.io/docs/components/copy-page-markdown"
+  githubUrl="https://github.com/your-org/lokalhost/blob/main/content/docs/components/copy-page-markdown.mdx"
+/>
+
+{/* extraItems — appended after the default set */}
+<CopyPageMarkdown
+  pageUrl="https://lokalhost.io/docs/components/copy-page-markdown"
+  extraItems={[
+    {
+      id: "open-grok",
+      label: "Open in Grok",
+      icon: <RiGrokAiFill size={18} />,
+      external: true,
+    },
+  ]}
+/>
+
+{/* items — full override, replaces the built-in default set entirely */}
+<CopyPageMarkdown
+  pageUrl="https://lokalhost.io/docs/components/copy-page-markdown"
+  items={[
+    {
+      id: "copy-md",
+      label: "Copy as Markdown",
+      icon: <FiCopy size={18} />,
+      external: false,
+    },
+    {
+      id: "open-grok",
+      label: "Open in Grok",
+      icon: <RiGrokAiFill size={18} />,
+      external: true,
+    },
+  ]}
+/>
 </Preview>
 
 ### Manual Installation 

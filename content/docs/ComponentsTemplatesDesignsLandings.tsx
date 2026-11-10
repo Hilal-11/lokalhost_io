@@ -31,7 +31,7 @@ export default function ComponentsTemplatesDesignsLandings() {
 
       {/* ── Top filter bar ── */}
       <div className="border sticky top-0 z-30 rounded-lg w-full lg:w-[80%] mx-auto border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-950">
-        <div className="container max-w-[1580px] mx-auto px-4">
+        <div className="container max-w-[1580px] mx-auto">
           <div className="flex items-center gap-1 py-3 overflow-x-auto scrollbar-none">
             {FILTERS.map((filter) => (
               <button
