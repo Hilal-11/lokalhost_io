@@ -1,12 +1,11 @@
 ---
 title: Install Command
-description: Install command of Lokalhost.io AI SDK
-icon: " "
+description: A package-manager aware install command with tabs for npm, pnpm, yarn and bun and one-click copy.
 ---
-### Component Preview - Preview
+## Preview
 import InstallCommand from "@/components/lokalhost_io/micro-ai-components/install-command";
 
-<Preview link="micro-ai-components/install-command" isBlock={true} language="tsx" code={`
+<Preview link="micro-ai-components/install-command" registry="install-command" isBlock={true} language="tsx" code={`
 <InstallCommand
     title="Terminal"
     commands={{
@@ -30,10 +29,11 @@ import InstallCommand from "@/components/lokalhost_io/micro-ai-components/instal
      </div>
 </Preview>
 
-### Manual Installation 
+## Installation
 import ManualInstallation from "@/components/mdx/manual-installation";
 
 <ManualInstallation
+  registry="install-command"
   dependencies="clsx tailwind-merge react-icons shaki"
   utilsCode={`import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -45,7 +45,7 @@ export function cn(...inputs: ClassValue[]) {
   componentCode={``}
 />
 
-### Props
+## Props
 import PropsTable from "@/components/mdx/props-table";
 import {installCommandProps} from "./install-command-props";
 

@@ -1,0 +1,31 @@
+---
+title: Introduction
+description: Copy-paste mobile UI for React Native and Flutter — components, full screens and blocks.
+---
+
+lokalhost Mobile is a library of **components**, **screens** and **blocks** for iOS and Android. Every item ships twice — once for **React Native (Expo or bare)** and once for **Flutter** — with the same API shape, the same design tokens and a live preview you can poke at before you install anything.
+
+It is not a package you depend on. You copy the source into your app (or let the CLI do it) and own it from there.
+
+## What’s inside
+
+- **Components** — buttons, inputs, cards, lists, bottom sheets, tabs, navigation bars, modals, toasts, avatars and skeletons.
+- **Screens** — onboarding, auth, feed, product, cart & checkout, profile, settings, chat and empty / error states. Multi-step flows are previewed side by side.
+- **Blocks** — larger sections like a large-title header, story rail, stats grid and paywall that you drop into your own screens.
+
+## How it works
+
+1. Pick a framework with the **React Native / Flutter** switch on any page — it changes the code, install steps, props and dependencies everywhere and is remembered.
+2. Add the shared [theme tokens](/mobile/theming) once.
+3. Install items with the [CLI](/mobile/cli) or copy them manually. Each page lists exactly which dependencies and other items it needs.
+
+## Principles
+
+- **Native first.** Gestures run on the UI thread (Reanimated / Flutter’s animation system), lists are virtualised, and nothing blocks the JS thread.
+- **Platform-aware.** iOS and Android conventions differ — dialogs, tab indicators and switches follow each platform.
+- **Accessible by default.** Roles, labels and states are set on every interactive element; dynamic type and screen readers are tested.
+- **Monochrome tokens.** A neutral palette with one accent, so your brand colour drops in with a single change.
+
+<Callout title="Previews are web renditions">
+  The phone frames on these pages render web versions of each component so you can try them instantly. The code you install is the real native source shown in the **Code** tab.
+</Callout>

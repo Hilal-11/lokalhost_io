@@ -36,11 +36,23 @@ var backgroundsmeta = defineCollections({
   dir: "content/backgrounds",
   schema: metaSchema
 });
+var mobileDocs = defineCollections({
+  type: "doc",
+  dir: "content/mobile",
+  schema: frontmatterSchema
+});
+var mobileMeta = defineCollections({
+  type: "meta",
+  dir: "content/mobile",
+  schema: metaSchema
+});
 export {
   authdocs,
   authmeta,
   backgrounds,
   backgroundsmeta,
   docs,
-  meta
+  meta,
+  mobileDocs,
+  mobileMeta
 };

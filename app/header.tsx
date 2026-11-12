@@ -64,7 +64,7 @@ function Header() {
   return (
     <>
       {/* Mobile Pro Banner completely separate from sticky header */}
-      <div className="sticky top-0 left-0 right-0 z-50">
+      <div data-site-header className="sticky top-0 left-0 right-0 z-50">
         <div className="bg-neutral-50 dark:bg-neutral-950 w-full">
           {/* Rest of the header content */}
           <div className="flex items-center justify-center w-full flex-col shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] border-b 

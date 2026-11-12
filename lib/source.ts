@@ -1,6 +1,6 @@
 
 import { type InferPageType } from 'fumadocs-core/source';
-import { docs, meta , authdocs, authmeta ,backgrounds , backgroundsmeta} from "@/.source";
+import { docs, meta , authdocs, authmeta ,backgrounds , backgroundsmeta, mobileDocs, mobileMeta } from "@/.source";
 import { createMDXSource } from "fumadocs-mdx";
 import { loader } from "fumadocs-core/source";
 
@@ -50,6 +50,12 @@ export const backgroundsource = loader({
     },
 });
 
+
+/** /mobile prose pages. Library items come from lib/mobile/catalog.ts. */
+export const mobileSource = loader({
+  baseUrl: "/mobile",
+  source: createMDXSource(mobileDocs, mobileMeta),
+});
 
 export function getPageImage(page: InferPageType<typeof authsource>) {
   const segments = [...page.slugs, 'image.png'];

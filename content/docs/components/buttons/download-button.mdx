@@ -1,15 +1,14 @@
 ---
 title: Download Button
-description: A list of download button components
-icon: " "
+description: Platform-aware download buttons for Mac, Windows and Linux with a smooth hover roll animation and fully swappable colors.
 ---
-### Download Button - Preview
+## Preview
 import { FaApple } from "react-icons/fa";
 import { DiWindows } from "react-icons/di";
 import { FcLinux } from "react-icons/fc";
 import DownloadButtonGroup from "@/components/lokalhost_io/buttons/download-button";
 
-<Preview link="buttons/download-button" isBlock={true} language="tsx" code={`
+<Preview link="buttons/download-button" registry="download-button" isBlock={true} language="tsx" code={`
 import DownloadButtonGroup from "@/components/lokalhost_io/buttons/download-button";
 
 <DownloadButtonGroup
@@ -114,10 +113,11 @@ import DownloadButtonGroup from "@/components/lokalhost_io/buttons/download-butt
     </div>
 </Preview>
 
-### Manual Installation 
+## Installation
 import ManualInstallation from "@/components/mdx/manual-installation";
 
 <ManualInstallation
+  registry="download-button"
   dependencies="motion clsx tailwind-merge react-icons"
   utilsCode={`import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -615,7 +615,7 @@ export function DownloadButtonGroup({
 }`}
 />
 
-### Props
+## Props
 import PropsTable from "@/components/mdx/props-table";
 import {downloadButtonProps} from "./download-button-props";
 

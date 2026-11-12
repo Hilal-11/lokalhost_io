@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, CSSProperties } from "react";
+import React, { useEffect, useState, type CSSProperties } from "react";
 import { IoCheckmarkOutline } from "react-icons/io5";
-import { BiLogoTypescript } from "react-icons/bi";
+import { BiLogoTypescript, BiLogoJavascript } from "react-icons/bi";
+import { PiCopyDuotone, PiFileCodeDuotone, PiTerminalDuotone } from "react-icons/pi";
 import { codeToHtml } from "shiki";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { PiCopyDuotone } from "react-icons/pi";
 
 interface CodeBlockProps {
   code: string;
@@ -14,22 +14,53 @@ interface CodeBlockProps {
   language?: string;
   showLineNumbers?: boolean;
   lightTheme?: string; // e.g. "github-light"
-  darkTheme?: string;  // e.g. "github-dark"
+  darkTheme?: string; // e.g. "github-dark"
 
   // layout
-  width?: string | number;   // e.g. 600, "100%", "40rem"
-  height?: string | number;  // e.g. 400, "auto"
+  width?: string | number; // e.g. 600, "100%", "40rem"
+  height?: string | number; // e.g. 400, "auto"
+  /** Max height of the code area before it scrolls (ignored when height is fixed). */
+  maxHeight?: string | number;
   borderRadius?: string | number; // e.g. 8, "0.5rem", "9999px"
 
   // colors (override the neutral defaults)
-  bgColor?: string;          // light mode background
-  darkBgColor?: string;      // dark mode background
-  borderColor?: string;      // light mode border
-  darkBorderColor?: string;  // dark mode border
-  headerBgColor?: string;    // optional separate header bg (defaults to bgColor)
+  bgColor?: string; // light mode background
+  darkBgColor?: string; // dark mode background
+  borderColor?: string; // light mode border
+  darkBorderColor?: string; // dark mode border
+  headerBgColor?: string; // optional separate header bg (defaults to bgColor)
   darkHeaderBgColor?: string;
 
   className?: string; // escape hatch for anything else
+}
+
+const toCss = (v: string | number | undefined) => (typeof v === "number" ? `${v}px` : v);
+
+/* Scoped styles: dual-theme colors via CSS variables + line numbers. */
+const CODE_BLOCK_CSS = `
+.lkcb pre { margin:0; padding:1rem 0; background:transparent !important; min-width:max-content; }
+.lkcb code { display:block; counter-reset:lkcb-line; }
+.lkcb .line { display:inline-block; width:100%; padding:0 1rem; }
+.lkcb pre span { color:var(--shiki-light); }
+.dark .lkcb pre span { color:var(--shiki-dark); }
+.lkcb[data-ln] .line { padding-left:.5rem; }
+.lkcb[data-ln] .line::before {
+  counter-increment:lkcb-line; content:counter(lkcb-line);
+  display:inline-block; width:2rem; margin-right:1rem; text-align:right;
+  color:#a3a3a3; opacity:.7; user-select:none;
+}
+.dark .lkcb[data-ln] .line::before { color:#525252; }
+`;
+
+function LanguageIcon({ language }: { language: string }) {
+  const lang = language.toLowerCase();
+  if (lang === "ts" || lang === "tsx" || lang === "typescript")
+    return <BiLogoTypescript size={18} className="text-[#3178c6]" />;
+  if (lang === "js" || lang === "jsx" || lang === "javascript")
+    return <BiLogoJavascript size={18} className="text-[#e5c42b]" />;
+  if (lang === "bash" || lang === "sh" || lang === "shell" || lang === "zsh")
+    return <PiTerminalDuotone size={17} className="text-neutral-500" />;
+  return <PiFileCodeDuotone size={17} className="text-neutral-500" />;
 }
 
 function CodeBlock({
@@ -40,9 +71,10 @@ function CodeBlock({
   lightTheme = "github-light",
   darkTheme = "github-dark",
 
-  width = 600,
-  height = 400,
-  borderRadius = 0,
+  width = "100%",
+  height = "auto",
+  maxHeight = 480,
+  borderRadius = 12,
 
   bgColor,
   darkBgColor,
@@ -54,8 +86,12 @@ function CodeBlock({
   className,
 }: CodeBlockProps) {
   const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
-  const isDark = resolvedTheme === "dark";
+
+  useEffect(() => setMounted(true), []);
+  // only trust the theme after mount — avoids hydration mismatches for color overrides
+  const isDark = mounted && resolvedTheme === "dark";
 
   const handleCopy = async () => {
     try {
@@ -67,31 +103,33 @@ function CodeBlock({
     }
   };
 
+  const fixedHeight = height !== "auto" && height !== undefined;
+
   const containerStyle: CSSProperties = {
-    width: typeof width === "number" ? `${width}px` : width,
-    height: typeof height === "number" ? `${height}px` : height,
-    borderRadius: typeof borderRadius === "number" ? `${borderRadius}px` : borderRadius,
+    width: toCss(width),
+    maxWidth: "100%",
+    height: toCss(height),
+    borderRadius: toCss(borderRadius),
     backgroundColor: isDark ? darkBgColor ?? bgColor : bgColor,
     borderColor: isDark ? darkBorderColor ?? borderColor : borderColor,
   };
 
   const headerStyle: CSSProperties = {
-    backgroundColor: isDark
-      ? darkHeaderBgColor ?? headerBgColor
-      : headerBgColor,
+    backgroundColor: isDark ? darkHeaderBgColor ?? headerBgColor : headerBgColor,
+    borderColor: isDark ? darkBorderColor ?? borderColor : borderColor,
   };
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="flex w-full items-center justify-center">
+      <style>{CODE_BLOCK_CSS}</style>
       <div
         style={containerStyle}
         className={cn(
-          "flex flex-col border overflow-hidden",
-          // fall back to defaults only where no override color was given
-          !bgColor && "bg-neutral-100",
-          !darkBgColor && "dark:bg-black",
-          !borderColor && "border-neutral-400",
-          !darkBorderColor && "dark:border-neutral-700",
+          "flex flex-col overflow-hidden border shadow-sm",
+          !bgColor && "bg-neutral-50",
+          !darkBgColor && "dark:bg-neutral-950",
+          !borderColor && "border-neutral-200",
+          !darkBorderColor && "dark:border-neutral-800",
           className
         )}
       >
@@ -99,40 +137,42 @@ function CodeBlock({
         <div
           style={headerStyle}
           className={cn(
-            "flex w-full justify-between items-center h-[50px] shrink-0 border-b",
-            !borderColor && "border-neutral-400",
-            !darkBorderColor && "dark:border-neutral-700"
+            "flex h-11 w-full shrink-0 items-center justify-between border-b px-3",
+            !headerBgColor && "bg-white",
+            !darkHeaderBgColor && "dark:bg-neutral-900/60",
+            !borderColor && "border-neutral-200",
+            !darkBorderColor && "dark:border-neutral-800"
           )}
         >
-          <div className="flex items-center gap-2 px-4">
-            <div>
-              <BiLogoTypescript size={20} />
-            </div>
-            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-              {fileName}
-            </p>
+          <div className="flex min-w-0 items-center gap-2">
+            <LanguageIcon language={language} />
+            <p className="truncate font-mono text-[12.5px] text-neutral-600 dark:text-neutral-400">{fileName}</p>
           </div>
-          <div className="flex items-center gap-2 px-4">
-            <button
-              onClick={handleCopy}
-              aria-label="Copy code"
-              className="cursor-pointer flex items-center justify-center p-1 rounded-sm bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors"
-            >
-              {copied ? (
-                <IoCheckmarkOutline size={16} className="text-neutral-600 dark:text-neutral-500" />
-              ) : (
-                <PiCopyDuotone size={16} />
-              )}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleCopy}
+            aria-label={copied ? "Copied" : "Copy code"}
+            title={copied ? "Copied!" : "Copy code"}
+            className="relative flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-neutral-500 transition-all hover:bg-neutral-200/70 hover:text-neutral-900 active:scale-90 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+          >
+            <IoCheckmarkOutline
+              size={16}
+              className={cn("absolute text-emerald-500 transition-all duration-200", copied ? "scale-100 opacity-100" : "scale-50 opacity-0")}
+            />
+            <PiCopyDuotone
+              size={16}
+              className={cn("absolute transition-all duration-200", copied ? "scale-50 opacity-0" : "scale-100 opacity-100")}
+            />
+          </button>
         </div>
 
-        {/* Code block part */}
-        <div className="flex-1 min-h-0 overflow-auto">
+        {/* Code */}
+        <div className="min-h-0 flex-1 overflow-auto" style={fixedHeight ? undefined : { maxHeight: toCss(maxHeight) }}>
           <CodeHighlight
             code={code}
             language={language}
-            shikiTheme={isDark ? darkTheme : lightTheme}
+            lightTheme={lightTheme}
+            darkTheme={darkTheme}
             showLineNumbers={showLineNumbers}
           />
         </div>
@@ -144,96 +184,64 @@ function CodeBlock({
 function CodeHighlight({
   code,
   language = "tsx",
-  shikiTheme,
+  lightTheme,
+  darkTheme,
   showLineNumbers,
 }: {
   code: string;
   language?: string;
-  shikiTheme: string;
+  lightTheme: string;
+  darkTheme: string;
   showLineNumbers: boolean;
 }) {
   const [html, setHtml] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
+    // Highlight once with both themes; CSS variables switch colors on theme change.
     codeToHtml(code, {
       lang: language,
-      theme: shikiTheme,
-    }).then((h) => {
-      if (!cancelled) setHtml(h);
-    });
+      themes: { light: lightTheme, dark: darkTheme },
+      defaultColor: false,
+    })
+      .catch(() =>
+        codeToHtml(code, { lang: "text", themes: { light: lightTheme, dark: darkTheme }, defaultColor: false })
+      )
+      .then((h) => {
+        if (!cancelled) setHtml(h);
+      });
     return () => {
       cancelled = true;
     };
-  }, [code, language, shikiTheme]);
+  }, [code, language, lightTheme, darkTheme]);
+
+  const sharedClass = "lkcb text-[12.5px] leading-[1.7] [&_pre]:font-[inherit]";
+  const fontStyle: CSSProperties = { fontFamily: "'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace" };
 
   if (!html) {
-    return <CodeFallback code={code} showLineNumbers={showLineNumbers} />;
+    return (
+      <div className={sharedClass} style={fontStyle} data-ln={showLineNumbers ? "" : undefined}>
+        <pre className="text-neutral-700 dark:text-neutral-300">
+          <code>
+            {code.split("\n").map((line, i) => (
+              <span key={i} className="line">
+                {line || " "}
+                {"\n"}
+              </span>
+            ))}
+          </code>
+        </pre>
+      </div>
+    );
   }
 
   return (
-    <>
-      {showLineNumbers && (
-        <style>{`
-          .shiki-lines code { counter-reset: line; }
-          .shiki-lines .line { counter-increment: line; display: inline-block; width: 100%; }
-          .shiki-lines .line::before {
-            content: counter(line);
-            display: inline-block;
-            width: 2rem;
-            margin-right: 0.50rem;
-            text-align: right;
-            color: hsl(var(--muted-foreground));
-            opacity: 0.4;
-            user-select: none;
-          }
-        `}</style>
-      )}
-      <div
-        style={{ fontFamily: "'Geist Mono', 'Geist Mono Fallback', monospace" }}
-        className={cn(
-          showLineNumbers && "shiki-lines",
-          "[&>pre]:overflow-x-auto [&>pre]:text-[12px] [&>pre]:leading-relaxed [&>pre]:py-4",
-          showLineNumbers ? "[&>pre]:pl-0 [&>pre]:pr-4" : "[&>pre]:px-4",
-          // force transparent bg so the container's own bg shows through
-          "[&>pre]:!bg-transparent [&_code]:!bg-transparent [&>pre]:![font-family:inherit]"
-        )}
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    </>
-  );
-}
-
-function CodeFallback({
-  code,
-  showLineNumbers,
-}: {
-  code: string;
-  showLineNumbers: boolean;
-}) {
-  const lines = code.split("\n");
-  return (
-    <pre className="overflow-x-auto text-[12px] leading-relaxed font-mono text-foreground px-4 py-4">
-      <code
-        className={showLineNumbers ? "grid" : "block"}
-        style={showLineNumbers ? { gridTemplateColumns: "auto 1fr" } : undefined}
-      >
-        {lines.map((line, i) =>
-          showLineNumbers ? (
-            <span key={i} className="contents">
-              <span className="select-none pr-2 text-right text-muted-foreground/40">
-                {i + 1}
-              </span>
-              <span>{line || "\u00A0"}</span>
-            </span>
-          ) : (
-            <span key={i} className="block">
-              {line || "\u00A0"}
-            </span>
-          )
-        )}
-      </code>
-    </pre>
+    <div
+      className={sharedClass}
+      style={fontStyle}
+      data-ln={showLineNumbers ? "" : undefined}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   );
 }
 

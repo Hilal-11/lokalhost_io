@@ -1,12 +1,11 @@
 ---
 title: Component Preview
-description: code-block and preview of the code
-icon: " "
+description: A Preview / Code tabbed container for showcasing live components next to their source.
 ---
-### Component Preview - Preview
+## Preview
 import { ComponentPreview } from "@/components/lokalhost_io/code-blocks/component-preview";
 
-<Preview link="code-blocks/component-preview" isBlock={true} language="tsx" code={`
+<Preview link="code-blocks/component-preview" registry="code-preview-block" isBlock={true} language="tsx" code={`
 <ComponentPreview
     code={code}
     language="tsx"
@@ -64,7 +63,7 @@ import { ComponentPreview } from "@/components/lokalhost_io/code-blocks/componen
     </ComponentPreview>
 </Preview>
 
-<Preview link="code-blocks/component-preview" isBlock={true} language="tsx" code={`
+<Preview link="code-blocks/component-preview" registry="code-preview-block" isBlock={true} language="tsx" code={`
 <ComponentPreview
     code={code}
     language="tsx"
@@ -122,10 +121,11 @@ import { ComponentPreview } from "@/components/lokalhost_io/code-blocks/componen
     </ComponentPreview>
 </Preview>
 
-### Manual Installation 
+## Installation
 import ManualInstallation from "@/components/mdx/manual-installation";
 
 <ManualInstallation
+  registry="code-preview-block"
   dependencies="clsx tailwind-merge react-icons shaki"
   utilsCode={`import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -623,7 +623,7 @@ export function DownloadButtonGroup({
 }`}
 />
 
-### Props
+## Props
 import PropsTable from "@/components/mdx/props-table";
 import {componentPreviewProps} from "./code-preview-props";
 
