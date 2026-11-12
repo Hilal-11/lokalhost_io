@@ -45,3 +45,16 @@ export const backgroundsmeta = defineCollections({
 
 
 
+/* /mobile prose docs (Introduction, Installation, CLI, Theming, …).
+   Component / screen / block pages are generated from lib/mobile/catalog.ts. */
+export const mobileDocs = defineCollections({
+  type: "doc",
+  dir: "content/mobile",
+  schema: frontmatterSchema,
+});
+
+export const mobileMeta = defineCollections({
+  type: "meta",
+  dir: "content/mobile",
+  schema: metaSchema,
+});

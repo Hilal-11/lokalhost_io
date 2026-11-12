@@ -1,13 +1,12 @@
 ---
 title: Model Selector
-description: Model Selector of Lokalhost.io
-icon: " "
+description: A compact AI model dropdown with sizes, radius presets and optional search.
 ---
-### Component Preview - Preview
+## Preview
 import ModelsSelector from "@/components/lokalhost_io/micro-ai-components/models-selector";
 
 
-<Preview link="micro-ai-components/model-picker" isBlock={true} language="tsx" code={`
+<Preview link="micro-ai-components/model-picker" registry={null} isBlock={true} language="tsx" code={`
   <ModelsSelector size="sm" />
 <ModelsSelector size="md" />
 <ModelsSelector size="lg" />
@@ -102,25 +101,24 @@ import ModelsSelector from "@/components/lokalhost_io/micro-ai-components/models
 </div>
 </Preview>
 
-### Manual Installation 
+## Installation
 import ManualInstallation from "@/components/mdx/manual-installation";
 
 <ManualInstallation
-  dependencies="clsx tailwind-merge react-icons shaki"
+  registry={null}
+  dependencies="react-icons"
   utilsCode={`import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }`}
-  componentFileName="components/lokalhost_io/micro-ai-components/model-picker.tsx"
-  componentCode={``}
+  componentFileName="components/lokalhost_io/micro-ai-components/models-selector.tsx"
 />
 
-### Props
+## Props
 import PropsTable from "@/components/mdx/props-table";
-import {aiModelProps, modelPickerProps} from "./model-picker-props";
+import { modelsSelectorProps } from "./models-selector-props";
 
-<PropsTable rows={aiModelProps} />
-<PropsTable rows={modelPickerProps} />
+<PropsTable rows={modelsSelectorProps} />
 

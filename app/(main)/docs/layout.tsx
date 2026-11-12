@@ -1,28 +1,16 @@
-import { source } from "@/lib/source";
-import { DocsLayout } from "fumadocs-ui/layouts/notebook";
 import type { ReactNode } from "react";
-import { baseOptions } from "@/app/layout.config";
 import type { Metadata } from "next";
+import { getDocsNav } from "@/lib/docs-nav";
+import { DocsShell } from "@/components/docs/docs-shell";
 
 export const metadata: Metadata = {
   title: {
-    template:
-      "%s | Lokalhost.io - Free UI Components to build beautiful websites  Templates",
-    default: "Lokalhost.io - Free UI Components to build beautiful websites Templates",
+    template: "%s | Lokalhost.io Docs",
+    default: "Docs | Lokalhost.io — Free React UI Components & Templates",
   },
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
-  return (
-    <DocsLayout
-      tree={source.pageTree}
-      {...baseOptions}
-      sidebar={{
-        defaultOpenLevel: 1,
-        className: "bg-white dark:bg-black border-r border-border",
-      }}
-    >
-      {children}
-  </DocsLayout>
-  );
+  const { categories } = getDocsNav();
+  return <DocsShell categories={categories}>{children}</DocsShell>;
 }

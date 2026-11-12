@@ -1,0 +1,4 @@
+{
+  "title": "Mobile",
+  "pages": ["introduction", "installation", "cli", "theming", "changelog", "templates", "showcase", "contributing"]
+}

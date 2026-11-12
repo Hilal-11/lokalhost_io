@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
+@import './tokens.css';
 
 
 ::selection {
@@ -385,4 +386,86 @@ background: linear-gradient(
   box-shadow: 0 0 16px #ef4444, 0 0 8px #f97316;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Docs                                                               */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --docs-header-h: 73px;
+}
+
+/* Shiki output rendered by components/mdx/code-view.tsx (dual theme) */
+.lk-code pre.shiki {
+  margin: 0;
+  padding: 1rem 0;
+  background: transparent !important;
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  min-width: max-content;
+}
+.lk-code pre.shiki code {
+  display: block;
+  counter-reset: lk-line;
+}
+.lk-code pre.shiki .line {
+  display: inline-block;
+  width: 100%;
+  padding: 0 1.25rem;
+}
+.lk-code[data-line-numbers] pre.shiki .line {
+  padding-left: 0.75rem;
+}
+.lk-code[data-line-numbers] pre.shiki .line::before {
+  counter-increment: lk-line;
+  content: counter(lk-line);
+  display: inline-block;
+  width: 2rem;
+  margin-right: 1.25rem;
+  text-align: right;
+  color: #a3a3a3;
+  opacity: 0.7;
+  user-select: none;
+}
+.lk-code pre.shiki span {
+  color: var(--shiki-light);
+}
+.dark .lk-code pre.shiki span {
+  color: var(--shiki-dark);
+}
+.dark .lk-code[data-line-numbers] pre.shiki .line::before {
+  color: #525252;
+}
+
+/* Docs article typography */
+.lk-docs-body {
+  max-width: none;
+}
+.lk-docs-body :where(h2, h3, h4) {
+  scroll-margin-top: calc(var(--docs-header-h) + 24px);
+}
+.lk-docs-body > h2,
+.lk-docs-body > h3 {
+  margin-top: 3.5rem;
+  margin-bottom: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.lk-docs-body > h2 {
+  font-size: 1.5rem;
+}
+.lk-docs-body > h3 {
+  font-size: 1.2rem;
+}
+.lk-docs-body > :first-child {
+  margin-top: 0;
+}
+
+/* Thin, quiet scrollbar for the docs sidebar / toc */
+.lk-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.lk-scroll:hover {
+  scrollbar-color: rgb(163 163 163 / 0.4) transparent;
 }

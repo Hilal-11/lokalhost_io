@@ -1,0 +1,167 @@
+/* ==================================================================== */
+/* lokalhost.io design tokens                                           */
+/* One source of truth for colour, radius, spacing and motion.          */
+/* Dark is the primary theme; light mirrors it with the same roles.     */
+/* Tailwind utilities: bg-lk-surface, text-lk-muted, border-lk-border,  */
+/* rounded-lk (8px controls), rounded-lk-card (12px panels), lk-focus.  */
+/* ==================================================================== */
+
+:root {
+  /* surfaces */
+  --lk-bg: #ffffff;
+  --lk-bg-subtle: #fafafa;
+  --lk-surface: #f5f5f5;
+  --lk-surface-2: #eeeeee;
+  --lk-surface-3: #e5e5e5;
+  --lk-overlay: rgb(0 0 0 / 0.4);
+
+  /* lines */
+  --lk-border: #e5e5e5;
+  --lk-border-strong: #d4d4d4;
+
+  /* text (all AA on --lk-bg and --lk-surface) */
+  --lk-fg: #0a0a0a;
+  --lk-fg-muted: #525252;
+  --lk-fg-subtle: #6b6b6b;
+
+  /* focus */
+  --lk-ring: rgb(10 10 10 / 0.4);
+
+  /* tiny semantic accents — never used for chrome */
+  --lk-new: #2563eb;
+  --lk-pro: #b45309;
+  --lk-beta: #7c3aed;
+  --lk-success: #15803d;
+  --lk-danger: #dc2626;
+
+  /* code */
+  --lk-code-bg: #fafafa;
+
+  /* radius */
+  --lk-radius-control: 8px;
+  --lk-radius-card: 12px;
+  --lk-radius-pill: 9999px;
+
+  /* spacing (4px grid) */
+  --lk-space-1: 4px;
+  --lk-space-2: 8px;
+  --lk-space-3: 12px;
+  --lk-space-4: 16px;
+  --lk-space-6: 24px;
+  --lk-space-8: 32px;
+  --lk-space-12: 48px;
+
+  /* layout */
+  --lk-sidebar-w: 248px;
+  --lk-rail-w: 60px;
+  --lk-content-max: 1100px;
+  --lk-toc-w: 224px;
+  --lk-topbar-h: 0px;
+
+  /* motion */
+  --lk-duration: 150ms;
+  --lk-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.dark {
+  --lk-bg: #0a0a0a;
+  --lk-bg-subtle: #0d0d0d;
+  --lk-surface: #171717;
+  --lk-surface-2: #1f1f1f;
+  --lk-surface-3: #262626;
+  --lk-overlay: rgb(0 0 0 / 0.6);
+
+  --lk-border: #262626;
+  --lk-border-strong: #3a3a3a;
+
+  --lk-fg: #fafafa;
+  --lk-fg-muted: #a3a3a3;
+  --lk-fg-subtle: #8f8f8f;
+
+  --lk-ring: rgb(255 255 255 / 0.4);
+
+  --lk-new: #60a5fa;
+  --lk-pro: #fbbf24;
+  --lk-beta: #a78bfa;
+  --lk-success: #4ade80;
+  --lk-danger: #f87171;
+
+  --lk-code-bg: #111111;
+}
+
+@theme inline {
+  --color-lk-bg: var(--lk-bg);
+  --color-lk-bg-subtle: var(--lk-bg-subtle);
+  --color-lk-surface: var(--lk-surface);
+  --color-lk-surface-2: var(--lk-surface-2);
+  --color-lk-surface-3: var(--lk-surface-3);
+  --color-lk-overlay: var(--lk-overlay);
+  --color-lk-border: var(--lk-border);
+  --color-lk-border-strong: var(--lk-border-strong);
+  --color-lk-fg: var(--lk-fg);
+  --color-lk-muted: var(--lk-fg-muted);
+  --color-lk-subtle: var(--lk-fg-subtle);
+  --color-lk-new: var(--lk-new);
+  --color-lk-pro: var(--lk-pro);
+  --color-lk-beta: var(--lk-beta);
+  --color-lk-success: var(--lk-success);
+  --color-lk-danger: var(--lk-danger);
+  --color-lk-code: var(--lk-code-bg);
+  --radius-lk: var(--lk-radius-control);
+  --radius-lk-card: var(--lk-radius-card);
+}
+
+/* 2px ring at 40% — the only focus treatment used across the site */
+@utility lk-focus {
+  &:focus-visible {
+    outline: 2px solid var(--lk-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* quiet 150ms transitions for chrome */
+@utility lk-transition {
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-duration: var(--lk-duration);
+  transition-timing-function: var(--lk-ease);
+}
+
+/* dotted stage behind phone previews */
+@utility lk-dots {
+  background-color: var(--lk-bg-subtle);
+  background-image: radial-gradient(var(--lk-border-strong) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lk-app *,
+  .lk-app *::before,
+  .lk-app *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* code blocks inside the mobile docs: fade at the bottom of scroll areas */
+.lk-fade-bottom {
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent);
+}
+
+/* Line numbers for /mobile code blocks. Uses its own attribute because
+   fumadocs-ui/css/shiki.css also numbers [data-line-numbers] (double counts). */
+.lk-code[data-lk-lines] pre.shiki .line {
+  padding-left: 0.75rem;
+}
+.lk-code[data-lk-lines] pre.shiki .line::before {
+  counter-increment: lk-line;
+  content: counter(lk-line);
+  display: inline-block;
+  width: 2rem;
+  margin-right: 1.25rem;
+  text-align: right;
+  color: var(--lk-fg-subtle);
+  opacity: 0.6;
+  user-select: none;
+}

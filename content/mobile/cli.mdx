@@ -1,0 +1,44 @@
+---
+title: CLI
+description: Add components, screens and blocks to your app from the terminal.
+---
+
+## React Native
+
+React Native items are published to the shadcn registry under the `@lokalhost` namespace. Register it once in `components.json`:
+
+```json title="components.json"
+{
+  "registries": {
+    "@lokalhost": "https://lokalhost.io/r/mobile/{name}.json"
+  }
+}
+```
+
+Then add anything by name:
+
+```bash
+npx shadcn@latest add @lokalhost/bottom-sheet
+```
+
+The CLI copies the source to `components/ui`, `screens` or `components/blocks`, installs npm dependencies and pulls in any other items it uses (for example, **Modal** also adds **Buttons**).
+
+## Flutter
+
+```bash
+npx lokalhost@latest add bottom-sheet --flutter
+```
+
+Files are written to `lib/widgets`, `lib/screens` or `lib/blocks`, and `pubspec.yaml` dependencies are added with `flutter pub add`.
+
+## Useful flags (React Native)
+
+| Flag | Description |
+| --- | --- |
+| `--overwrite` | Replace files that already exist. |
+| `--path <dir>` | Write to a custom directory. |
+| `--yes` | Skip the confirmation prompt. |
+
+<Callout type="warn" title="Registry endpoints">
+  The mobile registry URLs above are the planned endpoints. Until they’re live, use the **Manual** tab on each page.
+</Callout>

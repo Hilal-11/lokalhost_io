@@ -1,556 +1,470 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Suspense, useEffect, useRef, useState } from "react";
-import { ThemeToggle } from "@/components/ui/theme-toggle"
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "motion/react";
 import {
   Check,
   ChevronDown,
+  CodeXml,
   Copy,
+  Eye,
   Maximize2,
-  Minimize2,
+  RotateCcw,
+  Sparkles,
   X,
 } from "lucide-react";
-import { SiNpm, SiPnpm, SiYarn } from 'react-icons/si'
+import { SiNpm, SiPnpm, SiYarn, SiClaude } from "react-icons/si";
 import { PiCatBold } from "react-icons/pi";
-import { SiClaude } from "react-icons/si";
-import { TbCursorText } from "react-icons/tb";
-import { TbBrandVercelFilled } from "react-icons/tb";
+import { TbBrandVercelFilled, TbCursorText } from "react-icons/tb";
 import { GiWrappedHeart } from "react-icons/gi";
-import { HiOutlineTerminal } from "react-icons/hi";
-import { TbEyeSpark } from "react-icons/tb";
+import {
+  PACKAGE_MANAGERS,
+  REGISTRY_BASE,
+  registryCommand,
+  registryUrl,
+  type PackageManager,
+} from "@/lib/registry";
+import { CodeView, CopyButton, copyText } from "./code-view";
+
+/* ------------------------------------------------------------------ */
+/* Shared bits                                                        */
+/* ------------------------------------------------------------------ */
+
+export const pmIcons: Record<PackageManager, ReactNode> = {
+  npm: <SiNpm size={13} className="text-red-500" />,
+  pnpm: <SiPnpm size={12} className="text-amber-500" />,
+  yarn: <SiYarn size={13} className="text-sky-500" />,
+  bun: <PiCatBold size={13} className="text-orange-400" />,
+};
+
+function useOutside(ref: React.RefObject<HTMLElement | null>, onOutside: () => void, active: boolean) {
+  useEffect(() => {
+    if (!active) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) onOutside();
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onOutside();
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [ref, onOutside, active]);
+}
+
+const toolbarBtn =
+  "inline-flex h-8 items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-2.5 text-[12.5px] font-medium " +
+  "text-neutral-600 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all hover:border-neutral-300 hover:text-neutral-900 " +
+  "dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:border-neutral-700 dark:hover:text-neutral-100 " +
+  "active:scale-[0.97]";
+
+const menuPanel =
+  "absolute right-0 top-full z-[60] mt-2 origin-top-right overflow-hidden rounded-xl border border-neutral-200 bg-white/95 p-1 " +
+  "shadow-xl shadow-black/[0.06] backdrop-blur dark:border-neutral-800 dark:bg-neutral-900/95 dark:shadow-black/40";
+
+const menuMotion = {
+  initial: { opacity: 0, scale: 0.96, y: -4 },
+  animate: { opacity: 1, scale: 1, y: 0 },
+  exit: { opacity: 0, scale: 0.96, y: -4 },
+  transition: { duration: 0.14, ease: "easeOut" as const },
+};
+
+/* ------------------------------------------------------------------ */
+/* Install chip — click to copy, pick package manager                 */
+/* ------------------------------------------------------------------ */
+
+export function InstallChip({ name }: { name: string }) {
+  const [pm, setPm] = useState<PackageManager>("npm");
+  const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useOutside(ref, () => setOpen(false), open);
+
+  const command = registryCommand(name, pm);
+  const short = command.replace(`${REGISTRY_BASE}/r/`, "").replace(/\.json$/, "");
+
+  const copy = async () => {
+    if (await copyText(command)) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    }
+  };
+
+  return (
+    <div ref={ref} className="relative flex">
+      <div className="flex h-8 items-center overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] dark:border-neutral-800 dark:bg-neutral-900">
+        <button
+          type="button"
+          onClick={copy}
+          title={command}
+          className="group flex h-full min-w-0 items-center gap-2 pl-2.5 pr-2 font-mono text-[12px] text-neutral-700 transition-colors hover:bg-neutral-50 dark:text-neutral-300 dark:hover:bg-neutral-800/60"
+        >
+          <span className="shrink-0">{pmIcons[pm]}</span>
+          <span className="max-w-[150px] truncate sm:max-w-[230px]">{short}</span>
+          <span className="relative flex size-3.5 shrink-0 items-center justify-center text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
+            <Check
+              size={13}
+              strokeWidth={2.5}
+              className={cn("absolute text-emerald-500 transition-all", copied ? "scale-100 opacity-100" : "scale-50 opacity-0")}
+            />
+            <Copy size={12} className={cn("absolute transition-all", copied ? "scale-50 opacity-0" : "scale-100 opacity-100")} />
+          </span>
+        </button>
+        <div className="h-4 w-px bg-neutral-200 dark:bg-neutral-800" />
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-label="Choose package manager"
+          className="flex h-full items-center px-1.5 text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900 dark:hover:bg-neutral-800/60 dark:hover:text-neutral-100"
+        >
+          <ChevronDown size={13} className={cn("transition-transform duration-200", open && "rotate-180")} />
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div {...menuMotion} className={cn(menuPanel, "w-36")}>
+            {PACKAGE_MANAGERS.map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => {
+                  setPm(p);
+                  setOpen(false);
+                  setCopied(false);
+                }}
+                className={cn(
+                  "flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-[13px] transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800",
+                  pm === p ? "text-neutral-900 dark:text-neutral-100" : "text-neutral-500 dark:text-neutral-400"
+                )}
+              >
+                <span className="flex items-center gap-2">
+                  {pmIcons[p]}
+                  {p}
+                </span>
+                {pm === p && <Check size={13} />}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Copy prompt — ready-made prompt for AI builders                    */
+/* ------------------------------------------------------------------ */
+
+type AITool = "claude" | "v0" | "lovable" | "cursor";
+
+const aiTools: { id: AITool; label: string; icon: ReactNode; chip: string }[] = [
+  { id: "claude", label: "Claude", icon: <SiClaude size={14} />, chip: "bg-orange-100 text-orange-600 dark:bg-orange-500/15 dark:text-orange-400" },
+  { id: "v0", label: "v0", icon: <TbBrandVercelFilled size={14} />, chip: "bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-100" },
+  { id: "lovable", label: "Lovable", icon: <GiWrappedHeart size={14} />, chip: "bg-pink-100 text-pink-600 dark:bg-pink-500/15 dark:text-pink-400" },
+  { id: "cursor", label: "Cursor", icon: <TbCursorText size={14} />, chip: "bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-400" },
+];
+
+function buildPrompt(name: string) {
+  return [
+    `Add the "${name}" component from the Lokalhost.io shadcn registry to this project.`,
+    `Install it with: ${registryCommand(name)}`,
+    `Registry item: ${registryUrl(name)}`,
+    `After installing, import it from the generated file and use it where it fits. Keep Tailwind CSS classes intact and make sure any listed dependencies are installed.`,
+  ].join("\n");
+}
+
+function PromptMenu({ name }: { name: string }) {
+  const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState<AITool | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  useOutside(ref, () => setOpen(false), open);
+
+  const copy = async (tool: AITool) => {
+    if (await copyText(buildPrompt(name))) {
+      setCopied(tool);
+      setTimeout(() => setCopied(null), 1500);
+    }
+  };
+
+  return (
+    <div ref={ref} className="relative">
+      <button type="button" onClick={() => setOpen((o) => !o)} className={cn(toolbarBtn, "group", open && "border-neutral-300 text-neutral-900 dark:border-neutral-700 dark:text-neutral-100")}>
+        <Sparkles size={13} className="text-neutral-400 transition-colors group-hover:text-amber-500" />
+        <span className="hidden sm:inline">Copy prompt</span>
+        <ChevronDown size={12} className={cn("text-neutral-400 transition-transform duration-200", open && "rotate-180")} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div {...menuMotion} className={cn(menuPanel, "w-48")}>
+            <p className="px-2.5 pb-1 pt-1.5 text-[11px] font-medium uppercase tracking-wider text-neutral-400">Copy prompt for</p>
+            {aiTools.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => copy(t.id)}
+                className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-[13px] text-neutral-700 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+              >
+                <span className="flex items-center gap-2.5">
+                  <span className={cn("flex size-6 items-center justify-center rounded-md", t.chip)}>{t.icon}</span>
+                  {t.label}
+                </span>
+                {copied === t.id ? (
+                  <Check size={13} strokeWidth={2.5} className="text-emerald-500" />
+                ) : (
+                  <Copy size={12} className="text-neutral-400" />
+                )}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Preview                                                            */
+/* ------------------------------------------------------------------ */
 
 interface PreviewProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   isPremium?: boolean;
+  /** "<folder>/<file>" — used for the iframe route and as the default registry name. */
   link: string;
+  /** Registry item name. Defaults to the last segment of `link`. Pass `null` to hide the install chip. */
+  registry?: string | null;
   useIframe?: boolean;
-  height?: string;
+  height?: string | number;
   compact?: boolean;
   comment?: string[];
+  /** Renders children edge-to-edge (no inner padding). */
   isBlock?: boolean;
   code?: string;
   language?: string;
 }
 
-type PackageManager = "npx" | "pnpm" | "yarn" | "bun";
-type AITool = "claude" | "v0" | "lovable" | "cursor";
-
-const prePath = process.env.NEXT_PUBLIC_BASE_URL
-  ? `https://${process.env.NEXT_PUBLIC_BASE_URL}`
-  : "http://localhost:3000";
-
-const packageCommands: Record<PackageManager, (slug: string) => string> = {
-  npx:  (slug) => `npx shadcn@latest add ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/r/${slug}`,
-  pnpm: (slug) => `pnpm dlx shadcn@latest add ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/r/${slug}`,
-  yarn: (slug) => `yarn dlx shadcn@latest add ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/r/${slug}`,
-  bun:  (slug) => `bunx --bun shadcn@latest add ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/r/${slug}`,
-};
-
-
-
-const pmIcons: Record<PackageManager, React.ReactNode> = {
-  npx:  <SiNpm size={14} />,
-  pnpm: <SiPnpm size={14} />,
-  yarn: <SiYarn size={14} />,
-  bun:  <PiCatBold size={14} />,
-};
-
-const pmColors: Record<PackageManager, string> = {
-  npx:  "text-red-500",
-  pnpm: "text-yellow-500",
-  yarn: "text-blue-400",
-  bun:  "text-orange-400",
-};
-
-const pmLabels: Record<PackageManager, string> = {
-  npx:  "npm",
-  pnpm: "pnpm",
-  yarn: "yarn",
-  bun:  "bun",
-};
-
-const aiPrompts: Record<AITool, (slug: string) => string> = {
-  claude: (slug) =>
-    `Install and use the ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/${slug} component from the shadcn registry: npx shadcn@latest add ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/${slug}`,
-  v0: (slug) =>
-    `Use the ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/${slug} shadcn component. Install with: npx shadcn@latest add ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/${slug}`,
-  lovable: (slug) =>
-    `Add the ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/${slug} component using: npx shadcn@latest add ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/${slug}`,
-  cursor: (slug) =>
-    `Install ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/${slug}: npx shadcn@latest add ${process.env.NEXT_PUBLIC_BASE_URL ? process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:3000"}/${slug}`,
-};
-
-const AIIcons: Record<AITool, React.ReactNode> = {
-  claude:  <SiClaude size={16} />,
-  v0:      <TbBrandVercelFilled size={16} />,
-  lovable: <GiWrappedHeart size={16} />,
-  cursor:  <TbCursorText size={16} />,
-};
-
-
-
-function InstallDropdown({ slug }: { slug: string }) {
-  const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<PackageManager>("npx");
-  const [copied, setCopied] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", handleOutside);
-    return () => document.removeEventListener("mousedown", handleOutside);
-  }, []);
-
-  const command = packageCommands[selected](slug);
-
-  const handleCopy = async () => {
-    if (copied) return;
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(command);
-      } else {
-        const el = document.createElement("textarea");
-        el.value = command;
-        el.style.cssText = "position:absolute;left:-9999px;top:-9999px";
-        document.body.appendChild(el);
-        el.focus();
-        el.select();
-        document.execCommand("copy");
-        document.body.removeChild(el);
-      }
-      setCopied(true);
-      setTimeout(() => setCopied(false), 3000);
-    } catch (err) {
-      console.error("Copy failed:", err);
-    }
-  };
-
-  return (
-    // ✅ z-[999] so dropdown punches above the content area's z-50
-    <div ref={ref} className="relative flex items-center p-[3px] bg-neutral-200/60 dark:bg-neutral-800/60 rounded-[9px] z-[999]">
-      <div className="flex items-center bg-white dark:bg-neutral-950 rounded-[7px] border border-border overflow-hidden h-7">
-
-        {/* Left: icon + command — click to copy */}
-        <button
-          onClick={handleCopy}
-          title="Click to copy"
-          className={cn(
-            "flex items-center gap-2 pl-2.5 pr-3 h-full text-[12px] font-mono font-medium transition-colors select-none",
-            "text-foreground hover:bg-neutral-50 dark:hover:bg-neutral-900 cursor-copy"
-          )}
-        >
-          {/* Icon slot: check for 3s, then back to PM icon */}
-          <span className={cn(
-            "shrink-0 transition-all",
-            copied ? "text-emerald-500 dark:text-emerald-400" : pmColors[selected]
-          )}>
-            {copied ? <Check size={13} strokeWidth={2.5} /> : pmIcons[selected]}
-          </span>
-
-          {/* Command text — always visible, never hidden */}
-          <span className="truncate max-w-[240px]">{command}</span>
-        </button>
-        {/* Divider */}
-        <div className="w-px h-4 bg-border shrink-0" />
-
-        {/* Right: PM selector */}
-        <button
-          onClick={() => setOpen((o) => !o)}
-          className="flex items-center gap-1.5 px-2.5 h-full text-[11px] font-sans font-medium text-muted-foreground hover:text-foreground hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors shrink-0"
-        >
-          <span className={cn("flex items-center", pmColors[selected])}>
-            {pmIcons[selected]}
-          </span>
-          <span>{pmLabels[selected]}</span>
-          <ChevronDown
-            size={11}
-            className={cn("transition-transform duration-150", open && "rotate-180")}
-          />
-        </button>
-      </div>
-
-      {/* Dropdown — ✅ z-[9999] ensures it's above everything */}
-      {open && (
-        <div className="absolute top-full right-0 mt-1.5 z-[9999] w-[140px] rounded-lg border bg-popover shadow-lg overflow-hidden py-px">
-          {(["npx", "pnpm", "yarn", "bun"] as PackageManager[]).map((pm) => {
-            const isActive = selected === pm;
-            return (
-              <button
-                key={pm}
-                onClick={() => {
-                  setSelected(pm);
-                  setOpen(false);
-                  setCopied(false); // reset copy state so new command shows immediately
-                }}
-                className={cn(
-                  "w-full flex items-center justify-between px-3 py-[4px] text-[13px] font-sans font-medium transition-colors hover:bg-muted",
-                  isActive ? "text-foreground" : "text-muted-foreground"
-                )}
-              >
-                <span className="flex items-center gap-1">
-                  <span className={cn("flex items-center", pmColors[pm])}>
-                    {pmIcons[pm]}
-                  </span>
-                  {pmLabels[pm]}
-                </span>
-                {isActive && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-500 shrink-0" />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
-
-
-
-import { Sparkles } from "lucide-react";
-
-const TOOL_STYLES: Record<
-  AITool,
-  { chip: string; hoverRow: string }
-> = {
-  claude: {
-    chip: "bg-orange-100 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400",
-    hoverRow: "hover:bg-orange-50/70 dark:hover:bg-orange-500/[0.06]",
-  },
-  v0: {
-    chip: "bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-100",
-    hoverRow: "hover:bg-neutral-100/80 dark:hover:bg-neutral-800/60",
-  },
-  lovable: {
-    chip: "bg-pink-100 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400",
-    hoverRow: "hover:bg-pink-50/70 dark:hover:bg-pink-500/[0.06]",
-  },
-  cursor: {
-    chip: "bg-sky-100 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400",
-    hoverRow: "hover:bg-sky-50/70 dark:hover:bg-sky-500/[0.06]",
-  },
-};
-
-function AIPromptDropdown({ slug }: { slug: string }) {
-  const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState<AITool | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
-
-  const copy = async (tool: AITool) => {
-    await navigator.clipboard.writeText(aiPrompts[tool](slug));
-    setCopied(tool);
-    setTimeout(() => setCopied(null), 1500);
-  };
-
-  const labels: Record<AITool, string> = {
-    claude: "Claude",
-    v0: "v0",
-    lovable: "Lovable",
-    cursor: "Cursor",
-  };
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => setOpen(!open)}
-        className={cn(
-          "group flex items-center gap-1.5 h-8 px-3 rounded-lg border text-[12.5px] font-medium",
-          "transition-all duration-200 whitespace-nowrap",
-          "border-neutral-200 dark:border-neutral-800",
-          "bg-white dark:bg-neutral-950 shadow-sm hover:shadow",
-          "text-neutral-600 dark:text-neutral-400",
-          "hover:text-neutral-900 dark:hover:text-neutral-100",
-          "hover:border-neutral-300 dark:hover:border-neutral-700",
-          open &&
-            "bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 border-neutral-300 dark:border-neutral-700 shadow"
-        )}
-      >
-        <Sparkles
-          size={13}
-          className={cn(
-            "text-neutral-400 dark:text-neutral-500 transition-colors",
-            "group-hover:text-amber-500 dark:group-hover:text-amber-400",
-            open && "text-amber-500 dark:text-amber-400"
-          )}
-        />
-        Copy prompt
-        <ChevronDown
-          size={12}
-          className={cn(
-            "transition-transform duration-200 text-neutral-400 dark:text-neutral-500",
-            open && "rotate-180"
-          )}
-        />
-      </button>
-
-      {open && (
-        <div
-          className={cn(
-            "absolute top-full right-0 mt-2 z-50 min-w-[140px] px-px",
-            "rounded-lg border border-neutral-200/80 dark:border-neutral-800",
-            "bg-white/95 dark:bg-neutral-950/95 backdrop-blur-sm",
-            "shadow-lg shadow-black/5 dark:shadow-black/30",
-            "origin-top-right animate-in fade-in-0 zoom-in-95 duration-150"
-          )}
-        >
-          {(["claude", "v0", "lovable", "cursor"] as AITool[]).map((tool) => {
-            const style = TOOL_STYLES[tool];
-            const isCopied = copied === tool;
-
-            return (
-              <button
-                key={tool}
-                onClick={() => copy(tool)}
-                className={cn(
-                  "w-full flex items-center justify-between gap-3 px-2 py-[4.5px] rounded-lg",
-                  "text-[13px] font-sans font-medium text-left",
-                  "transition-colors duration-150",
-                  "text-neutral-700 dark:text-neutral-300",
-                  style.hoverRow
-                )}
-              >
-                <span className="flex items-center gap-2.5">
-                  <span
-                    className={cn(
-                      "flex h-6 w-6 items-center justify-center rounded-md shrink-0 transition-transform",
-                      style.chip
-                    )}
-                  >
-                    {AIIcons[tool]}
-                  </span>
-                  {labels[tool]}
-                </span>
-
-                <span className="relative flex h-3.5 w-3.5 items-center justify-center shrink-0">
-                  <Check
-                    size={13}
-                    strokeWidth={2.5}
-                    className={cn(
-                      "absolute text-emerald-500 transition-all duration-200",
-                      isCopied ? "scale-100 opacity-100" : "scale-50 opacity-0"
-                    )}
-                  />
-                  <Copy
-                    size={12}
-                    className={cn(
-                      "absolute text-neutral-400 dark:text-neutral-500 transition-all duration-200",
-                      isCopied ? "scale-50 opacity-0" : "scale-100 opacity-100"
-                    )}
-                  />
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
-
-
+type Tab = "preview" | "code";
 
 export function Preview({
   children,
-  className = "",
+  className,
   link,
+  registry,
   useIframe = false,
+  height,
   compact = false,
   comment = [],
   isBlock = false,
-  language = "",
   code,
+  language = "tsx",
 }: PreviewProps) {
-  const [tab, setTab] = useState<"preview" | "code">("preview");
+  const id = useId();
+  const [tab, setTab] = useState<Tab>("preview");
   const [fullscreen, setFullscreen] = useState(false);
-  const [isExpandCode, setIsExpandCode] = useState(true)
-  const slug = link.split("/").pop() ?? link;
+  const [replayKey, setReplayKey] = useState(0);
+  const [mounted, setMounted] = useState(false);
+  const registryName = registry === null ? null : registry ?? link.split("/").pop() ?? link;
 
-  const inner = (
-    <div className="p-4 shadow-xs rounded-2xl border bg-neutral-100 dark:bg-neutral-900 relative overflow-hidden">
-      <div
-        className={cn(
-          "w-full rounded-2xl border bg-white dark:bg-black overflow-hidden",
-          fullscreen && "h-full flex flex-col",
-          className
-        )}
-      >
-        {/* ── Header ── */}
-        <div className="rounded-t-2xl flex items-center justify-between gap-3 px-3 py-2 border-b border-border bg-muted/20 z-50 ">
-          {/* Left: tabs */}
-          <div className="flex items-center gap-0.5 p-0.5 rounded-lg bg-neutral-100/60 dark:bg-neutral-900/60 border border-border">
-            <button
-              onClick={() => setTab("preview")}
-              className={cn(
-                "flex items-center gap-1.5 h-7 px-3 rounded-md text-[12px] font-medium transition-colors",
-                tab === "preview"
-                  ? "bg-background text-foreground shadow-sm border border-border"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <TbEyeSpark size={14} strokeWidth={2} />
-              Preview
-            </button>
+  useEffect(() => setMounted(true), []);
 
-            {/* ✅ Always show Code tab, no code && guard */}
-            <button
-              onClick={() => setTab("code")}
-              className={cn(
-                "flex items-center gap-1.5 h-7 px-3 rounded-md text-[12px] font-medium transition-colors",
-                tab === "code"
-                  ? "bg-background text-foreground shadow-sm border border-border"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <HiOutlineTerminal size={14} strokeWidth={2} />
-              Code
-            </button>
-            
-          </div>
+  useEffect(() => {
+    if (!fullscreen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setFullscreen(false);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [fullscreen]);
 
-          {/* Right: controls */}
-          <div className="flex items-center gap-2">
-            <InstallDropdown slug={slug} />
+  const minHeight =
+    height !== undefined ? (typeof height === "number" ? `${height}px` : height) : compact ? "160px" : "420px";
 
-
-            <AIPromptDropdown slug={slug} />
-
-          
-
-            <div className="p-[3px] bg-neutral-200/60 dark:bg-neutral-800/60 rounded-[9px] flex items-center justify-center">
-              <button
-                onClick={() => setFullscreen(!fullscreen)}
-                className="bg-white dark:bg-neutral-950 flex items-center justify-center w-6 h-6 rounded-[9px] border border-border text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
-                title={fullscreen ? "Exit fullscreen" : "Fullscreen"}
-              >
-                {fullscreen ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
-            </button>
-            </div>
-              {
-                !fullscreen && <div className="p-[3px] bg-neutral-200/60 dark:bg-neutral-800/60 rounded-[9px] flex items-center justify-center">
-                <button
-                    className="bg-white dark:bg-neutral-900/60 flex items-center justify-center w-6 h-6 rounded-[9px] border border-border text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
-                  >
-                    <ThemeToggle />
-                </button>
-              </div>
-              }
-            {fullscreen && (
-              <div className="p-[3px] bg-neutral-200/60 dark:bg-neutral-800/60 rounded-[9px] flex items-center justify-center">
-                <button
-                    className="bg-white dark:bg-neutral-900/60 flex items-center justify-center w-6 h-6 rounded-[9px] border border-border text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
-                  >
-                    <ThemeToggle />
-                </button>
-              </div>
+  const toolbar = (
+    <div className="flex flex-wrap items-center justify-between gap-2">
+      {/* Tabs */}
+      <div role="tablist" className="relative flex w-fit items-center gap-0.5 rounded-xl border border-neutral-200 bg-neutral-100/80 p-1 dark:border-neutral-800 dark:bg-neutral-900">
+        {(["preview", "code"] as Tab[]).map((t) => (
+          <button
+            key={t}
+            role="tab"
+            type="button"
+            aria-selected={tab === t}
+            onClick={() => setTab(t)}
+            className={cn(
+              "relative flex h-7 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium transition-colors",
+              tab === t ? "text-neutral-900 dark:text-neutral-100" : "text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200"
             )}
-            {fullscreen && (
-              <div className="p-[3px] bg-neutral-200/60 dark:bg-neutral-800/60 rounded-[9px] flex items-center justify-center">
-                <button
-                    onClick={() => setFullscreen(false)}
-                    className="bg-white dark:bg-neutral-900/60 flex items-center justify-center w-6 h-6 rounded-[9px] border border-border text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
-                  >
-                    <X size={13} />
-                </button>
-              </div>
+          >
+            {tab === t && (
+              <motion.span
+                layoutId={`preview-tab-${id}`}
+                className="absolute inset-0 rounded-lg border border-neutral-200 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-800"
+                transition={{ type: "spring", bounce: 0.18, duration: 0.4 }}
+              />
             )}
-            
-          </div>
-        </div>
+            <span className="relative flex items-center gap-1.5">
+              {t === "preview" ? <Eye size={14} /> : <CodeXml size={14} />}
+              {t === "preview" ? "Preview" : "Code"}
+            </span>
+          </button>
+        ))}
+      </div>
 
-        {/* ── Content ── */}
-        <div className={cn("rounded-b-2xl w-full h-auto overflow-hidden relative z-50", fullscreen && "relative rounded-2xl flex-1 overflow-hidden")}>
-          {/* Preview tab */}
-          {tab === "preview" && (
-            <>
-              {useIframe ? (
-                <div className="relative w-full h-full overflow-hidden">
-                  <iframe
-                    title={link}
-                    src={`${prePath}/preview/${link}`}
-                    className="w-full h-full overflow-y-auto list-none"
-                    style={{ border: "none" }}
-                  />
-                </div>
-              ) : (
-                <div
-                  className={cn(
-                    "flex justify-center items-center not-prose",
-                    isBlock ? "" : "p-6 md:p-10",
-                    fullscreen ? "h-screen" : compact ? "min-h-[120px]" : "min-h-[500px]"
-                  )}
-                >
-                  {children}
-                </div>
-              )}
-            </>
-          )}
-
-          {/* Code tab — ✅ no && code guard, handles missing code gracefully */}
-          {tab === "code" && (
-            <div className={`relative group`}>
-              {code ? (
-                <>
-                  <div className="absolute top-2 right-5 z-10 flex gap-px items-center justify-center border bg-white dark:bg-black rounded-[9px] px-2">
-                    <span><CopyButton text={code} /></span>
-                  </div>
-                  <Suspense fallback={
-                    <pre className="overflow-x-auto px-2 text-[15px] leading-relaxed font-mono font-medium text-foreground max-h-[500px] overflow-y-auto">
-                      <code>{code}</code>
-                    </pre>
-                  }>
-                    <CodeHighlight code={code} language={language ?? "tsx"} />
-                  </Suspense>
-                </>
-              ) : (
-                <div className="flex items-center justify-center min-h-[200px] text-sm text-muted-foreground">
-                  No code provided for this Component.
-                </div>
-              )}
-            </div>
-          )}
-
-        </div>
+      {/* Actions */}
+      <div className="flex items-center gap-1.5">
+        {registryName && <InstallChip name={registryName} />}
+        {registryName && <PromptMenu name={registryName} />}
+        <button
+          type="button"
+          onClick={() => {
+            setTab("preview");
+            setReplayKey((k) => k + 1);
+          }}
+          title="Replay preview"
+          aria-label="Replay preview"
+          className={cn(toolbarBtn, "group w-8 justify-center px-0")}
+        >
+          <RotateCcw size={13} className="transition-transform duration-500 group-hover:-rotate-180" />
+        </button>
+        <button
+          type="button"
+          onClick={() => setFullscreen((f) => !f)}
+          title={fullscreen ? "Exit fullscreen (Esc)" : "Fullscreen"}
+          aria-label={fullscreen ? "Exit fullscreen" : "Fullscreen"}
+          className={cn(toolbarBtn, "w-8 justify-center px-0")}
+        >
+          {fullscreen ? <X size={14} /> : <Maximize2 size={13} />}
+        </button>
       </div>
     </div>
   );
 
-  if (fullscreen) {
-    return (
-      <>
-        {/* Backdrop */}
-        <div
-          className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
-          onClick={() => setFullscreen(false)}
-        />
-        {/* Fullscreen panel */}
-        <div className="fixed inset-4 z-50 rounded-2xl border border-border bg-background overflow-hidden shadow-2xl flex flex-col py-10">
-          {inner}
-        </div>
-      </>
-    );
-  }
+  const frame = (
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-2xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950",
+        fullscreen && "flex min-h-0 flex-1 flex-col",
+        className
+      )}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {tab === "preview" ? (
+          <motion.div
+            key="preview"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className={cn("relative", fullscreen && "flex-1 overflow-auto")}
+          >
+            {/* dotted canvas */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 text-neutral-300/70 dark:text-neutral-800"
+              style={{
+                backgroundImage: "radial-gradient(currentColor 1px, transparent 1px)",
+                backgroundSize: "18px 18px",
+                maskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
+                WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
+              }}
+            />
+            {useIframe ? (
+              <iframe
+                key={replayKey}
+                title={link}
+                src={`/preview/${link}`}
+                className="relative block w-full"
+                style={{ border: "none", height: fullscreen ? "100%" : minHeight, minHeight }}
+              />
+            ) : (
+              <div
+                key={replayKey}
+                className={cn(
+                  "relative flex w-full items-center justify-center",
+                  isBlock ? "p-4 sm:p-6" : "p-6 sm:p-10",
+                  fullscreen && "h-full"
+                )}
+                style={{ minHeight }}
+              >
+                {children}
+              </div>
+            )}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="code"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className={cn("relative bg-neutral-50 dark:bg-neutral-950", fullscreen && "flex-1 overflow-auto")}
+          >
+            {code ? (
+              <>
+                <div className="absolute right-3 top-3 z-10 rounded-lg border border-neutral-200 bg-white/90 backdrop-blur dark:border-neutral-800 dark:bg-neutral-900/90">
+                  <CopyButton text={code.trim()} />
+                </div>
+                <CodeView code={code} language={language} collapsible={!fullscreen} collapsedHeight={420} />
+              </>
+            ) : (
+              <div className="flex min-h-[200px] items-center justify-center text-sm text-neutral-500">
+                No code provided for this example.
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 
   return (
-    <div className="my-6 not-prose py-10">
-      {inner}
+    <div className="not-prose my-6">
+      {fullscreen && mounted ? (
+        <>
+          {/* keep layout height while the preview is portalled */}
+          <div className="flex flex-col gap-3">
+            {toolbar}
+            <div className="rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800" style={{ minHeight }} />
+          </div>
+          {createPortal(
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="fixed inset-0 z-[100] flex flex-col gap-3 bg-white/80 p-3 backdrop-blur-md sm:p-6 dark:bg-black/80"
+            >
+              {toolbar}
+              {frame}
+            </motion.div>,
+            document.body
+          )}
+        </>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {toolbar}
+          {frame}
+        </div>
+      )}
+
       {comment.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="mt-3 flex flex-wrap gap-1.5">
           {comment.map((text, i) => (
             <span
               key={i}
-              className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-muted text-muted-foreground"
+              className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-xs text-neutral-600 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400"
             >
               {text}
             </span>
@@ -561,52 +475,4 @@ export function Preview({
   );
 }
 
-
-// components/code-highlight.tsx
-import { codeToHtml } from "shiki";
-
-export async function CodeHighlight({
-  code,
-  language = "tsx",
-}: {
-  code: string;
-  language?: string;
-}) {
-  const html = await codeToHtml(code, {
-    lang: language,
-    themes: { 
-      light: "one-dark-pro", 
-      dark: "one-dark-pro" 
-    }
-  });
-
-  return (
-    <div
-      style={{ fontFamily: "'Geist Mono', 'Geist Mono Fallback', monospace" }}
-      className="[&>pre]:overflow-x-auto [&>pre]:p-5 [&>pre]:text-[14px] [&>pre]:leading-normal [&>pre]:font-bold [&>pre]:max-h-[500px] [&>pre]:overflow-y-auto [&_code]:bg-transparent [&>pre]:![font-family:inherit]"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
-}
-
-
-
-export function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <button
-      onClick={handleCopy}
-      className="p-1 text-muted-foreground hover:text-foreground transition-colors"
-      title="Copy code"
-    >
-      {copied ? <Check size={13} /> : <Copy size={13} />}
-    </button>
-  );
-}
+export { CopyButton };

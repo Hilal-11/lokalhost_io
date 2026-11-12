@@ -1,0 +1,78 @@
+---
+title: Installation
+description: Set up your project once, then add any Lokalhost.io component with a single command or by copying the source.
+---
+
+## Requirements
+
+Lokalhost.io components are plain React components styled with Tailwind CSS. They work in any React 18+ project, and are tuned for:
+
+- **Next.js 14+** (App Router) or any React setup (Vite, Remix, Astro)
+- **Tailwind CSS v4** (v3 works with minor class tweaks)
+- **TypeScript**, recommended but optional
+- **motion** for components with animations
+
+## Create a project
+
+Skip this step if you already have a project.
+
+```bash
+npx create-next-app@latest my-app --typescript --tailwind --app
+cd my-app
+```
+
+## Initialise shadcn
+
+Components are distributed through a [shadcn](https://ui.shadcn.com) compatible registry, so the shadcn CLI can install them and their dependencies for you.
+
+```bash
+npx shadcn@latest init
+```
+
+## Add the `cn` helper
+
+Most components merge class names with a small `cn` utility. `shadcn init` usually creates it already. If yours doesn't have one:
+
+```bash
+npx shadcn@latest add https://lokalhost.io/r/utils.json
+```
+
+Or add it by hand:
+
+```ts title="lib/utils.ts"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+## Add a component
+
+Every component page has an **Installation** section with two options:
+
+- **CLI**: runs the shadcn CLI to copy the file into your project and install its dependencies.
+- **Manual**: lists the dependencies and the full source to paste in yourself.
+
+```bash
+npx shadcn@latest add https://lokalhost.io/r/download-button.json
+```
+
+Then import it like any local component:
+
+```tsx title="app/page.tsx"
+import DownloadButtonGroup from "@/components/lokalhost_io/buttons/download-button";
+
+export default function Page() {
+  return <DownloadButtonGroup platforms={["mac", "windows", "linux"]} />;
+}
+```
+
+## Dark mode
+
+All components ship light and dark styles through Tailwind's `dark:` variant. Add the `dark` class to `<html>` (for example with [next-themes](https://github.com/pacocoursey/next-themes)) and they switch automatically.
+
+## Using AI builders
+
+Each preview toolbar has a **Copy prompt** menu. It gives you a ready-made prompt for Claude, v0, Lovable or Cursor with the exact install command and registry URL, so your AI tool installs the real component instead of guessing.

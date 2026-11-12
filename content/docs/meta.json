@@ -6,6 +6,7 @@
     "defaultOpen": true,
     "pages": [
         "index",
+        "installation",
         
         "---Buttons---",
         "/components/buttons/download-button",

@@ -8,6 +8,17 @@ const nextConfig = {
     outputFileTracingIncludes: {
         "/**": ["components/lokalhost_io/**/*"],
     },
+    // Legacy /mobile links used on the landing page → new /mobile sections.
+    async redirects() {
+        return [
+            { source: "/mobile/apps", destination: "/mobile/screens", permanent: false },
+            { source: "/mobile/ui-blocks", destination: "/mobile/blocks", permanent: false },
+            { source: "/mobile/core-ui-rn", destination: "/mobile/components", permanent: false },
+            { source: "/mobile/flutter-essentials", destination: "/mobile/components", permanent: false },
+            { source: "/mobile/onboarding-rn", destination: "/mobile/screens/onboarding", permanent: false },
+            { source: "/mobile/figma", destination: "/mobile", permanent: false },
+        ];
+    },
     async headers() {
         return [
             {

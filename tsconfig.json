@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,9 +23,30 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["video.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/success/page.jsx", "app/page.jsx", "components/landing/ShowcaseCodeBlock.js", "components/landing/showcaseCodeBlock.jsx", "content/authdocs/changeCurrrentPassword.mdx", "app/(main)/actions/auth.js", "lib/definitions.js", "app/(auth)/signup/page.jsx", "app/(auth)/login/page.jsx", "content/docs/components/micro-ai-components/copy-page-markdown.mdx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "video.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/success/page.jsx",
+    "app/page.jsx",
+    "components/landing/ShowcaseCodeBlock.js",
+    "components/landing/showcaseCodeBlock.jsx",
+    "content/authdocs/changeCurrrentPassword.mdx",
+    "app/(main)/actions/auth.js",
+    "lib/definitions.js",
+    "app/(auth)/signup/page.jsx",
+    "app/(auth)/login/page.jsx",
+    "content/docs/components/micro-ai-components/copy-page-markdown.mdx"
+  ],
+  "exclude": [
+    "node_modules",
+    "registry/mobile"
+  ]
 }

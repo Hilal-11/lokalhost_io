@@ -1,15 +1,13 @@
 ---
 title: Copy Page markdown 
-description: Install command of Lokalhost.io AI SDK
-icon: " "
+description: A split button that copies the page as Markdown or opens it in ChatGPT, Claude, v0 and more.
 ---
-### Component Preview - Preview
-
+## Preview
 import CopyPageMarkdown from "@/components/lokalhost_io/micro-ai-components/copy-page-markdown";
 import { RiGrokAiFill } from "react-icons/ri";
 import { FiCopy } from "react-icons/fi";
 
-<Preview link="micro-ai-components/copy-page-markdown" isBlock={true} language="tsx" code={`
+<Preview link="micro-ai-components/copy-page-markdown" registry="Copy-page-markdown" isBlock={true} language="tsx" code={`
 <CopyPageMarkdowns
     pageUrl={pageUrl}
     markdown={rawMarkdown}
@@ -75,10 +73,11 @@ import { FiCopy } from "react-icons/fi";
 />
 </Preview>
 
-### Manual Installation 
+## Installation
 import ManualInstallation from "@/components/mdx/manual-installation";
 
 <ManualInstallation
+  registry="Copy-page-markdown"
   dependencies="clsx tailwind-merge react-icons"
   utilsCode={`import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -309,7 +308,7 @@ export default CopyPageMarkdown
 export type { MenuItem, CopyPageMarkdownsProps }`}
 />
 
-### Props
+## Props
 import PropsTable from "@/components/mdx/props-table";
 import {copyPageMarkdownsProps} from "./copy-page-markdown-props";
 
