@@ -1,0 +1,27 @@
+
+[
+    {
+        "id": 1,
+        "social": "Github",
+        "socialIcon": "",
+        "link": "https://github.com/hilal-11"
+    },
+    {
+        "id": 2,
+        "social": "X",
+        "socialIcon": "",
+        "link": "https://github.com/hilal-11"
+    },
+    {
+        "id": 3,
+        "social": "Instagram",
+        "socialIcon": "",
+        "link": "https://github.com/hilal-11"
+    },
+    {
+        "id": 4,
+        "social": "Discord",
+        "socialIcon": "",
+        "link": "https://github.com/hilal-11"
+    }
+]

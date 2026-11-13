@@ -1,0 +1,35 @@
+---
+title: Contributing
+description: Add a component, screen or block to lokalhost Mobile.
+---
+
+Every item is three things: a catalog entry, the React Native source and the Flutter source. The site generates the page — preview, code, install steps, props and right rail — from those.
+
+## 1. Add the source
+
+```text
+registry/mobile/
+├── react-native/
+│   ├── my-thing.tsx            # the component
+│   └── demos/my-thing.tsx      # demo, with a // usage-start … // usage-end region
+└── flutter/
+    ├── lk_my_thing.dart
+    └── demos/my_thing.dart
+```
+
+The lines between the `usage-start` and `usage-end` markers become the **Usage** snippet; the markers themselves are stripped. Inside JSX, write them as `{/* usage-start */}`.
+
+## 2. Add a catalog entry
+
+Add an object to `lib/mobile/catalog.ts` with the title, category, tags, platforms, props for each framework and the `preview` it uses. Set `uses` to other catalog slugs your source imports so they’re installed alongside it.
+
+## 3. Add a preview
+
+Previews are small web renditions in `components/mobile/preview/previews`. Build them from the kit in `preview/kit.tsx` so they pick up the phone’s theme, platform and safe areas, then register the id in `previews/index.tsx`.
+
+## Checklist
+
+- Uses only tokens from `theme.ts` / `lk_theme.dart` — no hard-coded colours except status.
+- Every pressable has an accessibility role and label; state changes are announced.
+- Works in light and dark, on iOS and Android, and at the largest Dynamic Type size.
+- Props tables match the source exactly.

@@ -1,0 +1,26 @@
+
+[
+  {
+    "feature_id": "lokalhost_io",
+    "feature": "Lokalhost.io",
+    "feature_about": "The lokalhost.io is a modern template marketplace, creative design UI kits, component library, pre-built functional components, authentication kits for SaaS, mobile application blocks, and cross-platform mobile apps (React Native and Flutter). Lokalhost.io provides functional, modern assets for developing modern web and mobile applications."
+  },
+  {
+    "feature_id": "design_micro",
+    "feature": "Modern UI/UX with Micro-Interactions",
+    "feature_about": "Lokalhost.io focuses on modern web and mobile technologies, crafting futuristic web and mobile experiences.",
+    "feature_about_2": "Web technologies: Next.js, React.js, Motion, GSAP, Three.js",
+    "feature_about_3": "Cross-platform mobile: React Native, Expo, Flutter, Motion, GSAP, Animate.js",
+    "feature_buttons": [
+      { "button_name": "Let's start", "button_link": "/docs" },
+      { "button_name": "Get Templates Free", "button_link": "/templates" }
+    ]
+  },
+  {
+    "feature_id": "production",
+    "feature": "Production Ready | Easy to Ship",
+    "feature_about": "Lokalhost.io focuses on modern web and mobile technologies, crafting futuristic web and mobile experiences.",
+    "feature_about_2": "Web technologies: Next.js, React.js, Motion, GSAP, Three.js",
+    "feature_about_3": "Cross-platform mobile: React Native, Expo, Flutter, Motion, GSAP, Animate.js"
+  }
+]

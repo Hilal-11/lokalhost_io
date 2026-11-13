@@ -1,0 +1,19 @@
+{
+  "templates": [
+    { "image": "/templates/hero-block-1-light.webp", "to": "" },
+    { "image": "/templates/hero-block-2-light.webp", "to": "" },
+    { "image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1759937470/Screenshot_2025-10-05_232854_jjjxka.png", "to": "" },
+    { "image": "/templates/hero-block-3-light.webp", "to": "" },
+    { "image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760680334/Screenshot_2025-09-28_081449_sk8qpj.png", "to": "" },
+    { "image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760680296/Screenshot_2025-08-16_010903_jpmvup.png", "to": "" },
+    { "image": "/templates/hero-block-5-light.webp", "to": "" },
+    { "image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760629285/Screenshot_2025-10-05_232843_pjfcdu.png", "to": "" },
+    { "image": "/templates/hero-block-6-light.webp", "to": "" },
+    { "image": "/templates/hero-block-7-light.webp", "to": "" },
+    { "image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1759937583/Screenshot_2025-09-11_012042_aqqxwo.png", "to": "" },
+    { "image": "/templates/hero-block-8-light.webp", "to": "" },
+    { "image": "/templates/hero-block-9-light.webp", "to": "" },
+    { "image": "https://res.cloudinary.com/dou5rypdf/image/upload/v1760680333/Screenshot_2025-09-28_081408_bvxwvh.png", "to": "" },
+    { "image": "/templates/hero-block-10-light.webp", "to": "" }
+  ]
+}

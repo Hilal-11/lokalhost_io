@@ -1,0 +1,118 @@
+---
+title: Code Block
+description: A syntax-highlighted code block with file header, copy button, optional line numbers and light/dark Shiki themes.
+---
+## Preview
+import CodeBlock from "@/components/lokalhost_io/code-blocks/code-block";
+
+<Preview link="code-blocks/component-preview" registry="code-block" isBlock={true} language="tsx" code={`
+import CodeBlock from "@/components/lokalhost_io/code-blocks/code-block";
+<CodeBlock
+        code={"code"}
+        fileName="app/api/mcp/route.ts"
+        language="ts"
+        showLineNumbers
+/>
+`}>
+        <CodeBlock
+        code={`import { z } from 'zod';
+import { createMcpHandler } from 'mcp-handler';
+ 
+const handler = createMcpHandler(
+  (server) => {
+    server.tool(
+      'roll_dice',
+      'Rolls an N-sided die',
+      { sides: z.number().int().min(2) },
+      async ({ sides }) => {
+        const value = 1 + Math.floor(Math.random() * sides);
+        return {
+          content: [{ type: 'text', text: \`🎲 You rolled a ${10}!\` }],
+        };
+      },
+    );
+  },
+  {},
+  { basePath: '/api' },
+);`}
+        fileName="app/api/mcp/route.ts"
+        language="ts"
+        showLineNumbers
+      />
+</Preview>
+
+<Preview link="code-blocks/component-preview" registry="code-block" isBlock={true} language="tsx" code={`
+import CodeBlock from "@/components/lokalhost_io/code-blocks/code-block";
+<CodeBlock
+        code={"code"}
+        fileName="app/api/mcp/route.ts"
+        language="ts"
+        showLineNumbers
+/>
+`}>
+        <CodeBlock
+        code={`import { useChat } from '@ai-sdk/react';
+import { useState } from 'react';
+
+export default function Chat() {
+  const [input, setInput] = useState('');
+  const { messages, sendMessage } = useChat();
+  return (
+    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
+      {messages.map(message => (
+        <div key={message.id} className="whitespace-pre-wrap">
+          {message.role === 'user' ? 'User: ' : 'AI: '}
+          {message.parts.map((part, i) => {
+            switch (part.type) {
+              case 'text':
+                return <div>{part.text}</div>;
+            }
+          })}
+        </div>
+      ))}
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          sendMessage({ text: input });
+          setInput('');
+        }}
+      >
+        <input
+          className="fixed dark:bg-zinc-900 bottom-0 w-full max-w-md p-2 mb-8 border border-zinc-300 dark:border-zinc-800 rounded shadow-xl"
+          value={input}
+          placeholder="Say something..."
+          onChange={e => setInput(e.currentTarget.value)}
+        />
+      </form>
+    </div>
+  );
+}`}
+        fileName="pages/index.tsx"
+        language="ts"
+        showLineNumbers
+        width="80%" height="auto"
+        borderRadius={12}
+      />
+</Preview>
+
+
+## Installation
+import ManualInstallation from "@/components/mdx/manual-installation";
+
+<ManualInstallation
+  registry="code-block"
+  dependencies="shiki next-themes react-icons clsx tailwind-merge"
+  utilsCode={`import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/code-blocks/code-block.tsx"
+/>
+
+## Props
+import PropsTable from "@/components/mdx/props-table";
+import {codeBlockProps} from "./code-block-props";
+
+<PropsTable rows={codeBlockProps} />

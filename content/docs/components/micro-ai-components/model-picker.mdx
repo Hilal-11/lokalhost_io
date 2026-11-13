@@ -1,0 +1,41 @@
+---
+title: Model Picker
+description: A searchable AI model picker with provider icons, smooth motion and full keyboard navigation.
+---
+## Preview
+import { ModelPicker , defaultModels } from "@/components/lokalhost_io/micro-ai-components/model-picker";
+import { ModelPickerComponent } from "../../componentsAll.tsx"
+
+
+<Preview link="micro-ai-components/model-picker" registry={null} isBlock={true} language="tsx" code={`
+    <ModelPicker
+        models={defaultModels}
+        selectedModelId={selectedId}
+        onSelectModel={(model) => setSelectedId(model.id)}
+    />
+`}>
+    <ModelPickerComponent />
+</Preview>
+
+## Installation
+import ManualInstallation from "@/components/mdx/manual-installation";
+
+<ManualInstallation
+  registry={null}
+  dependencies="motion lucide-react react-icons clsx tailwind-merge"
+  utilsCode={`import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/model-picker.tsx"
+/>
+
+## Props
+import PropsTable from "@/components/mdx/props-table";
+import {aiModelProps, modelPickerProps} from "./model-picker-props";
+
+<PropsTable title="ModelPicker" rows={modelPickerProps} />
+<PropsTable title="AIModel" rows={aiModelProps} />
+

@@ -1,0 +1,124 @@
+---
+title: Model Selector
+description: A compact AI model dropdown with sizes, radius presets and optional search.
+---
+## Preview
+import ModelsSelector from "@/components/lokalhost_io/micro-ai-components/models-selector";
+
+
+<Preview link="micro-ai-components/model-picker" registry={null} isBlock={true} language="tsx" code={`
+  <ModelsSelector size="sm" />
+<ModelsSelector size="md" />
+<ModelsSelector size="lg" />
+
+{/* Custom width/height (number = px) */}
+<ModelsSelector width={200} height={34} radius="sm" />
+<ModelsSelector width={180} height={34} radius="md" searchable={false} />
+<ModelsSelector width={220} height={36} radius="lg" />
+
+{/* CSS string units instead of px numbers */}
+<ModelsSelector width="14rem" height="2.25rem" radius="full" />
+
+{/* Radius scale */}
+<ModelsSelector width={200} height={34} radius="none" />
+<ModelsSelector width={200} height={34} radius="sm" />
+<ModelsSelector width={200} height={34} radius="md" />
+<ModelsSelector width={200} height={34} radius="lg" />
+<ModelsSelector width={200} height={34} radius="full" />
+
+{/* Independent trigger vs panel radius */}
+<ModelsSelector width={200} height={34} triggerRadius="full" panelRadius="md" />
+
+{/* Custom color theme */}
+<ModelsSelector
+  width={200}
+  height={34}
+  radius="md"
+  colors={{
+    triggerBg: "#0f0f10",
+    panelBg: "#18181b",
+    text: "#f4f4f5",
+    muted: "#71717a",
+    accent: "#f97316",
+  }}
+/>
+
+{/* Search forced off */}
+<ModelsSelector width={200} height={34} searchable={false} />
+
+{/* Search forced on, custom empty message */}
+<ModelsSelector width={220} height={34} searchable={true} emptyMessage="No matching models" />
+
+{/* name prop for native form usage */}
+<ModelsSelector width={200} height={34} name="model" />
+`}>
+    {/* Sizes */}
+<div className="flex flex-wrap gap-6 absolute lg:px-10 lg:py-10 ">
+<ModelsSelector size="sm" />
+<ModelsSelector size="md" />
+<ModelsSelector size="lg" />
+
+{/* Custom width/height (number = px) */}
+<ModelsSelector width={200} height={34} radius="sm" />
+<ModelsSelector width={180} height={34} radius="md" searchable={false} />
+<ModelsSelector width={220} height={36} radius="lg" />
+
+{/* CSS string units instead of px numbers */}
+<ModelsSelector width="14rem" height="2.25rem" radius="full" />
+
+{/* Radius scale */}
+<ModelsSelector width={200} height={34} radius="none" />
+<ModelsSelector width={200} height={34} radius="sm" />
+<ModelsSelector width={200} height={34} radius="md" />
+<ModelsSelector width={200} height={34} radius="lg" />
+<ModelsSelector width={200} height={34} radius="full" />
+
+{/* Independent trigger vs panel radius */}
+<ModelsSelector width={200} height={34} triggerRadius="full" panelRadius="md" />
+
+{/* Custom color theme */}
+<ModelsSelector
+  width={200}
+  height={34}
+  radius="md"
+  colors={{
+    triggerBg: "#0f0f10",
+    panelBg: "#18181b",
+    text: "#f4f4f5",
+    muted: "#71717a",
+    accent: "#f97316",
+  }}
+/>
+
+{/* Search forced off */}
+<ModelsSelector width={200} height={34} searchable={false} />
+
+{/* Search forced on, custom empty message */}
+<ModelsSelector width={220} height={34} searchable={true} emptyMessage="No matching models" />
+
+{/* name prop for native form usage */}
+<ModelsSelector width={200} height={34} name="model" />
+</div>
+</Preview>
+
+## Installation
+import ManualInstallation from "@/components/mdx/manual-installation";
+
+<ManualInstallation
+  registry={null}
+  dependencies="react-icons"
+  utilsCode={`import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/models-selector.tsx"
+/>
+
+## Props
+import PropsTable from "@/components/mdx/props-table";
+import { modelsSelectorProps } from "./models-selector-props";
+
+<PropsTable rows={modelsSelectorProps} />
+

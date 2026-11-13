@@ -1,0 +1,623 @@
+---
+title: Download Button
+description: Platform-aware download buttons for Mac, Windows and Linux with a smooth hover roll animation and fully swappable colors.
+---
+## Preview
+import { FaApple } from "react-icons/fa";
+import { DiWindows } from "react-icons/di";
+import { FcLinux } from "react-icons/fc";
+import DownloadButtonGroup from "@/components/lokalhost_io/buttons/download-button";
+
+<Preview link="buttons/download-button" registry="download-button" isBlock={true} language="tsx" code={`
+import DownloadButtonGroup from "@/components/lokalhost_io/buttons/download-button";
+
+<DownloadButtonGroup
+    config={{
+      windows: { downloadUrl: ""},
+    }}
+    buttonProps={{
+      label: "Download For Windows",
+      icon: <DiWindows size={20} />,
+      iconPosition: "right",
+    }}
+    size="md"
+    platforms={['windows']}
+/>`}>
+    <div className="flex flex-wrap gap-4">
+    <DownloadButtonGroup
+              config={{
+                windows: { downloadUrl: ""},
+              }}
+                            buttonProps={{
+                              label: "Download For Windows",
+                              icon: <DiWindows size={20} />,
+                              iconPosition: "right",
+                            }}
+                            size="md"
+              platforms={['windows']}
+            />
+            <DownloadButtonGroup
+              config={{
+                              mac: { downloadUrl: ""},
+                            }}
+                            buttonProps={{
+                              label: "Download For Mac",
+                              icon: <FaApple size={20} />,
+                              iconPosition: "right",
+                            }}
+                            wrapperColorClassName="bg-yellow-400"
+                            colorClassName="bg-yellow-500"
+                            size="md"
+              platforms={['mac']}
+            />
+             
+            <DownloadButtonGroup
+              config={{
+                linux: { downloadUrl: ""},
+              }}
+                            buttonProps={{
+                              label: "Download For Linux",
+                              icon: <FcLinux size={20} />,
+                              iconPosition: "right",
+                            }}
+                            size="md"
+              wrapperColorClassName='bg-blue-400 rounded-0'
+              colorClassName='bg-blue-500 rounded-0'
+              platforms={['linux']}
+              radius="full"
+            />
+            <DownloadButtonGroup
+              config={{
+                              mac: { downloadUrl: ""},
+                            }}
+                            buttonProps={{
+                              label: "Download For Mac",
+                              icon: <FaApple size={20} />,
+                              iconPosition: "right",
+                            }}
+                            wrapperColorClassName="bg-orange-400"
+                            colorClassName="bg-orange-500"
+                            size="md"
+              platforms={['mac']}
+            />
+            <DownloadButtonGroup
+              config={{
+                windows: { downloadUrl: ""},
+              }}
+              buttonProps={{
+                label: "Download For Windows",
+                icon: <DiWindows size={20} />,
+                iconPosition: "right",
+              }}
+              size="md"
+              wrapperColorClassName='bg-white rounded-none!important text-black'
+              colorClassName='bg-neutral-100 rounded-none!important'
+              className="rounded-none text-black"
+              platforms={['windows']}
+              radius="none"
+            />
+            <DownloadButtonGroup
+              config={{
+                              mac: { downloadUrl: ""},
+                            }}
+                            buttonProps={{
+                              label: "Download For Mac",
+                              icon: <FaApple size={20} />,
+                              iconPosition: "right",
+                            }}
+                            wrapperColorClassName="bg-gradient-to-r from-red-500 to-red-400"
+                            colorClassName="bg-gradient-to-r from-red-600 to-red-800"
+                            size="md"
+              platforms={['mac']}
+            />
+    </div>
+</Preview>
+
+## Installation
+import ManualInstallation from "@/components/mdx/manual-installation";
+
+<ManualInstallation
+  registry="download-button"
+  dependencies="motion clsx tailwind-merge react-icons"
+  utilsCode={`import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/buttons/download-button.tsx"
+  componentCode={`"use client";
+
+import React, { forwardRef, useSyncExternalStore, useEffect, useState } from "react";
+
+function cx(...classes: Array<string | false | null | undefined>) {
+  return classes.filter(Boolean).join(" ");
+}
+export type Platform = "mac" | "windows" | "linux" | "custom";
+export type ButtonSize = "sm" | "md" | "lg" | "xl";
+
+export interface PlatformConfig {
+  id: Platform;
+  label: string;
+  icon?: React.ReactNode;
+  downloadUrl?: string;
+  fileName?: string;
+}
+
+export interface DownloadButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  platform?: Platform;
+
+  label?: React.ReactNode;
+
+  icon?: React.ReactNode;
+  iconPosition?: "left" | "right";
+  showIcon?: boolean;
+
+  as?: "button" | "a";
+  href?: string;
+  fileName?: string;
+  target?: string;
+  rel?: string;
+
+  size?: ButtonSize;
+
+  /** State */
+  isLoading?: boolean;
+  loadingText?: React.ReactNode;
+  loadingIcon?: React.ReactNode;
+  disabled?: boolean;
+
+  className?: string;
+  wrapperClassName?: string;
+  colorClassName?: string;
+
+  wrapperColorClassName?: string;
+
+  iconClassName?: string;
+
+  /** Callbacks */
+  onDownloadStart?: (platform: Platform) => void;
+  onDownloadComplete?: (platform: Platform) => void;
+  onDownloadError?: (error: Error) => void;
+
+  children?: React.ReactNode;
+}
+
+/* ------------------------------------------------------------------ */
+/* Size config                                                        */
+/* ------------------------------------------------------------------ */
+
+export const sizeConfig: Record<
+  ButtonSize,
+  {
+    outerHeight: string;
+    outerMinWidth: string;
+    innerMinWidth: string;
+    text: string;
+    gap: string;
+    iconSize: string;
+  }
+> = {
+  sm: {
+    outerHeight: "h-8",
+    outerMinWidth: "min-w-[108px]",
+    innerMinWidth: "min-w-[96px]",
+    text: "text-xs",
+    gap: "gap-1.5",
+    iconSize: "[&_svg]:size-3.5",
+  },
+  md: {
+    outerHeight: "h-9",
+    outerMinWidth: "min-w-[128px]",
+    innerMinWidth: "min-w-[116px]",
+    text: "text-sm",
+    gap: "gap-2",
+    iconSize: "[&_svg]:size-4",
+  },
+  lg: {
+    outerHeight: "h-11",
+    outerMinWidth: "min-w-[148px]",
+    innerMinWidth: "min-w-[136px]",
+    text: "text-base",
+    gap: "gap-2",
+    iconSize: "[&_svg]:size-[18px]",
+  },
+  xl: {
+    outerHeight: "h-12",
+    outerMinWidth: "min-w-[168px]",
+    innerMinWidth: "min-w-[156px]",
+    text: "text-lg",
+    gap: "gap-2.5",
+    iconSize: "[&_svg]:size-5",
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* Default styling — split into STRUCTURE and COLOR                   */
+/* ------------------------------------------------------------------ */
+
+export const structuralButtonClassName =
+  "inline-flex items-center rounded-lg px-1 text-sm font-medium font-sans " +
+  "overflow-hidden transition-colors duration-150 " +
+  "disabled:opacity-50 disabled:cursor-not-allowed " +
+  "shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]";
+
+/** Default color classes for the outer shell — fully replaceable via "colorClassName". */
+export const defaultButtonColorClassName =
+  "bg-neutral-800 dark:bg-neutral-200 text-neutral-100 dark:text-neutral-900 " +
+  "border border-neutral-700 dark:border-neutral-300 " +
+  "hover:bg-neutral-950 dark:hover:bg-neutral-100";
+
+export const structuralWrapperClassName =
+  "inline-flex items-center rounded-sm px-2 py-[3.5px] shadow-sm transition-colors duration-150";
+
+/** Default color classes for the inner wrapper — fully replaceable via "wrapperColorClassName". */
+export const defaultWrapperColorClassName =
+  "bg-neutral-950 dark:bg-neutral-100 text-neutral-100 dark:text-neutral-900 " +
+  "hover:bg-neutral-800 dark:hover:bg-neutral-200";
+
+export const defaultButtonClassName = cx(
+  structuralButtonClassName,
+  sizeConfig.md.outerHeight,
+  sizeConfig.md.text,
+  defaultButtonColorClassName
+);
+
+export const defaultWrapperClassName = cx(
+  structuralWrapperClassName,
+  sizeConfig.md.gap,
+  defaultWrapperColorClassName
+);
+
+/* ------------------------------------------------------------------ */
+/* Default platform config (data-driven — edit/extend freely)         */
+/* ------------------------------------------------------------------ */
+
+export const defaultPlatformConfig: Record<Platform, PlatformConfig> = {
+  mac: {
+    id: "mac",
+    label: "Download for Mac",
+    icon: null, // plug in your own icon component/svg
+    downloadUrl: "",
+    fileName: "",
+  },
+  windows: {
+    id: "windows",
+    label: "Download for Windows",
+    icon: null,
+    downloadUrl: "",
+    fileName: "",
+  },
+  linux: {
+    id: "linux",
+    label: "Download for Linux",
+    icon: null,
+    downloadUrl: "",
+    fileName: "",
+  },
+  custom: {
+    id: "custom",
+    label: "Download",
+    icon: null,
+  },
+};
+
+// No real browser event to subscribe to (UA doesn't change at runtime),
+// so subscribe is a no-op — we only need getSnapshot/getServerSnapshot.
+function subscribeNoop() {
+  return () => {};
+}
+
+function getPlatformSnapshot(): Platform | null {
+  const ua = window.navigator.userAgent.toLowerCase();
+  // check android before linux — Android UAs contain "linux" too
+  if (ua.includes("android")) return null;
+  if (ua.includes("mac")) return "mac";
+  if (ua.includes("win")) return "windows";
+  if (ua.includes("linux")) return "linux";
+  return null;
+}
+
+function getPlatformServerSnapshot(): Platform | null {
+  return null;
+}
+
+export function useDetectedPlatform(): Platform | null {
+  return useSyncExternalStore(
+    subscribeNoop,
+    getPlatformSnapshot,
+    getPlatformServerSnapshot
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Hover animation — slides content up, teleports to bottom, slides in */
+/* ------------------------------------------------------------------ */
+
+const BTN_HOVER_CSS = \`
+@keyframes keep-btn-enter {
+  0% { transform: translateY(0); opacity: 1; }
+  30% { transform: translateY(-100%); opacity: 0; }
+  32% { transform: translateY(100%); opacity: 0; }
+  80% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes keep-btn-leave {
+  0% { transform: translateY(0); opacity: 1; }
+  30% { transform: translateY(100%); opacity: 0; }
+  32% { transform: translateY(-100%); opacity: 0; }
+  80% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.keep-btn-enter {
+  animation: keep-btn-enter 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.keep-btn-leave {
+  animation: keep-btn-leave 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+\`;
+
+let keepBtnCssInjected = false;
+
+function injectKeepBtnCSS() {
+  if (keepBtnCssInjected) return;
+  keepBtnCssInjected = true;
+  if (typeof document !== "undefined") {
+    const s = document.createElement("style");
+    s.textContent = BTN_HOVER_CSS;
+    document.head.appendChild(s);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Component                                                          */
+/* ------------------------------------------------------------------ */
+
+export const DownloadButton = forwardRef<
+  HTMLButtonElement | HTMLAnchorElement,
+  DownloadButtonProps
+>(
+  (
+    {
+      platform = "custom",
+      label,
+      icon,
+      iconPosition = "left",
+      showIcon = true,
+
+      as = "button",
+      href,
+      fileName,
+      target,
+      rel,
+
+      size = "md",
+
+      isLoading = false,
+      loadingText,
+      loadingIcon,
+      disabled = false,
+
+      className,
+      colorClassName,
+      iconClassName = "",
+      wrapperClassName,
+      wrapperColorClassName,
+
+      onDownloadStart,
+      onDownloadComplete,
+      onDownloadError,
+
+      children,
+      onClick,
+      onMouseEnter: onMouseEnterProp,
+      onMouseLeave: onMouseLeaveProp,
+      ...rest
+    },
+    ref
+  ) => {
+    const config = defaultPlatformConfig[platform];
+    const sizing = sizeConfig[size];
+
+    useEffect(() => { injectKeepBtnCSS(); }, []);
+
+    const [animClass, setAnimClass] = useState<"keep-btn-enter" | "keep-btn-leave" | "">("");
+
+    const resolvedLabel = children ?? label ?? config.label;
+    const resolvedIcon = icon ?? config.icon;
+    const resolvedHref = href ?? config.downloadUrl;
+    const resolvedFileName = fileName ?? config.fileName;
+
+    const handleClick = (
+      e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+    ) => {
+      if (disabled || isLoading) {
+        e.preventDefault();
+        return;
+      }
+      try {
+        onDownloadStart?.(platform);
+        onClick?.(e as React.MouseEvent<HTMLButtonElement>);
+        onDownloadComplete?.(platform);
+      } catch (err) {
+        onDownloadError?.(err instanceof Error ? err : new Error(String(err)));
+      }
+    };
+
+    const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+      onMouseEnterProp?.(e as React.MouseEvent<HTMLButtonElement>);
+      setAnimClass("keep-btn-enter");
+    };
+
+    const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+      onMouseLeaveProp?.(e as React.MouseEvent<HTMLButtonElement>);
+      setAnimClass("keep-btn-leave");
+    };
+
+    const handleAnimEnd = () => {
+      setAnimClass("");
+    };
+
+    const iconNode = showIcon
+      ? isLoading
+        ? loadingIcon ?? resolvedIcon
+        : resolvedIcon
+      : null;
+
+    const labelNode = isLoading ? loadingText ?? resolvedLabel : resolvedLabel;
+
+    // Inner wrapper: full override wins; otherwise compose structure + size + color.
+    const resolvedWrapperClassName =
+      wrapperClassName ??
+      cx(
+        animClass,
+        structuralWrapperClassName,
+        sizing.gap,
+        sizing.innerMinWidth,
+        "justify-center",
+        wrapperColorClassName ?? defaultWrapperColorClassName
+      );
+
+    const content = (
+      <span className={resolvedWrapperClassName} data-slot="content-wrapper" onAnimationEnd={handleAnimEnd}>
+        {iconPosition === "left" && iconNode ? (
+          <span className={cx(sizing.iconSize, iconClassName)} data-slot="icon">
+            {iconNode}
+          </span>
+        ) : null}
+        <span data-slot="label">{labelNode}</span>
+        {iconPosition === "right" && iconNode ? (
+          <span className={cx(sizing.iconSize, iconClassName)} data-slot="icon">
+            {iconNode}
+          </span>
+        ) : null}
+      </span>
+    );
+
+    // Outer shell: full override wins; otherwise compose structure + size + color.
+    const resolvedClassName =
+      className ??
+      cx(
+        structuralButtonClassName,
+        sizing.outerHeight,
+        sizing.outerMinWidth,
+        sizing.text,
+        "justify-center",
+        colorClassName ?? defaultButtonColorClassName
+      );
+
+    const sharedProps = {
+      className: resolvedClassName,
+      onMouseEnter: handleMouseEnter,
+      onMouseLeave: handleMouseLeave,
+      "data-platform": platform,
+      "data-size": size,
+      "data-loading": isLoading || undefined,
+      "data-disabled": disabled || undefined,
+      "aria-disabled": disabled || isLoading || undefined,
+      "aria-busy": isLoading || undefined,
+    };
+
+    if (as === "a") {
+      return (
+        <a
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          href={disabled || isLoading ? undefined : resolvedHref}
+          download={resolvedFileName || true}
+          target={target}
+          rel={rel ?? (target === "_blank" ? "noopener noreferrer" : undefined)}
+          onClick={handleClick}
+          {...sharedProps}
+          {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        >
+          {content}
+        </a>
+      );
+    }
+
+    return (
+      <button
+        ref={ref as React.Ref<HTMLButtonElement>}
+        type="button"
+        disabled={disabled || isLoading}
+        onClick={handleClick}
+        {...sharedProps}
+        {...rest}
+      >
+        {content}
+      </button>
+    );
+  }
+);
+
+DownloadButton.displayName = "DownloadButton";
+
+/* ------------------------------------------------------------------ */
+/* Group wrapper — renders Mac / Windows / Linux together             */
+/* ------------------------------------------------------------------ */
+
+export interface DownloadButtonGroupProps {
+  platforms?: Platform[];
+  config?: Partial<Record<Platform, Partial<PlatformConfig>>>;
+  highlightDetected?: boolean;
+  as?: "button" | "a";
+  size?: ButtonSize;
+  className?: string;
+  colorClassName?: string;
+  wrapperColorClassName?: string;
+  buttonProps?: Partial<DownloadButtonProps>;
+}
+
+export function DownloadButtonGroup({
+  platforms = ["mac", "windows", "linux"],
+  config,
+  highlightDetected = false,
+  as = "a",
+  size = "md",
+  className = "",
+  colorClassName,
+  wrapperColorClassName,
+  buttonProps,
+}: DownloadButtonGroupProps) {
+  const detected = useDetectedPlatform();
+  const merged: Record<Platform, PlatformConfig> = platforms.reduce(
+    (acc, p) => {
+      acc[p] = { ...defaultPlatformConfig[p], ...config?.[p] };
+      return acc;
+    },
+    {} as Record<Platform, PlatformConfig>
+  );
+
+  return (
+    <div className={className} data-slot="download-group">
+      {platforms.map((p) => {
+        const cfg = merged[p];
+        const isDetected = highlightDetected && detected === p;
+
+        return (
+          <DownloadButton
+            key={p}
+            platform={p}
+            as={as}
+            size={size}
+            colorClassName={colorClassName}
+            wrapperColorClassName={wrapperColorClassName}
+            href={cfg.downloadUrl}
+            fileName={cfg.fileName}
+            data-detected={isDetected || undefined}
+            {...buttonProps}
+          />
+        );
+      })}
+    </div>
+  );
+}`}
+/>
+
+## Props
+import PropsTable from "@/components/mdx/props-table";
+import {downloadButtonProps} from "./download-button-props";
+
+<PropsTable rows={downloadButtonProps} />
+

@@ -1,0 +1,61 @@
+---
+title: Theming
+description: One set of tokens for colour, radius and spacing — shared by React Native, Flutter and the previews on this site.
+---
+
+Every component reads its colours from a single token file. Light and dark follow the system setting automatically. To rebrand, change `primary` and `accent` — everything else is neutral on purpose.
+
+## Tokens
+
+| Token | Light | Dark | Used for |
+| --- | --- | --- | --- |
+| `bg` | `#ffffff` | `#000000` | Screen background |
+| `bgSubtle` | `#f5f5f5` | `#0a0a0a` | Grouped list background |
+| `card` | `#ffffff` | `#141414` | Cards, sheets, dialogs |
+| `muted` | `#f4f4f5` | `#1f1f1f` | Secondary buttons, tracks, skeletons |
+| `border` | `#e5e5e5` | `#262626` | Hairlines and outlines |
+| `fg` | `#0a0a0a` | `#fafafa` | Primary text |
+| `fgMuted` | `#737373` | `#a3a3a3` | Secondary text and icons |
+| `primary` | `#0a0a0a` | `#fafafa` | Primary buttons |
+| `accent` | `#2563eb` | `#3b82f6` | Links, chat bubbles, unread badges |
+| `success` / `danger` / `warning` | — | — | Status only |
+
+Radius: `sm 8` · `md 12` (controls) · `lg 16` (cards) · `xl 24` (sheets). Spacing follows a 4pt grid.
+
+## React Native
+
+```ts title="lib/theme.ts"
+import { useColorScheme } from "react-native";
+
+export const palette = {
+  light: { bg: "#ffffff", card: "#ffffff", muted: "#f4f4f5", border: "#e5e5e5", fg: "#0a0a0a", fgMuted: "#737373", primary: "#0a0a0a", onPrimary: "#ffffff", accent: "#2563eb" /* … */ },
+  dark: { bg: "#000000", card: "#141414", muted: "#1f1f1f", border: "#262626", fg: "#fafafa", fgMuted: "#a3a3a3", primary: "#fafafa", onPrimary: "#0a0a0a", accent: "#3b82f6" /* … */ },
+};
+
+export function useTheme() {
+  const dark = useColorScheme() === "dark";
+  return { colors: dark ? palette.dark : palette.light, dark };
+}
+```
+
+The full file — with `radius`, `space()` and `fontSize` — is in the **Code** tab of any component as `theme.ts`.
+
+## Flutter
+
+Tokens are a `ThemeExtension`, so they animate between light and dark with the rest of Material:
+
+```dart title="lib/theme/lk_theme.dart"
+MaterialApp(
+  theme: lkTheme(Brightness.light),
+  darkTheme: lkTheme(Brightness.dark),
+);
+
+// anywhere below:
+final c = context.lk;
+Text('Hello', style: TextStyle(color: c.fgMuted));
+```
+
+## Forcing a mode
+
+- **React Native:** replace `useColorScheme()` with your own setting (e.g. from a Zustand store) in `useTheme()`.
+- **Flutter:** pass `themeMode: ThemeMode.dark` to `MaterialApp`.

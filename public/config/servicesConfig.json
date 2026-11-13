@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "service": "Components",
+    "about": "Pre-built, customizable components to speed up your development workflow.",
+    "icon": "GrCubes",
+    "link": "/docs"
+  },
+  {
+    "id": 2,
+    "service": "Web Templates",
+    "about": "Production-ready website templates built with modern UI and top-tier code quality.",
+    "icon": "MdViewQuilt",
+    "link": "/templates"
+  },
+  {
+    "id": 3,
+    "service": "Application Templates",
+    "about": "Starter app templates for full-scale web and mobile applications with best practices.",
+    "icon": "IoPhonePortraitOutline",
+    "link": "/mobile-apps"
+  },
+  {
+    "id": 4,
+    "service": "Mobile UI Elements",
+    "about": "Beautiful and reusable mobile UI components for iOS and Android apps.",
+    "icon": "PiCubeDuotone",
+    "link": "/mobile-apps"
+  },
+  {
+    "id": 5,
+    "service": "Authentication Kits",
+    "about": "Authentication solutions for modern apps including JWT, OAuth, and social logins.",
+    "icon": "TbBrandAuth0",
+    "link": "/authdocs"
+  },
+  {
+    "id": 6,
+    "service": "SaaS Starter Kits",
+    "about": "End-to-end starter kits with complete backend, APIs, and scalable architectures.",
+    "icon": "LiaIconsSolid",
+    "link": "/"
+  },
+  {
+    "id": 7,
+    "service": "UI Patterns",
+    "about": "Modern UI backgrounds, patterns, and sections ready to plug into any project.",
+    "icon": "TbBackground",
+    "link": "/bg-patterns"
+  },
+  {
+    "id": 9,
+    "service": "Figma Kits",
+    "about": "Complete Figma design systems, components, and templates for fast UI/UX creation.",
+    "icon": "LuFigma",
+    "link": "/designs"
+  }
+]

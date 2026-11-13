@@ -1,0 +1,81 @@
+"use client";
+
+import type { ComponentType } from "react";
+import type { PreviewId } from "@/lib/mobile/types";
+import {
+  AvatarPreview,
+  BottomSheetPreview,
+  ButtonsPreview,
+  CardsPreview,
+  InputsPreview,
+  ListsPreview,
+  ModalPreview,
+  NavigationBarPreview,
+  SkeletonPreview,
+  TabsPreview,
+  ToastPreview,
+} from "./components";
+import {
+  AppHeaderBlock,
+  AuthOtp,
+  AuthSignIn,
+  AuthSignUp,
+  CartScreen,
+  ChatList,
+  ChatThread,
+  CheckoutScreen,
+  EmptyState,
+  ErrorState,
+  HomeFeed,
+  OfflineState,
+  Onboarding1,
+  Onboarding2,
+  Onboarding3,
+  OrderSuccess,
+  PricingPlansBlock,
+  ProductScreen,
+  ProfileScreen,
+  SettingsScreen,
+  StatsGridBlock,
+  StoryRailBlock,
+} from "./screens";
+
+/** PreviewId → live web rendition shown inside the phone frame. */
+export const PREVIEWS: Record<PreviewId, ComponentType> = {
+  buttons: ButtonsPreview,
+  inputs: InputsPreview,
+  cards: CardsPreview,
+  lists: ListsPreview,
+  "bottom-sheet": BottomSheetPreview,
+  tabs: TabsPreview,
+  "navigation-bar": NavigationBarPreview,
+  modal: ModalPreview,
+  toast: ToastPreview,
+  avatar: AvatarPreview,
+  skeleton: SkeletonPreview,
+  "onboarding-1": Onboarding1,
+  "onboarding-2": Onboarding2,
+  "onboarding-3": Onboarding3,
+  "auth-sign-in": AuthSignIn,
+  "auth-sign-up": AuthSignUp,
+  "auth-otp": AuthOtp,
+  "home-feed": HomeFeed,
+  product: ProductScreen,
+  cart: CartScreen,
+  checkout: CheckoutScreen,
+  "order-success": OrderSuccess,
+  profile: ProfileScreen,
+  settings: SettingsScreen,
+  "chat-list": ChatList,
+  "chat-thread": ChatThread,
+  "empty-state": EmptyState,
+  "error-state": ErrorState,
+  "offline-state": OfflineState,
+  "app-header": AppHeaderBlock,
+  "story-rail": StoryRailBlock,
+  "stats-grid": StatsGridBlock,
+  "pricing-plans": PricingPlansBlock,
+};
+
+/** Screens whose content runs under the status bar (full-bleed imagery). */
+export const OVERLAY_STATUS_BAR = new Set<PreviewId>(["product"]);

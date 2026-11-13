@@ -1,0 +1,64 @@
+[
+  {
+    "id": "free",
+    "plan": "Free",
+    "planDescription": "Everything you need to start building. Free components with full source and CLI install — no account needed.",
+    "subscription_amount": "0",
+    "period": "forever",
+    "save_price": "No sign-up required",
+    "features": [
+      "All free components with full source code",
+      "Install with the shadcn CLI or copy and paste",
+      "Free templates and mobile components",
+      "Live previews of every premium item",
+      "Built with Next.js, React, TypeScript and Tailwind CSS",
+      "Use in personal and commercial projects"
+    ],
+    "butttonContent": "Browse free components",
+    "microcopy": "Free forever · No credit card needed",
+    "popular": false
+  },
+  {
+    "id": "pro_monthly",
+    "plan": "Pro Monthly",
+    "planDescription": "Unlock everything premium — components, blocks, templates and mobile UI. Billed monthly, cancel whenever you like.",
+    "subscription_amount": "999",
+    "period": "month",
+    "save_price": "Billed monthly · renews automatically",
+    "features": [
+      "Everything in Free",
+      "All premium components and blocks",
+      "All premium templates with source downloads",
+      "Mobile UI screens and components (React Native + Flutter)",
+      "CLI access to the private Pro registry",
+      "Copy prompts for v0, Cursor, Lovable and Claude",
+      "New releases included while subscribed",
+      "Cancel anytime — keep access until the period ends"
+    ],
+    "butttonContent": "Get Monthly",
+    "microcopy": "Secure payment via Razorpay · UPI, cards, netbanking · Cancel anytime",
+    "popular": false
+  },
+  {
+    "id": "pro_yearly",
+    "plan": "Pro Yearly",
+    "planDescription": "A full year of Pro for the price of eight months. One payment, no auto-renewal — we remind you before it ends.",
+    "subscription_amount": "7999",
+    "period": "year",
+    "save_price": "₹667/mo · one-time payment",
+    "save_price_value": "11988",
+    "features": [
+      "Everything in Pro Monthly",
+      "365 days of full access",
+      "Save 33% compared to paying monthly",
+      "One-time payment — never auto-renews",
+      "Extend anytime; extra years stack on top",
+      "Renewal reminders by email before access ends",
+      "All new components and templates released during the year",
+      "Priority email support"
+    ],
+    "butttonContent": "Get Yearly",
+    "microcopy": "Secure payment via Razorpay · UPI, cards, netbanking · No auto-renewal",
+    "popular": true
+  }
+]
