@@ -387,11 +387,18 @@ function Footer() {
         <p className="text-xs font-mono text-neutral-400 dark:text-neutral-600">
           © {new Date().getFullYear()} Lokalhost.io — All rights reserved.
         </p>
-        <div className="flex items-center gap-4">
-          {["Privacy Policy", "Terms of Use", "Sitemap"].map((item) => (
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          {[
+            { item: "Pricing", href: "/pricing" },
+            { item: "Terms", href: "/terms" },
+            { item: "Privacy", href: "/privacy" },
+            { item: "Refunds", href: "/refund-policy" },
+            { item: "Delivery", href: "/shipping-policy" },
+            { item: "Contact", href: "/contact" },
+          ].map(({ item, href }) => (
             <Link
               key={item}
-              href={`/${item.toLowerCase().replace(/ /g, "-")}`}
+              href={href}
               className="text-xs font-mono text-neutral-400 dark:text-neutral-600 hover:text-neutral-700 dark:hover:text-neutral-400 transition-colors"
             >
               {item}

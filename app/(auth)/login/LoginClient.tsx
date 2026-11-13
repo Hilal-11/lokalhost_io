@@ -13,7 +13,8 @@ import {
   HiEyeSlash,
 } from 'react-icons/hi2'
 import { IoIosArrowRoundForward } from 'react-icons/io'
-import { signIn, signUp, signInWithGithub, signInWithGoogle } from '@/app/(main)/auth/actions'
+import { signIn, signUp, signInWithGithub, signInWithGoogle, signInWithMagicLink } from '@/app/(main)/auth/actions'
+import { safeNext, isPaidPlanId } from '@/lib/safe-redirect'
 import { useSearchParams } from 'next/navigation'
 import { HiArrowLeft } from 'react-icons/hi'
 import { useRouter } from 'next/navigation'
@@ -70,14 +71,20 @@ function SocialButton({
   icon,
   label,
   action,
+  next,
+  plan,
 }: {
   icon: React.ReactNode
   label: string
-  action: () => void
+  action: (formData: FormData) => void
+  next: string
+  plan: string
 }) {
   return (
     <motion.div variants={socialItem}>
       <form action={action}>
+        <input type="hidden" name="next" value={next} />
+        <input type="hidden" name="plan" value={plan} />
         <motion.button
           type="submit"
           whileHover={{ scale: 1.01, y: -1 }}
@@ -131,6 +138,26 @@ export default function LoginPage() {
 
   const searchParams  = useSearchParams()
   const hasAuthError  = searchParams.get('error') === 'auth'
+  // Where to go after signing in (validated again on the server).
+  const next = safeNext(searchParams.get('next') ?? searchParams.get('redirect'), '')
+  const planParam = searchParams.get('plan')
+  const plan = isPaidPlanId(planParam) ? planParam : ''
+  const planLabel = plan === 'pro_yearly' ? 'Pro Yearly — ₹7,999 / year' : plan === 'pro_monthly' ? 'Pro Monthly — ₹999 / month' : ''
+
+  const handleMagicLink = async () => {
+    setPasswordError('')
+    if (!email.trim()) { setEmailError('Enter your email to get a sign-in link'); return }
+    setIsLoading(true)
+    setMessage(null)
+    const formData = new FormData()
+    formData.set('email', email)
+    formData.set('next', next)
+    formData.set('plan', plan)
+    const result = await signInWithMagicLink(formData)
+    if (result?.error) setMessage({ type: 'error', text: result.error })
+    if (result && 'success' in result && result.success) setMessage({ type: 'success', text: result.success })
+    setIsLoading(false)
+  }
   const router = useRouter()
 
   const validate = (): boolean => {
@@ -171,13 +198,13 @@ if (result && 'success' in result) setMessage({ type: 'success', text: result.su
         <div className="relative  flex flex-col justify-center w-full lg:w-[45%] px-6 md:px-12 lg:px-16 py-10 pt-10 lg:pt-0">
           <motion.button
             variants={fadeUp}
-            onClick={() => router.back()}
+            onClick={() => router.push(plan ? '/pricing' : '/')}
             whileHover={{ x: -3 }}
             whileTap={{ scale: 0.95 }}
             className="absolute top-2 lg:top-14 left-1 lg:left-20 w-fit flex items-center gap-1.5 text-neutral-400 dark:text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors duration-200 group cursor-pointer"
           >
             <HiArrowLeft className="text-sm transition-transform duration-200 group-hover:-translate-x-0.5" />
-            <span className="text-sm font-sans font-medium">Back to home</span>
+            <span className="text-sm font-sans font-medium">{plan ? 'Back to pricing' : 'Back to home'}</span>
           </motion.button>
 
           <div className="w-full max-w-md mx-auto">
@@ -211,6 +238,14 @@ if (result && 'success' in result) setMessage({ type: 'success', text: result.su
                     : 'Get started with Lokalhost.io.'}
                 </p>
               </motion.div>
+
+              {/* Checkout context: tell the buyer what happens next */}
+              {planLabel && (
+                <motion.div variants={fadeUp} className="mb-4 px-4 py-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 text-sm font-sans text-neutral-700 dark:text-neutral-300">
+                  <span className="font-semibold text-neutral-900 dark:text-neutral-100">{planLabel}</span>
+                  <span className="block text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">Sign in and we&apos;ll take you straight to secure checkout.</span>
+                </motion.div>
+              )}
 
               {/* Auth error from callback */}
               <AnimatePresence>
@@ -246,8 +281,8 @@ if (result && 'success' in result) setMessage({ type: 'success', text: result.su
 
               {/* Social buttons */}
               <motion.div variants={socialStagger} className="space-y-3">
-                <SocialButton icon={<FcGoogle />} label="Continue with Google" action={signInWithGoogle} />
-                <SocialButton icon={<FaGithub />} label="Continue with GitHub" action={signInWithGithub} />
+                <SocialButton icon={<FcGoogle />} label="Continue with Google" action={signInWithGoogle} next={next} plan={plan} />
+                <SocialButton icon={<FaGithub />} label="Continue with GitHub" action={signInWithGithub} next={next} plan={plan} />
               </motion.div>
 
               {/* Divider */}
@@ -266,6 +301,8 @@ if (result && 'success' in result) setMessage({ type: 'success', text: result.su
                 noValidate
                 className="space-y-5"
               >
+                <input type="hidden" name="next" value={next} />
+                <input type="hidden" name="plan" value={plan} />
                 {/* Email */}
                 <div>
                   <label
@@ -353,6 +390,16 @@ if (result && 'success' in result) setMessage({ type: 'success', text: result.su
                   text={mode === 'signin' ? 'Sign in' : 'Create account'}
                   loading={isLoading}
                 />
+                {mode === 'signin' && (
+                  <button
+                    type="button"
+                    onClick={handleMagicLink}
+                    disabled={isLoading}
+                    className="w-full text-center text-sm font-medium font-sans text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 underline underline-offset-2 transition-colors disabled:opacity-50"
+                  >
+                    Email me a sign-in link instead
+                  </button>
+                )}
               </motion.form>
 
               {/* Toggle mode */}

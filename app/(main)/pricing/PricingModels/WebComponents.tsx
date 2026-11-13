@@ -13,6 +13,8 @@ interface PricingConfig {
   save_price_value?: string;
   features: string[];
   butttonContent?: string;
+  period?: string;
+  microcopy?: string;
   popular?: boolean;
 }
 

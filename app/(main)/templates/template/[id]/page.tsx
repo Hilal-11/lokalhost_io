@@ -11,7 +11,7 @@ import { HiArrowLeft } from 'react-icons/hi'
 import { useId } from "react"
 import { cn } from "@/lib/utils"
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { UnlockButton } from '@/components/billing/plan-button'
 
 import react from "@/public/tech/react.jpeg"
 import next from "@/public/tech/next.jpeg"
@@ -29,7 +29,7 @@ interface Template {
   template_name: string
   template_description: string
   template_live_url: string
-  template_prize: string
+  template_price: string
   is_premium: boolean
   template_images: string[]
   template_prefer_for: string[]
@@ -53,7 +53,12 @@ async function templateView({ params }: PageProps) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) redirect('/login')
+  // Preview is public. Only the source download needs Pro (or a free template).
+  let hasAccess = false
+  if (user) {
+    const { data } = await supabase.rpc('my_access')
+    hasAccess = !!(Array.isArray(data) ? data[0]?.has_access : data?.has_access)
+  }
 
   const { data: template, error } = await supabase
     .from('templates')
@@ -69,6 +74,8 @@ async function templateView({ params }: PageProps) {
       </div>
     )
   }
+
+  const canDownload = !template.is_premium || hasAccess
 
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950">
@@ -170,12 +177,22 @@ async function templateView({ params }: PageProps) {
                   <HiArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
 
-                <button className="shine group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 font-sans font-semibold text-sm text-neutral-800 dark:text-neutral-200 shadow-sm hover:border-neutral-400 dark:hover:border-neutral-500 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
-                  Buy Now
-                  <span className="px-2 py-0.5 rounded-md bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-mono text-xs">
-                    {template.template_prize}
+                {template.is_premium && !hasAccess && (
+                  <UnlockButton
+                    item={{ name: template.template_name, image: template.template_images?.[0] }}
+                    className="shine group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 font-sans font-semibold text-sm text-neutral-800 dark:text-neutral-200 shadow-sm hover:border-neutral-400 dark:hover:border-neutral-500 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                  >
+                    Unlock with Pro
+                    <span className="px-2 py-0.5 rounded-md bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-mono text-xs">
+                      from ₹667/mo
+                    </span>
+                  </UnlockButton>
+                )}
+                {template.is_premium && hasAccess && (
+                  <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 font-sans font-semibold text-sm text-emerald-600 dark:text-emerald-400">
+                    <MdDone className="w-4 h-4" /> Included in your Pro plan
                   </span>
-                </button>
+                )}
               </div>
 
               <div className="w-full lg:w-[300px] h-px bg-neutral-100 dark:bg-neutral-800" />
@@ -186,11 +203,11 @@ async function templateView({ params }: PageProps) {
                 </p>
                 <div className="flex flex-wrap gap-2 lg:justify-end">
                   <Link
-                    href={template.zip_code_file || '#'}
+                    href={canDownload ? (template.zip_code_file || '#') : '/pricing'}
                     className="pill group inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 text-sm font-sans font-medium text-neutral-700 dark:text-neutral-300"
                   >
                     <GoFileZip className="w-4 h-4 text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200 transition-colors duration-200" />
-                    Download ZIP
+                    {canDownload ? 'Download ZIP' : 'Download ZIP · Pro'}
                   </Link>
                   <button className="pill group inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 text-sm font-sans font-medium text-neutral-700 dark:text-neutral-300">
                     <FaGithub className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors duration-200" />

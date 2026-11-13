@@ -23,7 +23,7 @@ export const PricingFAQ = () => {
   useEffect(() => {
     const fetchFAQ = async () => {
       try {
-        const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/config/faqConfig.json`, {
+        const data = await fetch('/config/faqConfig.json', {
         cache: 'force-cache'
       })
       const response = await data.json();

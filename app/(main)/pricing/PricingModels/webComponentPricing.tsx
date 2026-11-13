@@ -6,6 +6,9 @@ import { RiCustomerService2Line } from "react-icons/ri";
 import { MdOutlineCancel } from "react-icons/md";
 import { StripedPattern } from "@/components/magicui/striped-pattern";
 import { cn } from "@/lib/utils";
+import { PlanButton } from "@/components/billing/plan-button";
+
+const inr = (v: string | number) => `₹${Number(v).toLocaleString("en-IN")}`;
 
 interface PricingConfig {
   id: string;
@@ -16,6 +19,8 @@ interface PricingConfig {
   save_price_value?: string;
   features: string[];
   butttonContent?: string;
+  period?: string;
+  microcopy?: string;
   popular?: boolean;
 }
 
@@ -68,9 +73,12 @@ function WebComponentPricing({ webComponentsPricingConfig }: { webComponentsPric
               </div>
 
               <div className="flex items-end gap-2 pt-3 pb-1">
-                <span className="text-4xl font-bold font-sans leading-none">{plan.subscription_amount}$</span>
+                <span className="text-4xl font-bold font-sans leading-none">{inr(plan.subscription_amount)}</span>
+                {plan.period && (
+                  <span className={cn("text-sm font-sans mb-0.5", plan.popular ? "text-neutral-400" : "text-neutral-500 dark:text-neutral-400")}>/ {plan.period}</span>
+                )}
                 {plan.save_price_value && (
-                  <span className="text-xl font-sans text-neutral-500 line-through mb-0.5">{plan.save_price_value}$</span>
+                  <span className="text-xl font-sans text-neutral-500 line-through mb-0.5">{inr(plan.save_price_value)}</span>
                 )}
               </div>
 
@@ -126,20 +134,18 @@ function WebComponentPricing({ webComponentsPricingConfig }: { webComponentsPric
 
               {/* CTA button */}
               <div className="w-full px-4 mt-6">
-                <button className={cn(
+                <PlanButton planId={plan.id} freeLabel={plan.butttonContent ?? "Get Started"} className={cn(
                   "w-full py-2.5 rounded-xl font-sans font-semibold text-sm transition-all duration-200 active:scale-[0.98]",
                   plan.popular
                     ? "pramiun_pricing_btn text-neutral-800 shadow-md hover:brightness-105 z-20 relative"
                     : "bg-gradient-to-b from-neutral-700 to-neutral-900 text-neutral-100 hover:from-neutral-600 hover:to-neutral-800 shadow-[0_1px_2px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)]"
-                )}>
-                  {plan.butttonContent ?? "Get Started"}
-                </button>
+                )} />
               </div>
             </div>
 
             {/* Per-card micro-reassurance */}
             <p className={cn("text-center text-[10px] font-sans mt-3", plan.popular ? "text-neutral-400" : "text-neutral-400 dark:text-neutral-600")}>
-              No credit card required to start
+              {plan.microcopy ?? "Secure payment via Razorpay · UPI, cards, netbanking · Cancel anytime"}
             </p>
           </div>
         ))}
@@ -165,7 +171,7 @@ function WebComponentPricing({ webComponentsPricingConfig }: { webComponentsPric
         <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
           <span className="text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400">
-            Pause or cancel your subscription anytime — no questions asked.
+            Cancel monthly anytime — you keep access until the end of the billing period.
           </span>
         </div>
 
@@ -192,7 +198,9 @@ function WebComponentPricing({ webComponentsPricingConfig }: { webComponentsPric
           <a href="/terms" className="underline underline-offset-1 hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors">Terms of Service</a>
           {" "}and{" "}
           <a href="/privacy" className="underline underline-offset-1 hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors">Privacy Policy</a>.
-          {" "}Prices are in USD. Taxes may apply.
+          {" "}See our{" "}
+          <a href="/refund-policy" className="underline underline-offset-1 hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors">Refund Policy</a>.
+          {" "}Prices are in INR. Taxes may apply.
         </p>
       </div>
 
