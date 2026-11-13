@@ -25,6 +25,7 @@ import headerPagesConfig from "@/public/config/HeaderPages.json"
 import { HiArrowNarrowRight } from "react-icons/hi";
 import {  SoonV3 } from "@/components/landing/MicroComponents/ComingSoon";
 import { useUser } from '@/hooks/useUser'
+import Image from "next/image";
 
 
 function Header() {
@@ -82,10 +83,7 @@ function Header() {
                 {/* Logo Section with Navigation Links */}
                 <div className="flex items-center gap-6">
                   <Link prefetch={true} href="/" onClick={handleLinkClick} className="flex items-center">
-                   <PiTerminalFill className="h-8 w-8" />
-                    <span className="hidden sm:block font-sans font-bold text-xl">
-                      Lokalhost.io
-                    </span>
+                    <Image src="/logosvglight.svg" alt="Lokalhost.io" width={34} height={30} className="rounded-sm border border-neutral-200"/>     
                   </Link>
                   <span className="text-zinc-300 dark:text-zinc-700"></span>
                   {/* Desktop Navigation Links */}

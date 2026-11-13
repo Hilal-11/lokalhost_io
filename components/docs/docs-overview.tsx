@@ -10,18 +10,7 @@ import type { DocsNavCategory, DocsNavItem } from "@/lib/docs-nav";
 import { useTemplates } from "@/lib/templates-query";
 import { componentPreviews } from "@/content/docs/componentsAll";
 import { docsIcons } from "./docs-icons";
-import { Chip, Cover, type TintName } from "@/components/lk/cover";
-
-const SECTION_TINT: Partial<Record<keyof typeof docsIcons, TintName>> = {
-  start: "orange",
-  components: "violet",
-  templates: "amber",
-  landings: "sky",
-  blocks: "emerald",
-  designs: "pink",
-  mobile: "indigo",
-  custom: "rose",
-};
+import { Cover } from "@/components/lk/cover";
 
 /* ------------------------------------------------------------------ */
 /* Building blocks                                                    */
@@ -48,9 +37,7 @@ function SectionHeader({
   return (
     <div id={id} className="mb-6 flex scroll-mt-28 flex-wrap items-end justify-between gap-3">
       <div className="flex items-start gap-3">
-        <Chip tint={SECTION_TINT[icon] ?? "orange"} size={36} radius={11} className="mt-0.5">
-          <Icon size={17} />
-        </Chip>
+        <Icon size={20} className="mt-1.5 shrink-0 text-neutral-700 dark:text-neutral-300" aria-hidden />
         <div>
           <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-neutral-950 dark:text-white">
             {title}
