@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { safeNext, withPlan } from "@/lib/safe-redirect";
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -27,8 +28,9 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Protected routes — redirect to login if not authenticated
-  const protectedPaths = ["/templates/template"];
+  // Protected routes — redirect to login if not authenticated.
+  // Product pages (templates, docs, pricing) stay public so visitors can preview before buying.
+  const protectedPaths = ["/account"];
   const isProtected = protectedPaths.some((path) =>
     request.nextUrl.pathname.startsWith(path)
   );
@@ -36,13 +38,17 @@ export async function middleware(request: NextRequest) {
   if (isProtected && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    url.searchParams.set("redirect", request.nextUrl.pathname);
+    url.search = "";
+    url.searchParams.set("next", request.nextUrl.pathname + request.nextUrl.search);
     return NextResponse.redirect(url);
   }
 
   // Redirect logged-in users away from login page
   if (request.nextUrl.pathname === "/login" && user) {
-    return NextResponse.redirect(new URL("/templates", request.url));
+    // Already signed in: continue to where they were headed (e.g. back to checkout).
+    const params = request.nextUrl.searchParams;
+    const next = safeNext(withPlan(safeNext(params.get("next"), "/templates"), params.get("plan")), "/templates");
+    return NextResponse.redirect(new URL(next, request.url));
   }
 
   return supabaseResponse;

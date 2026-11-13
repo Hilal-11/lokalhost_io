@@ -168,6 +168,7 @@ function Header() {
                   </div>
                 </div>
 
+                  <Link href="/pricing" prefetch={true} onClick={handleLinkClick} className="lk-btn lk-btn-sm lk-btn-secondary ml-[4px] font-sans text-xs">Pricing</Link>
                   {
                     !user && (
                       <Link href="/login" prefetch={true} onClick={handleLinkClick} className="lk-btn lk-btn-sm lk-btn-primary ml-[4px] font-sans text-xs">Login</Link>)

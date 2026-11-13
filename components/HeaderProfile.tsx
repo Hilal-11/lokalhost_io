@@ -13,12 +13,16 @@ import { MdLogout } from "react-icons/md"
 import { LuLayoutDashboard, LuUser } from "react-icons/lu"
 import { RiMoonLine } from "react-icons/ri"
 import { useUser } from '@/hooks/useUser'
+import { useBillingStatus } from '@/hooks/use-billing'
+import { LuCreditCard, LuSparkles } from "react-icons/lu"
 
 
 function HeaderProfile() {
   const { user, loading }           = useUser()
   const [open, setOpen]             = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
+  const { data: billing } = useBillingStatus()
+  const isPro = !!billing?.hasAccess
 
   const displayName = user?.user_metadata?.full_name ?? user?.email ?? ''
   const avatarUrl = user?.user_metadata?.avatar_url as string | undefined
@@ -65,6 +69,9 @@ const handleLogout = async () => {
               </span>
             )}
           </div>
+            {isPro && (
+              <span className="absolute -bottom-px -right-px rounded-tl-md bg-emerald-500 px-[3px] font-mono text-[7px] font-bold uppercase leading-[10px] text-white" aria-label="Pro member">Pro</span>
+            )}
           </motion.button>
         </DropdownMenuTrigger>
 
@@ -114,8 +121,9 @@ const handleLogout = async () => {
                       )}
                     </div>
                     <div className="min-w-0">
-                      <p className="font-sans font-semibold text-sm text-neutral-800 dark:text-neutral-200 truncate leading-tight">
-                        {displayName}
+                      <p className="font-sans font-semibold text-sm text-neutral-800 dark:text-neutral-200 truncate leading-tight flex items-center gap-1.5">
+                        <span className="truncate">{displayName}</span>
+                        {isPro && <span className="shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-1.5 py-px font-mono text-[9px] font-bold uppercase text-emerald-500">Pro</span>}
                       </p>
                       <p className="font-sans font-medium text-[11px] text-neutral-400 dark:text-neutral-500 truncate mt-0.5">
                         {email}
@@ -129,8 +137,8 @@ const handleLogout = async () => {
                 {/* ── Menu items ── */}
                 <div className="px-2 py-2 flex flex-col gap-0.5">
                   {[
-                    { label: 'Dashboard', Icon: LuLayoutDashboard, href: '/dashboard' },
-                    { label: 'Profile',   Icon: LuUser,             href: '/profile' },
+                    ...(isPro ? [] : [{ label: 'Upgrade to Pro', Icon: LuSparkles, href: '/pricing' }]),
+                    { label: 'Billing', Icon: LuCreditCard, href: '/account/billing' },
                   ].map(({ label, Icon, href }, i) => (
                     <motion.a
                       key={label}
