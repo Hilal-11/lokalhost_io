@@ -9,19 +9,6 @@ import { cn } from "@/lib/utils";
 import type { DocsNavCategory, DocsNavGroup, DocsNavItem } from "@/lib/docs-nav";
 import { useTemplates } from "@/lib/templates-query";
 import { docsIcons } from "./docs-icons";
-import { Chip, type TintName } from "@/components/lk/cover";
-
-/** Same tint palette as the /mobile sidebar. */
-const CATEGORY_TINT: Record<string, TintName> = {
-  start: "orange",
-  components: "violet",
-  templates: "amber",
-  landings: "sky",
-  blocks: "emerald",
-  designs: "pink",
-  mobile: "indigo",
-  custom: "rose",
-};
 
 const STORAGE_KEY = "lk-docs-sidebar-open";
 
@@ -170,9 +157,7 @@ function CategoryRow({
   const containsActive = category.groups.some((g) => g.items.some((i) => i.url === pathname));
 
   const iconBox = (
-    <Chip tint={CATEGORY_TINT[category.id] ?? "orange"} active={containsActive} size={24} radius={7}>
-      <Icon size={13} strokeWidth={2} />
-    </Chip>
+    <Icon size={16} strokeWidth={2} className="shrink-0 text-neutral-600 dark:text-neutral-400" aria-hidden />
   );
 
   const rowClass =

@@ -33,10 +33,10 @@ import {
   ArrowUpRight,
   type LucideIcon,
 } from "lucide-react";
-import { PiTerminalFill } from "react-icons/pi";
+import Image from "next/image";
 import { FaGithub } from "react-icons/fa";
 import { cn } from "@/lib/utils";
-import { Chip, Cover, type TintName } from "@/components/lk/cover";
+import { Cover } from "@/components/lk/cover";
 import { useUser } from "@/hooks/useUser";
 import type { NavEntry, NavIconKey, NavSection } from "@/lib/mobile/nav";
 import { PACKAGE_MANAGERS } from "@/lib/mobile/install";
@@ -59,22 +59,6 @@ export const NAV_ICONS: Record<NavIconKey, LucideIcon> = {
   contributing: GitPullRequest,
 };
 
-/** Colour per nav item — tinted chips make the sidebar scannable. */
-export const NAV_TINT: Record<NavIconKey, TintName> = {
-  overview: "orange",
-  introduction: "sky",
-  installation: "emerald",
-  cli: "indigo",
-  theming: "pink",
-  changelog: "amber",
-  components: "orange",
-  screens: "violet",
-  blocks: "emerald",
-  templates: "amber",
-  showcase: "pink",
-  contributing: "sky",
-};
-
 const isActive = (pathname: string, href: string) => pathname === href;
 const contains = (pathname: string, e: NavEntry) =>
   pathname === e.href || (e.children?.some((c) => c.href === pathname) ?? false);
@@ -91,9 +75,13 @@ const WORKSPACES = [
 
 function Logo() {
   return (
-    <span className="flex size-7 shrink-0 items-center justify-center rounded-lk bg-lk-fg text-lk-bg">
-      <PiTerminalFill size={16} aria-hidden />
-    </span>
+    <Image
+      src="/logosvglight.svg"
+      alt="Lokalhost.io"
+      width={28}
+      height={28}
+      className="size-7 shrink-0 rounded-sm border border-neutral-200"
+    />
   );
 }
 
@@ -220,9 +208,7 @@ function SidebarItem({
             active || within ? "bg-lk-surface-2" : "hover:bg-lk-surface"
           )}
         >
-          <Chip tint={NAV_TINT[entry.icon]} active={active || within} size={26} radius={8}>
-            <Icon size={14} />
-          </Chip>
+          <Icon size={16} className={active || within ? "text-lk-fg" : "text-lk-muted"} aria-hidden />
           {entry.badge && <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-lk-brand" aria-hidden />}
         </Link>
       </Tip>
@@ -231,9 +217,7 @@ function SidebarItem({
 
   const label = (
     <>
-      <Chip tint={NAV_TINT[entry.icon]} active={active || within} size={22} radius={7}>
-        <Icon size={13} />
-      </Chip>
+      <Icon size={15} className="shrink-0" aria-hidden />
       <span className="flex-1 truncate">{entry.title}</span>
       {entry.badge && <Badge kind={entry.badge} />}
     </>

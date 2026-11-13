@@ -8,7 +8,7 @@ import type { ItemKind, MobileItemSummary, Platform } from "@/lib/mobile/types";
 import { KIND_LABEL } from "@/lib/mobile/catalog";
 import { IconButton, Segmented } from "../ui/primitives";
 import { CategoryCard, FeaturedCard, ItemCard } from "./cards";
-import { Chip, Cover, type TintName } from "@/components/lk/cover";
+import { Cover } from "@/components/lk/cover";
 import { Boxes, LayoutGrid, Sparkles } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -227,21 +227,17 @@ function SectionTitle({
   title,
   action,
   icon,
-  tint = "orange",
 }: {
   id?: string;
   title: string;
   action?: React.ReactNode;
   icon?: React.ReactNode;
-  tint?: TintName;
 }) {
   return (
     <div className="mb-4 flex items-end justify-between gap-4">
       <h2 id={id} className="m-0 flex scroll-mt-20 items-center gap-2.5 text-[20px] font-semibold tracking-tight text-lk-fg">
         {icon && (
-          <Chip tint={tint} size={28} radius={8}>
-            {icon}
-          </Chip>
+          <span aria-hidden className="flex shrink-0 text-lk-muted">{icon}</span>
         )}
         {title}
       </h2>
@@ -322,7 +318,7 @@ export function Overview({ items }: { items: MobileItemSummary[] }) {
 
       {/* categories */}
       <section aria-labelledby="categories">
-        <SectionTitle id="categories" title="Browse by category" icon={<LayoutGrid size={15} />} tint="orange" />
+        <SectionTitle id="categories" title="Browse by category" icon={<LayoutGrid size={15} />} />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
           {categories.map((c) => (
             <CategoryCard key={c.name} {...c} onSelect={() => pickCategory(c.name)} />
@@ -336,7 +332,6 @@ export function Overview({ items }: { items: MobileItemSummary[] }) {
           id="featured"
           title="Featured screens"
           icon={<Sparkles size={15} />}
-          tint="violet"
           action={
             <div className="flex gap-1">
               <IconButton label="Scroll left" onClick={() => scrollRow(-1)}>
@@ -357,7 +352,7 @@ export function Overview({ items }: { items: MobileItemSummary[] }) {
 
       {/* browse */}
       <section aria-labelledby="browse" className={cn("flex flex-col")}>
-        <SectionTitle id="browse" title="All items" icon={<Boxes size={15} />} tint="sky" />
+        <SectionTitle id="browse" title="All items" icon={<Boxes size={15} />} />
         <Explorer
           items={items}
           filters={filters}
