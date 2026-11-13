@@ -182,7 +182,7 @@ export function PreviewPanel({
       </div>
 
       {tab === "preview" ? (
-        <div id={`${panelId}-preview`} role="tabpanel" className={cn("relative flex flex-col lk-dots", fullscreen ? "min-h-0 flex-1" : "h-[680px] md:h-[min(820px,calc(100dvh-160px))] md:min-h-[620px]")}>
+        <div id={`${panelId}-preview`} role="tabpanel" className={cn("relative flex flex-col lk-stage", fullscreen ? "min-h-0 flex-1" : "h-[680px] md:h-[min(820px,calc(100dvh-160px))] md:min-h-[620px]")}>
           {/* device controls */}
           <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 px-3 pt-3">
             <div className="flex flex-wrap items-center gap-1.5">

@@ -249,7 +249,7 @@ function Feedback() {
               whileHover={!loading && !submitted ? { scale: 1.04, y: -1 } : {}}
               whileTap={!loading && !submitted ? { scale: 0.97 } : {}}
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="relative flex items-center justify-center gap-2 text-xs border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 cursor-pointer font-sans font-semibold px-4 py-2 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06)] overflow-hidden group disabled:opacity-60 disabled:cursor-not-allowed"
+              className="relative flex items-center justify-center gap-2 text-xs cursor-pointer font-sans font-semibold px-4 py-2 rounded-md overflow-hidden group disabled:opacity-60 disabled:cursor-not-allowed lk-btn-primary transition-[filter,box-shadow,transform]"
             >
               {/* shimmer sweep */}
               <motion.span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />

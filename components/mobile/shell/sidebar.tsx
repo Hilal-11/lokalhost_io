@@ -36,6 +36,7 @@ import {
 import { PiTerminalFill } from "react-icons/pi";
 import { FaGithub } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import { Chip, Cover, type TintName } from "@/components/lk/cover";
 import { useUser } from "@/hooks/useUser";
 import type { NavEntry, NavIconKey, NavSection } from "@/lib/mobile/nav";
 import { PACKAGE_MANAGERS } from "@/lib/mobile/install";
@@ -56,6 +57,22 @@ export const NAV_ICONS: Record<NavIconKey, LucideIcon> = {
   templates: LayoutTemplate,
   showcase: Sparkles,
   contributing: GitPullRequest,
+};
+
+/** Colour per nav item — tinted chips make the sidebar scannable. */
+export const NAV_TINT: Record<NavIconKey, TintName> = {
+  overview: "orange",
+  introduction: "sky",
+  installation: "emerald",
+  cli: "indigo",
+  theming: "pink",
+  changelog: "amber",
+  components: "orange",
+  screens: "violet",
+  blocks: "emerald",
+  templates: "amber",
+  showcase: "pink",
+  contributing: "sky",
 };
 
 const isActive = (pathname: string, href: string) => pathname === href;
@@ -81,25 +98,29 @@ function Logo() {
 }
 
 function WorkspaceSwitcher({ collapsed }: { collapsed: boolean }) {
+  const triggerClass = cn(
+    "lk-focus lk-transition flex h-10 min-w-0 items-center gap-2 rounded-lk hover:bg-lk-surface data-[state=open]:bg-lk-surface",
+    collapsed ? "w-10 justify-center" : "flex-1 px-1.5"
+  );
+  const triggerBody = (
+    <>
+      <Logo />
+      {!collapsed && (
+        <>
+          <span className="truncate text-[14px] font-semibold text-lk-fg">lokalhost</span>
+          <span className="rounded-full border border-lk-border bg-lk-surface px-1.5 py-px text-[11px] font-medium text-lk-muted">
+            Mobile
+          </span>
+          <ChevronsUpDown size={14} className="ml-auto shrink-0 text-lk-subtle" aria-hidden />
+        </>
+      )}
+    </>
+  );
+
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger
-        aria-label="Switch library"
-        className={cn(
-          "lk-focus lk-transition flex h-10 min-w-0 items-center gap-2 rounded-lk hover:bg-lk-surface data-[state=open]:bg-lk-surface",
-          collapsed ? "w-10 justify-center" : "flex-1 px-1.5"
-        )}
-      >
-        <Logo />
-        {!collapsed && (
-          <>
-            <span className="truncate text-[14px] font-semibold text-lk-fg">lokalhost</span>
-            <span className="rounded-full border border-lk-border bg-lk-surface px-1.5 py-px text-[11px] font-medium text-lk-muted">
-              Mobile
-            </span>
-            <ChevronsUpDown size={14} className="ml-auto shrink-0 text-lk-subtle" aria-hidden />
-          </>
-        )}
+      <DropdownMenu.Trigger aria-label="Switch library" className={triggerClass}>
+        {triggerBody}
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content align="start" sideOffset={6} className={cn(menuContentClass, "w-[248px]")}>
@@ -196,11 +217,13 @@ function SidebarItem({
           className={cn(
             rowBase,
             "relative size-10 justify-center",
-            active || within ? "bg-lk-surface-3 text-lk-fg" : "text-lk-muted hover:bg-lk-surface hover:text-lk-fg"
+            active || within ? "bg-lk-surface-2" : "hover:bg-lk-surface"
           )}
         >
-          <Icon size={16} aria-hidden />
-          {entry.badge && <span className="absolute right-2 top-2 size-1.5 rounded-full bg-lk-new" aria-hidden />}
+          <Chip tint={NAV_TINT[entry.icon]} active={active || within} size={26} radius={8}>
+            <Icon size={14} />
+          </Chip>
+          {entry.badge && <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-lk-brand" aria-hidden />}
         </Link>
       </Tip>
     );
@@ -208,7 +231,9 @@ function SidebarItem({
 
   const label = (
     <>
-      <Icon size={16} className={cn("shrink-0", active || within ? "text-lk-fg" : "text-lk-subtle group-hover/row:text-lk-fg")} aria-hidden />
+      <Chip tint={NAV_TINT[entry.icon]} active={active || within} size={22} radius={7}>
+        <Icon size={13} />
+      </Chip>
       <span className="flex-1 truncate">{entry.title}</span>
       {entry.badge && <Badge kind={entry.badge} />}
     </>
@@ -284,7 +309,9 @@ function SidebarItem({
                     className={cn(
                       rowBase,
                       "h-7 gap-2 px-2 text-[13px]",
-                      on ? "bg-lk-surface-3 font-medium text-lk-fg" : "text-lk-muted hover:bg-lk-surface hover:text-lk-fg"
+                      on
+                        ? "relative bg-lk-brand-soft font-medium text-lk-fg before:absolute before:-left-[9px] before:inset-y-1 before:w-[2px] before:rounded-full before:bg-lk-brand"
+                        : "text-lk-muted hover:bg-lk-surface hover:text-lk-fg"
                     )}
                   >
                     <span className="flex-1 truncate">{c.title}</span>
@@ -469,6 +496,18 @@ export function SidebarBody({
             </ul>
           </div>
         ))}
+
+        {!collapsed && (
+          <Cover tone="warm" pattern="dots" className="mt-6 rounded-lk-card border border-lk-border p-3.5">
+            <p className="m-0 text-[13px] font-semibold text-lk-fg">Unlock every screen</p>
+            <p className="mb-3 mt-1 text-[12px] leading-relaxed text-lk-muted">
+              Pro screens, full app templates and Figma files for React Native and Flutter.
+            </p>
+            <Link href="/pricing" onClick={onNavigate} className="lk-btn lk-btn-sm lk-btn-primary w-full">
+              Get All-Access
+            </Link>
+          </Cover>
+        )}
       </nav>
 
       {/* pinned footer */}

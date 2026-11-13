@@ -533,7 +533,7 @@ function ComponentsBento() {
                         whileHover={{ scale: 1.05, y: -1 }}
                         whileTap={{ scale: 0.97 }}
                         transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                        className="text-xs flex gap-1 items-center justify-center border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 cursor-pointer font-sans font-medium px-4 py-1 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06)] relative overflow-hidden group/btn"
+                        className="text-xs flex gap-1 items-center justify-center cursor-pointer font-sans font-medium px-4 py-1 rounded-md relative overflow-hidden group/btn lk-btn-primary transition-[filter,box-shadow,transform]"
                       >
                         <motion.span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
                         {label}
@@ -692,7 +692,7 @@ function ComponentsBento() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="z-20 relative inline-block border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 cursor-pointer font-sans font-medium px-10 py-2 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] overflow-hidden group/cta"
+              className="z-20 relative inline-block cursor-pointer font-sans font-medium px-10 py-2 rounded-md overflow-hidden group/cta lk-btn-primary transition-[filter,box-shadow,transform]"
             >
               <motion.span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/cta:translate-x-full transition-transform duration-700" />
               Explore Components

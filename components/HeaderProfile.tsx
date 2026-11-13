@@ -182,7 +182,7 @@ const handleLogout = async () => {
                     whileHover={!loggingOut ? { scale: 1.02, y: -0.5 } : {}}
                     whileTap={!loggingOut ? { scale: 0.97 } : {}}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                    className="relative w-full flex items-center justify-between px-3 py-2 rounded-lg border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-900 dark:border-neutral-800 bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_2px_4px_rgba(0,0,0,0.12)] overflow-hidden group/logout disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                    className="relative w-full flex items-center justify-between px-3 py-2 rounded-lg overflow-hidden group/logout disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer lk-btn-secondary transition-[filter,box-shadow,transform]"
                   >
                     <motion.span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/logout:translate-x-full transition-transform duration-700" />
                     <span className="relative z-10 text-sm font-sans font-semibold">

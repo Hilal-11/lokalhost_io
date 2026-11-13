@@ -97,7 +97,7 @@ function Header() {
                       <DropdownMenuContent className="lg:w-[720px] pt-3 pb-4 h-auto my-5.5" align="start">
                         <div className="w-full flex justify-between px-6 py-2 items-center border-b-1">
                           <div><h2 className="text-ms font-sans font-medium">Browse Products</h2></div>
-                          <div><button className="relative cursor-pointer font-sans font-medium px-10 py-2 rounded-md text-sm bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]">Start Building</button></div>
+                          <div><button className="relative cursor-pointer font-sans font-medium px-10 py-2 rounded-md text-sm lk-btn-primary transition-[filter,box-shadow,transform]">Start Building</button></div>
                         </div>
 
                         
@@ -162,7 +162,7 @@ function Header() {
                 <div className=" lg:block xl:block h-full relative left-2">
                   <div className="flex justify-end items-center gap-1">
                       <SearchingMain />
-                      <button onClick={() => setShowFeedback(prev => !prev)} className="flex items-center justify-center gap-2 text-xs border-t-[1px] border-l-[1px] border-r-[1px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer font-sans font-medium px-4 h-8 pb-px rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]"><span className="text-sm"><MdOutlineFeedback /></span>Feedback</button>
+                      <button onClick={() => setShowFeedback(prev => !prev)} className="lk-btn lk-btn-sm lk-btn-secondary font-sans text-xs"><span className="text-sm"><MdOutlineFeedback /></span>Feedback</button>
                       {/*  feedback  */}
                       { showFeedback && <div ref={feedbackRef} onMouseDown={(e) => e.stopPropagation()} className="absolute inset-0 top-10"><Feedback /></div> }
                   </div>
@@ -170,7 +170,7 @@ function Header() {
 
                   {
                     !user && (
-                      <Link href="/login" prefetch={true} onClick={handleLinkClick} className="ml-[4px] w-full whitespace-nowrap relative cursor-pointer font-sans font-medium py-2 rounded-md text-xs px-4 bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-2">Login</Link>)
+                      <Link href="/login" prefetch={true} onClick={handleLinkClick} className="lk-btn lk-btn-sm lk-btn-primary ml-[4px] font-sans text-xs">Login</Link>)
                   }
                   <span className="text-zinc-300 dark:text-zinc-700"></span>
                   {/* <HeaderPro /> */}
@@ -193,7 +193,7 @@ function Header() {
                    
                   {!isMobileMenuOpen ? <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="flex md:flex lg:hidden bg-neutral-100 dark:bg-neutral-900 rounded-sm p-1 text-2xl text-neutral-700 dark:text-neutral-300"><IoMenu /></button> : <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="flex md:flex lg:hidden text-2xl text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-900 rounded-sm p-1"><RiCloseFill /></button>}
                   {/* {
-                    isLoggedIn ? (<HeaderProfile user={user} userEmail={userEmail} />) : (<Link href="/signup" className="w-full whitespace-nowrap relative cursor-pointer font-sans font-medium py-2 rounded-md text-xs px-4 bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-2">Signup</Link>)
+                    isLoggedIn ? (<HeaderProfile user={user} userEmail={userEmail} />) : (<Link href="/signup" className="w-full whitespace-nowrap relative cursor-pointer font-sans font-medium py-2 rounded-md text-xs px-4 flex items-center justify-center gap-2 lk-btn-primary transition-[filter,box-shadow,transform]">Signup</Link>)
                    } */}
                    
                 </div>
@@ -212,7 +212,7 @@ function Header() {
                           <div className="w-full flex justify-between px-2 items-center ">
                             <div onClick={() => setShowServices(!showservices)} className="flex justify-between items-center w-full">
                               <h2 className="text-ms font-sans font-medium">Browse Products</h2>
-                              <button className="relative cursor-pointer font-sans font-medium py-2 rounded-md text-xs px-2 bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-2">
+                              <button className="relative cursor-pointer font-sans font-medium py-2 rounded-md text-xs px-2 flex items-center justify-center gap-2 lk-btn-secondary transition-[filter,box-shadow,transform]">
                                 {
                                   !showservices ? (<span><FaChevronDown /></span>) : (<span><FaChevronUp/></span>)
                                 }
@@ -282,7 +282,7 @@ function Header() {
                           </div>
                         </div>
                         <div className="flex justify-between items-center gap-3 px-2">
-                          <button className="w-full whitespace-nowrap relative cursor-pointer font-sans font-medium py-2 rounded-md text-sm bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-2">Start Building <span><HiOutlineArrowNarrowRight /></span></button>
+                          <button className="w-full whitespace-nowrap relative cursor-pointer font-sans font-medium py-2 rounded-md text-sm flex items-center justify-center gap-2 lk-btn-primary transition-[filter,box-shadow,transform]">Start Building <span><HiOutlineArrowNarrowRight /></span></button>
                         </div>
                         
                       </div>

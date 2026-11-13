@@ -113,7 +113,7 @@ function Templates() {
                   onClick={() => setActiveFilter(filter)}
                   className={
                     activeFilter === filter
-                      ? "bg-gradient-to-t from-[#262626] to-[#525252] text-primary-foreground"
+                      ? "lk-btn-primary transition-[filter,box-shadow,transform]"
                       : ""
                   }
                 >

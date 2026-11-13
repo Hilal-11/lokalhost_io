@@ -165,3 +165,226 @@
   opacity: 0.6;
   user-select: none;
 }
+
+/* ==================================================================== */
+/* Brand, tints, gradients & patterns                                   */
+/* Orange is the only brand colour. Tints are for small accents         */
+/* (sidebar chips, category dots, cover gradients) — never body text.   */
+/* ==================================================================== */
+
+:root {
+  --lk-brand-300: #fdba74;
+  --lk-brand-400: #fb923c;
+  --lk-brand: #f97316;
+  --lk-brand-600: #ea580c;
+  --lk-brand-700: #c2410c;
+  --lk-brand-soft: rgb(249 115 22 / 0.1);
+  --lk-brand-text: #c2410c; /* AA on white */
+
+  --lk-tint-orange: #f97316;
+  --lk-tint-pink: #ec4899;
+  --lk-tint-violet: #8b5cf6;
+  --lk-tint-indigo: #6366f1;
+  --lk-tint-sky: #0ea5e9;
+  --lk-tint-emerald: #10b981;
+  --lk-tint-amber: #f59e0b;
+  --lk-tint-rose: #f43f5e;
+
+  --lk-pattern: rgb(10 10 10 / 0.07);
+  --lk-cover-strength: 34%;
+}
+
+.dark {
+  --lk-brand-soft: rgb(249 115 22 / 0.14);
+  --lk-brand-text: #fdba74;
+  --lk-pattern: rgb(255 255 255 / 0.07);
+  --lk-cover-strength: 24%;
+}
+
+@theme inline {
+  --color-lk-brand: var(--lk-brand);
+  --color-lk-brand-400: var(--lk-brand-400);
+  --color-lk-brand-600: var(--lk-brand-600);
+  --color-lk-brand-soft: var(--lk-brand-soft);
+  --color-lk-brand-text: var(--lk-brand-text);
+}
+
+/* ------------------------------ Buttons ------------------------------ */
+/* Glossy: top sheen + inner highlight + soft coloured drop shadow.       */
+
+@utility lk-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.25rem;
+  padding-inline: 0.875rem;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  transition: transform 150ms var(--lk-ease), box-shadow 150ms var(--lk-ease), background 150ms var(--lk-ease), filter 150ms var(--lk-ease);
+  &:focus-visible {
+    outline: 2px solid var(--lk-ring);
+    outline-offset: 2px;
+  }
+  &:active {
+    transform: translateY(0.5px) scale(0.985);
+  }
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+@utility lk-btn-sm {
+  height: 2rem;
+  padding-inline: 0.75rem;
+  font-size: 12.5px;
+  border-radius: 8px;
+}
+
+@utility lk-btn-lg {
+  height: 2.75rem;
+  padding-inline: 1.25rem;
+  font-size: 14.5px;
+  border-radius: 12px;
+}
+
+@utility lk-btn-primary {
+  color: #fff;
+  border: 1px solid var(--lk-brand-700);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.22), rgb(255 255 255 / 0) 52%),
+    linear-gradient(180deg, var(--lk-brand-400) 0%, var(--lk-brand) 55%, var(--lk-brand-600) 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.4),
+    inset 0 -1px 0 rgb(0 0 0 / 0.12),
+    0 1px 2px rgb(0 0 0 / 0.2),
+    0 6px 18px -6px rgb(249 115 22 / 0.65);
+  text-shadow: 0 1px 0 rgb(0 0 0 / 0.18);
+  &:hover {
+    filter: brightness(1.06) saturate(1.05);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.45),
+      inset 0 -1px 0 rgb(0 0 0 / 0.12),
+      0 1px 2px rgb(0 0 0 / 0.2),
+      0 10px 24px -6px rgb(249 115 22 / 0.75);
+  }
+  &:active {
+    filter: brightness(0.97);
+    box-shadow:
+      inset 0 2px 4px rgb(0 0 0 / 0.18),
+      0 1px 2px rgb(0 0 0 / 0.2);
+  }
+}
+
+@utility lk-btn-secondary {
+  color: var(--lk-fg);
+  border: 1px solid var(--lk-border-strong);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0) 60%),
+    linear-gradient(180deg, var(--lk-bg), var(--lk-surface));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 1px 2px rgb(0 0 0 / 0.08);
+  &:hover {
+    background: var(--lk-surface-2);
+  }
+}
+
+/* ------------------------------ Covers ------------------------------- */
+/* Soft mesh gradient banners. Tone sets three colours; pattern overlays. */
+
+.lk-tone-warm { --c1: var(--lk-tint-orange); --c2: var(--lk-tint-pink); --c3: var(--lk-tint-amber); }
+.lk-tone-violet { --c1: var(--lk-tint-violet); --c2: var(--lk-tint-pink); --c3: var(--lk-tint-orange); }
+.lk-tone-sky { --c1: var(--lk-tint-sky); --c2: var(--lk-tint-indigo); --c3: var(--lk-tint-violet); }
+.lk-tone-mint { --c1: var(--lk-tint-emerald); --c2: var(--lk-tint-sky); --c3: var(--lk-tint-amber); }
+.lk-tone-rose { --c1: var(--lk-tint-rose); --c2: var(--lk-tint-orange); --c3: var(--lk-tint-violet); }
+
+.lk-cover {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(55% 110% at 0% 0%, color-mix(in oklab, var(--c1, var(--lk-brand)) var(--lk-cover-strength), transparent), transparent 70%),
+    radial-gradient(45% 120% at 100% 0%, color-mix(in oklab, var(--c2, var(--lk-tint-pink)) var(--lk-cover-strength), transparent), transparent 72%),
+    radial-gradient(60% 90% at 65% 110%, color-mix(in oklab, var(--c3, var(--lk-tint-violet)) calc(var(--lk-cover-strength) * 0.8), transparent), transparent 75%),
+    var(--lk-bg-subtle);
+}
+/* lighter version for card thumbnails */
+.lk-cover-soft {
+  --lk-cover-strength: 18%;
+}
+.dark .lk-cover-soft {
+  --lk-cover-strength: 14%;
+}
+
+.lk-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.lk-cover-grid::before {
+  background-image:
+    linear-gradient(to right, var(--lk-pattern) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--lk-pattern) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 80% 90% at 75% 10%, #000 25%, transparent 80%);
+}
+.lk-cover-pixels::before {
+  background-image: radial-gradient(var(--lk-pattern) 1.25px, transparent 1.35px);
+  background-size: 6px 6px;
+  mask-image: linear-gradient(to bottom, #000, transparent 95%);
+}
+.lk-cover-dots::before {
+  background-image: radial-gradient(var(--lk-pattern) 1px, transparent 1.1px);
+  background-size: 16px 16px;
+}
+
+/* glassy stacked shapes (decorative, right side of large covers) */
+.lk-glass {
+  position: absolute;
+  border-radius: 22px;
+  border: 1px solid rgb(255 255 255 / 0.35);
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.08));
+  box-shadow: 0 20px 40px -20px color-mix(in oklab, var(--c1, var(--lk-brand)) 60%, transparent);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+.dark .lk-glass {
+  border-color: rgb(255 255 255 / 0.12);
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.14), rgb(255 255 255 / 0.02));
+}
+
+/* preview stage: dots + a faint brand glow */
+@utility lk-stage {
+  background-color: var(--lk-bg-subtle);
+  background-image:
+    radial-gradient(40% 50% at 50% 40%, color-mix(in oklab, var(--lk-brand) 8%, transparent), transparent 70%),
+    radial-gradient(var(--lk-border-strong) 1px, transparent 1px);
+  background-size: 100% 100%, 16px 16px;
+}
+
+/* tinted icon chip: set --tint inline */
+.lk-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--tint);
+  background: color-mix(in oklab, var(--tint) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--tint) 22%, transparent);
+}
+.lk-chip[data-active="true"] {
+  color: #fff;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--tint) 80%, white), var(--tint));
+  border-color: color-mix(in oklab, var(--tint) 70%, black);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 2px 8px -2px color-mix(in oklab, var(--tint) 60%, transparent);
+}

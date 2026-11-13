@@ -2,25 +2,31 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeft, ArrowRight, ChevronRight, Pencil, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Cover, type Tone } from "@/components/lk/cover";
 
 /* ------------------------------------------------------------------ */
 /* Layout: content column + optional right rail (≥1280px).            */
 /* ------------------------------------------------------------------ */
 
-export function PageLayout({ children, rail }: { children: ReactNode; rail?: ReactNode }) {
+export function PageLayout({ children, rail, hero }: { children: ReactNode; rail?: ReactNode; hero?: ReactNode }) {
   return (
-    <div className="flex justify-center">
-      <article className="min-w-0 flex-1 px-4 pb-20 pt-8 sm:px-8 lg:px-10 lg:pt-10">
-        <div className="mx-auto w-full max-w-[var(--lk-content-max)]">{children}</div>
-      </article>
-      {rail && (
-        <aside
-          aria-label="On this page"
-          className="lk-scroll sticky top-0 hidden h-dvh w-[var(--lk-toc-w)] shrink-0 overflow-y-auto py-10 pr-6 xl:block"
-        >
-          {rail}
-        </aside>
-      )}
+    <div>
+      {/* hero spans the full width, including above the "On this page" rail */}
+      {hero}
+      <div className="flex">
+        {/* full-bleed: content spans the whole column, only a small gutter */}
+        <article className="min-w-0 flex-1 px-4 pb-20 pt-6 sm:px-6 lg:pt-8">
+          <div className="w-full">{children}</div>
+        </article>
+        {rail && (
+          <aside
+            aria-label="On this page"
+            className="lk-scroll sticky top-0 hidden h-dvh w-[var(--lk-toc-w)] shrink-0 overflow-y-auto py-8 pr-6 xl:block"
+          >
+            {rail}
+          </aside>
+        )}
+      </div>
     </div>
   );
 }
@@ -51,15 +57,53 @@ export function Breadcrumb({ items }: { items: { title: string; href?: string }[
   );
 }
 
-export function PageHeader({ title, description, children }: { title: string; description?: string; children?: ReactNode }) {
+export function PageHeader({
+  title,
+  description,
+  children,
+  className,
+}: {
+  title: string;
+  description?: string;
+  children?: ReactNode;
+  className?: string;
+}) {
   return (
-    <header className="mb-8">
+    <header className={cn("mb-8", className)}>
       <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,440px)] md:items-start md:gap-10">
         <h1 className="m-0 text-[32px] font-semibold leading-tight tracking-[-0.02em] text-lk-fg sm:text-[36px]">{title}</h1>
         {description && <p className="m-0 text-[15px] leading-relaxed text-lk-muted md:pt-2 md:text-right">{description}</p>}
       </div>
       {children && <div className="mt-6 flex flex-wrap items-center gap-3">{children}</div>}
     </header>
+  );
+}
+
+/** Full-bleed gradient + grid banner holding breadcrumb, title and actions. */
+export function PageHero({
+  tone = "violet",
+  breadcrumb,
+  title,
+  description,
+  children,
+}: {
+  tone?: Tone;
+  breadcrumb?: { title: string; href?: string }[];
+  title: string;
+  description?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <Cover
+      tone={tone}
+      pattern="grid"
+      className="border-b border-lk-border px-4 pb-7 pt-6 sm:px-6 lg:pt-8"
+    >
+      {breadcrumb && <Breadcrumb items={breadcrumb} />}
+      <PageHeader title={title} description={description} className="mb-0">
+        {children}
+      </PageHeader>
+    </Cover>
   );
 }
 

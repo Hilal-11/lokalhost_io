@@ -10,6 +10,7 @@ import PropsTable from "@/components/mdx/props-table";
 import { ManualInstallation } from "@/components/mdx/manual-installation";
 import { DocsToc } from "@/components/docs/docs-toc";
 import { DocsOverview } from "@/components/docs/docs-overview";
+import { Cover, toneFor } from "@/components/lk/cover";
 
 export default async function Page(props: { params: Promise<{ slug?: string[] }> }) {
   const params = await props.params;
@@ -46,6 +47,11 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
     <div className="flex">
       <article className="min-w-0 flex-1 px-4 pb-24 pt-8 sm:px-8 lg:px-12 lg:pt-10">
         <div className="mx-auto w-full max-w-[980px]">
+          <Cover
+            tone={toneFor(navItem?.group ?? category?.title ?? "Docs")}
+            pattern="grid"
+            className="mb-10 rounded-2xl border border-neutral-200 px-5 py-6 sm:px-8 sm:py-8 dark:border-neutral-800"
+          >
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-1 text-[13px] text-neutral-500 dark:text-neutral-400">
             <Link href="/docs" className="transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">
@@ -70,7 +76,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
           </nav>
 
           {/* Header */}
-          <header className="mb-10 grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,420px)] md:items-start md:gap-10">
+          <header className="grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,420px)] md:items-start md:gap-10">
             <h1 className="text-3xl font-semibold tracking-tight text-neutral-950 sm:text-4xl dark:text-white">
               {page.data.title}
             </h1>
@@ -80,6 +86,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
               </p>
             )}
           </header>
+          </Cover>
 
           {/* Body */}
           <div className="prose lk-docs-body max-w-none">
