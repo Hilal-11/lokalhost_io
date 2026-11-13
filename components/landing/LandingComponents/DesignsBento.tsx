@@ -25,7 +25,7 @@ export default function FeaturesBento() {
             </motion.p>
             <div className="flex flex-wrap justify-center items-center pt-3 pb-5 gap-3 lg:gap-6">
               <button className="border-1 border-orange-400 cursor-pointer px-8 py-[9px] rounded-lg text-sm font-sans font-medium text-neutral-800 bg-gradient-to-r from-[#F6D5F7] to-[#FBE9D7] shadow-sm flex items-center justify-center gap-2"><span><LuFigma /></span> Get Full Design Access</button>
-              <button className="px-8 py-[10px] cursor-pointer border-t border-l border-r border-neutral-800 rounded-lg whitespace-nowrap font-sans font-medium text-sm text-neutral-200 dark:text-neutral-200 bg-gradient-to-t from-[#262626] to-[#525252] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]">Get All Premium Templates</button>
+              <button className="px-8 py-[10px] cursor-pointer rounded-lg whitespace-nowrap font-sans font-medium text-sm lk-btn-primary transition-[filter,box-shadow,transform]">Get All Premium Templates</button>
           </div>
         </div>
         <div className="pt-10 relative h-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-0 lg:gap-0 border-b border-dashed px-px">
@@ -62,7 +62,7 @@ export default function FeaturesBento() {
         </div> 
         <div className='w-full flex items-center justify-center py-10 lg:py-16 border-b border-dashed relative lg:mask-x-from-60% mask-x-from-70% to-100%'>
           <StripedPattern />
-          <Link href="/designs" className='z-20 border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer font-sans font-medium px-10 py-2 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]'>Get Designs UI kits</Link>
+          <Link href="/designs" className='z-20 relative cursor-pointer font-sans font-medium px-10 py-2 rounded-md lk-btn-primary transition-[filter,box-shadow,transform]'>Get Designs UI kits</Link>
         </div>
     </div>
   )

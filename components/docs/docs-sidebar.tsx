@@ -9,6 +9,19 @@ import { cn } from "@/lib/utils";
 import type { DocsNavCategory, DocsNavGroup, DocsNavItem } from "@/lib/docs-nav";
 import { useTemplates } from "@/lib/templates-query";
 import { docsIcons } from "./docs-icons";
+import { Chip, type TintName } from "@/components/lk/cover";
+
+/** Same tint palette as the /mobile sidebar. */
+const CATEGORY_TINT: Record<string, TintName> = {
+  start: "orange",
+  components: "violet",
+  templates: "amber",
+  landings: "sky",
+  blocks: "emerald",
+  designs: "pink",
+  mobile: "indigo",
+  custom: "rose",
+};
 
 const STORAGE_KEY = "lk-docs-sidebar-open";
 
@@ -56,7 +69,7 @@ function NavLink({ item, active, onNavigate }: { item: DocsNavItem; active: bool
       {active && (
         <motion.span
           layoutId="docs-sidebar-active"
-          className="absolute inset-y-0 -left-px w-px bg-neutral-900 dark:bg-white"
+          className="absolute inset-y-0 -left-px w-[2px] rounded-full bg-lk-brand"
           transition={{ type: "spring", bounce: 0.15, duration: 0.45 }}
         />
       )}
@@ -157,16 +170,9 @@ function CategoryRow({
   const containsActive = category.groups.some((g) => g.items.some((i) => i.url === pathname));
 
   const iconBox = (
-    <span
-      className={cn(
-        "flex size-6 shrink-0 items-center justify-center rounded-md border transition-colors",
-        containsActive
-          ? "border-neutral-300 bg-white text-neutral-900 shadow-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-          : "border-neutral-200 bg-neutral-50 text-neutral-500 group-hover/cat:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400 dark:group-hover/cat:text-neutral-100"
-      )}
-    >
+    <Chip tint={CATEGORY_TINT[category.id] ?? "orange"} active={containsActive} size={24} radius={7}>
       <Icon size={13} strokeWidth={2} />
-    </span>
+    </Chip>
   );
 
   const rowClass =
@@ -359,13 +365,13 @@ export function SidebarContent({
           <Link
             href="/custom-work"
             onClick={onNavigate}
-            className="group/promo mt-8 block overflow-hidden rounded-xl border border-neutral-200 bg-gradient-to-b from-neutral-50 to-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800 dark:from-neutral-900 dark:to-neutral-950"
+            className="lk-cover lk-tone-warm lk-cover-dots group/promo mt-8 block rounded-xl border border-neutral-200 p-4 transition-all hover:-translate-y-0.5 hover:shadow-md dark:border-neutral-800"
           >
             <p className="text-[13px] font-semibold text-neutral-900 dark:text-neutral-100">Need something custom?</p>
             <p className="mt-1 text-[12px] leading-relaxed text-neutral-500 dark:text-neutral-400">
               We design and build landing pages, dashboards and full SaaS apps.
             </p>
-            <span className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-neutral-900 dark:text-white">
+            <span className="lk-btn lk-btn-sm lk-btn-primary mt-3 w-full">
               Start a project
               <ArrowUpRight size={13} className="transition-transform group-hover/promo:-translate-y-px group-hover/promo:translate-x-px" />
             </span>

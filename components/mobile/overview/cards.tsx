@@ -6,6 +6,10 @@ import { useTheme } from "next-themes";
 import { ArrowUpRight, Globe } from "lucide-react";
 import { SiAndroid, SiApple } from "react-icons/si";
 import { cn } from "@/lib/utils";
+import { TINTS, tintFor, toneFor, type Tone } from "@/components/lk/cover";
+import type { ItemKind } from "@/lib/mobile/types";
+
+const KIND_TONE: Record<ItemKind, Tone> = { component: "warm", screen: "violet", block: "mint" };
 import type { MobileItemSummary, PreviewId } from "@/lib/mobile/types";
 import { DEVICES, frameSize, type PhonePlatform } from "../preview/phone-frame";
 import { PhoneScreen } from "../preview/preview-panel";
@@ -94,8 +98,8 @@ function PlatformIcons({ item }: { item: MobileItemSummary }) {
 export function ItemCard({ item }: { item: MobileItemSummary }) {
   return (
     <article className={cardShell}>
-      <div className="relative flex h-[232px] justify-center overflow-hidden border-b border-lk-border lk-dots">
-        <PhoneThumb preview={item.preview} scale={0.46} className="mt-6 lk-transition group-hover:-translate-y-1" />
+      <div className={`lk-cover lk-cover-soft lk-cover-pixels lk-tone-${KIND_TONE[item.kind]} relative flex h-[300px] justify-center overflow-hidden border-b border-lk-border`}>
+        <PhoneThumb preview={item.preview} scale={0.6} className="mt-7 lk-transition group-hover:-translate-y-1" />
         <span className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-lk-bg-subtle to-transparent" />
         {item.flow && (
           <span className="absolute left-3 top-3 rounded-full border border-lk-border bg-lk-bg/80 px-2 py-0.5 text-[11px] font-medium text-lk-muted backdrop-blur">
@@ -128,7 +132,7 @@ export function ItemCard({ item }: { item: MobileItemSummary }) {
 export function ItemCardSkeleton() {
   return (
     <div className="flex flex-col overflow-hidden rounded-lk-card border border-lk-border" aria-hidden>
-      <SkeletonBlock className="h-[232px] rounded-none" />
+      <SkeletonBlock className="h-[300px] rounded-none" />
       <div className="flex flex-col gap-2 p-3.5">
         <SkeletonBlock className="h-3.5 w-1/2" />
         <SkeletonBlock className="h-3 w-5/6" />
@@ -155,12 +159,13 @@ export function CategoryCard({
 }) {
   return (
     <div className={cardShell}>
-      <div className="relative flex h-[148px] justify-center overflow-hidden border-b border-lk-border lk-dots">
-        <PhoneThumb preview={preview} scale={0.34} className="mt-5 lk-transition group-hover:-translate-y-1" />
+      <div className={`lk-cover lk-cover-soft lk-cover-pixels lk-tone-${toneFor(name)} relative flex h-[240px] justify-center overflow-hidden border-b border-lk-border`}>
+        <PhoneThumb preview={preview} scale={0.52} className="mt-6 lk-transition group-hover:-translate-y-1" />
         <span className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-lk-bg-subtle to-transparent" />
       </div>
       <div className="flex items-center justify-between px-3.5 py-3">
-        <button type="button" onClick={onSelect} className={`${stretch} text-left text-[13.5px] font-medium text-lk-fg`}>
+        <button type="button" onClick={onSelect} className={`${stretch} flex items-center gap-2 text-left text-[13.5px] font-medium text-lk-fg`}>
+          <span aria-hidden className="size-2 rounded-full" style={{ background: TINTS[tintFor(name)] }} />
           {name}
           <span className="sr-only">, {count} items</span>
         </button>
@@ -177,7 +182,7 @@ export function CategoryCard({
 export function FeaturedCard({ item }: { item: MobileItemSummary }) {
   return (
     <div className={`${cardShell} w-[236px] shrink-0 snap-start gap-3 p-3`}>
-      <div className="flex justify-center rounded-lk bg-lk-bg-subtle py-4">
+      <div className={`lk-cover lk-cover-soft lk-cover-pixels lk-tone-${KIND_TONE[item.kind]} flex justify-center rounded-lk py-4`}>
         <PhoneThumb preview={item.preview} scale={0.46} />
       </div>
       <div className="flex items-center gap-2 px-0.5">

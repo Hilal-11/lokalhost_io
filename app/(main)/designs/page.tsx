@@ -131,7 +131,7 @@ function DesignKits() {
           <button className="border border-orange-400 cursor-pointer px-8 py-[9px] rounded-lg text-sm font-sans font-medium text-neutral-800 bg-gradient-to-r from-[#F6D5F7] to-[#FBE9D7] shadow-sm flex items-center justify-center gap-2">
             <LuFigma /> Get Full Design Access
           </button>
-          <button className="px-8 py-[10px] cursor-pointer border-t border-l border-r border-neutral-800 rounded-lg whitespace-nowrap font-sans font-medium text-sm text-neutral-200 bg-gradient-to-t from-[#262626] to-[#525252] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]">
+          <button className="px-8 py-[10px] cursor-pointer rounded-lg whitespace-nowrap font-sans font-medium text-sm lk-btn-primary transition-[filter,box-shadow,transform]">
             Get All Premium Templates
           </button>
         </div>
@@ -301,7 +301,7 @@ function DesignKits() {
                     key={f}
                     variant={activeFilter === f ? 'default' : 'outline'}
                     onClick={() => setActiveFilter(f)}
-                    className={activeFilter === f ? 'bg-gradient-to-t from-[#262626] to-[#525252] text-primary-foreground' : ''}
+                    className={activeFilter === f ? 'lk-btn-primary transition-[filter,box-shadow,transform]' : ''}
                   >
                     {f}
                   </Button>
@@ -337,7 +337,7 @@ function DesignKits() {
                           day: 'numeric',
                         })}
                       </span>
-                      <span className="px-4 py-2 border-t border-l border-r border-neutral-800 rounded-lg whitespace-nowrap font-sans font-medium text-xs text-neutral-200 bg-gradient-to-t from-[#262626] to-[#525252] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06)]">
+                      <span className="px-4 py-2 rounded-lg whitespace-nowrap font-sans font-medium text-xs lk-btn-secondary transition-[filter,box-shadow,transform]">
                         {design.price === "free" || design.price === "Free" ? "Free" : design.price}
                       </span>
                     </div>
@@ -345,7 +345,7 @@ function DesignKits() {
                     <div className="flex w-full justify-start items-center pt-4">
                       <button
                         onClick={() => router.push(`/designs/design/${design.id}`)}
-                        className="px-8 py-[6px] cursor-pointer border-t border-l border-r border-neutral-800 rounded-lg whitespace-nowrap font-sans font-medium text-sm text-neutral-200 bg-gradient-to-t from-[#262626] to-[#525252] shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06)] flex gap-2 items-center"
+                        className="px-8 py-[6px] cursor-pointer rounded-lg whitespace-nowrap font-sans font-medium text-sm flex gap-2 items-center lk-btn-primary transition-[filter,box-shadow,transform]"
                       >
                         View Template <HiArrowNarrowRight className="text-lg" />
                       </button>

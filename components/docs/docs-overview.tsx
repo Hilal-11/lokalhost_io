@@ -10,6 +10,18 @@ import type { DocsNavCategory, DocsNavItem } from "@/lib/docs-nav";
 import { useTemplates } from "@/lib/templates-query";
 import { componentPreviews } from "@/content/docs/componentsAll";
 import { docsIcons } from "./docs-icons";
+import { Chip, Cover, type TintName } from "@/components/lk/cover";
+
+const SECTION_TINT: Partial<Record<keyof typeof docsIcons, TintName>> = {
+  start: "orange",
+  components: "violet",
+  templates: "amber",
+  landings: "sky",
+  blocks: "emerald",
+  designs: "pink",
+  mobile: "indigo",
+  custom: "rose",
+};
 
 /* ------------------------------------------------------------------ */
 /* Building blocks                                                    */
@@ -36,9 +48,9 @@ function SectionHeader({
   return (
     <div id={id} className="mb-6 flex scroll-mt-28 flex-wrap items-end justify-between gap-3">
       <div className="flex items-start gap-3">
-        <span className="mt-0.5 flex size-9 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-700 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300">
+        <Chip tint={SECTION_TINT[icon] ?? "orange"} size={36} radius={11} className="mt-0.5">
           <Icon size={17} />
-        </span>
+        </Chip>
         <div>
           <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-neutral-950 dark:text-white">
             {title}
@@ -237,9 +249,10 @@ export function DocsOverview({ categories }: { categories: DocsNavCategory[] }) 
   return (
     <div className="mx-auto w-full max-w-[1240px]">
       {/* ── Hero ── */}
-      <header className="grid gap-6 pb-12 pt-2 md:grid-cols-[minmax(0,1fr)_minmax(0,460px)] md:items-start md:gap-12">
+      <Cover tone="violet" pattern="grid" className="mb-10 rounded-3xl border border-neutral-200 px-6 py-10 sm:px-10 sm:py-12 dark:border-neutral-800">
+      <header className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,460px)] md:items-start md:gap-12">
         <div>
-          <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[12px] font-medium text-neutral-600 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300">
+          <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-white/70 px-2.5 py-1 backdrop-blur dark:bg-neutral-950/60 text-[12px] font-medium text-neutral-600 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300">
             <span className="relative flex size-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
               <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500" />
@@ -258,7 +271,7 @@ export function DocsOverview({ categories }: { categories: DocsNavCategory[] }) 
           <div className="mt-5 flex flex-wrap items-center gap-2">
             <Link
               href="/docs/installation"
-              className="group inline-flex h-9 items-center gap-1.5 rounded-lg bg-neutral-900 px-3.5 text-[13px] font-medium text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-[0.98] dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+              className="group lk-btn lk-btn-primary"
             >
               <Terminal size={14} />
               Get started
@@ -266,13 +279,14 @@ export function DocsOverview({ categories }: { categories: DocsNavCategory[] }) 
             </Link>
             <Link
               href="/templates"
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-neutral-200 px-3.5 text-[13px] font-medium text-neutral-700 transition-all hover:border-neutral-300 hover:bg-neutral-50 active:scale-[0.98] dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:bg-neutral-900"
+              className="lk-btn lk-btn-secondary"
             >
               Browse templates
             </Link>
           </div>
         </div>
       </header>
+      </Cover>
 
       {/* ── Filter ── */}
       <div className="mb-10 flex items-center gap-3">

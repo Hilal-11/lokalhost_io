@@ -8,6 +8,8 @@ import type { ItemKind, MobileItemSummary, Platform } from "@/lib/mobile/types";
 import { KIND_LABEL } from "@/lib/mobile/catalog";
 import { IconButton, Segmented } from "../ui/primitives";
 import { CategoryCard, FeaturedCard, ItemCard } from "./cards";
+import { Chip, Cover, type TintName } from "@/components/lk/cover";
+import { Boxes, LayoutGrid, Sparkles } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /* Filters                                                            */
@@ -165,7 +167,7 @@ export function EmptyResults({ onReset }: { onReset: () => void }) {
       <button
         type="button"
         onClick={onReset}
-        className="lk-focus lk-transition mt-3 h-8 rounded-lk border border-lk-border bg-lk-surface px-3 text-[13px] font-medium text-lk-fg hover:bg-lk-surface-2"
+        className="lk-btn lk-btn-sm lk-btn-primary mt-3"
       >
         Clear filters
       </button>
@@ -204,7 +206,7 @@ export function Explorer({
         {results.length} {results.length === 1 ? "result" : "results"}
       </p>
       {results.length ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {results.map((i) => (
             <ItemCard key={i.href} item={i} />
           ))}
@@ -220,10 +222,27 @@ export function Explorer({
 /* Overview — hero, categories, featured, browse                      */
 /* ------------------------------------------------------------------ */
 
-function SectionTitle({ id, title, action }: { id?: string; title: string; action?: React.ReactNode }) {
+function SectionTitle({
+  id,
+  title,
+  action,
+  icon,
+  tint = "orange",
+}: {
+  id?: string;
+  title: string;
+  action?: React.ReactNode;
+  icon?: React.ReactNode;
+  tint?: TintName;
+}) {
   return (
     <div className="mb-4 flex items-end justify-between gap-4">
-      <h2 id={id} className="m-0 scroll-mt-20 text-[20px] font-semibold tracking-tight text-lk-fg">
+      <h2 id={id} className="m-0 flex scroll-mt-20 items-center gap-2.5 text-[20px] font-semibold tracking-tight text-lk-fg">
+        {icon && (
+          <Chip tint={tint} size={28} radius={8}>
+            {icon}
+          </Chip>
+        )}
         {title}
       </h2>
       {action}
@@ -265,9 +284,14 @@ export function Overview({ items }: { items: MobileItemSummary[] }) {
   return (
     <div className="flex flex-col gap-16">
       {/* hero */}
-      <section className="flex flex-col gap-6 pt-4">
-        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-lk-border bg-lk-surface px-2.5 py-1 text-[12px] text-lk-muted">
-          <span className="size-1.5 rounded-full bg-lk-success" aria-hidden />
+      <Cover
+        tone="violet"
+        pattern="grid"
+        shapes
+        className="-mx-4 -mt-6 flex flex-col gap-6 border-b border-lk-border px-4 pb-12 pt-12 sm:-mx-6 sm:px-6 lg:-mt-8 lg:pb-16 lg:pt-16"
+      >
+        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-lk-border bg-lk-bg/70 px-2.5 py-1 text-[12px] text-lk-muted backdrop-blur">
+          <span className="size-1.5 rounded-full bg-lk-brand" aria-hidden />
           React Native · Expo · Flutter
         </span>
         <div className="flex flex-col gap-3">
@@ -282,24 +306,24 @@ export function Overview({ items }: { items: MobileItemSummary[] }) {
         <div className="flex flex-wrap items-center gap-2.5">
           <Link
             href="/mobile/components"
-            className="lk-focus lk-transition inline-flex h-9 items-center gap-1.5 rounded-lk bg-lk-fg px-3.5 text-[13.5px] font-medium text-lk-bg hover:opacity-90 active:opacity-80"
+            className="lk-btn lk-btn-lg lk-btn-primary"
           >
             Browse components <ArrowRight size={14} aria-hidden />
           </Link>
           <Link
             href="/mobile/installation"
-            className="lk-focus lk-transition inline-flex h-9 items-center gap-1.5 rounded-lk border border-lk-border bg-lk-bg px-3.5 text-[13.5px] font-medium text-lk-fg hover:bg-lk-surface active:bg-lk-surface-2"
+            className="lk-btn lk-btn-lg lk-btn-secondary"
           >
             <BookOpen size={14} aria-hidden /> Installation
           </Link>
         </div>
         <p className="m-0 text-[12.5px] text-lk-subtle">{counts.join(" · ")} · 2 frameworks</p>
-      </section>
+      </Cover>
 
       {/* categories */}
       <section aria-labelledby="categories">
-        <SectionTitle id="categories" title="Browse by category" />
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+        <SectionTitle id="categories" title="Browse by category" icon={<LayoutGrid size={15} />} tint="orange" />
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
           {categories.map((c) => (
             <CategoryCard key={c.name} {...c} onSelect={() => pickCategory(c.name)} />
           ))}
@@ -311,6 +335,8 @@ export function Overview({ items }: { items: MobileItemSummary[] }) {
         <SectionTitle
           id="featured"
           title="Featured screens"
+          icon={<Sparkles size={15} />}
+          tint="violet"
           action={
             <div className="flex gap-1">
               <IconButton label="Scroll left" onClick={() => scrollRow(-1)}>
@@ -331,7 +357,7 @@ export function Overview({ items }: { items: MobileItemSummary[] }) {
 
       {/* browse */}
       <section aria-labelledby="browse" className={cn("flex flex-col")}>
-        <SectionTitle id="browse" title="All items" />
+        <SectionTitle id="browse" title="All items" icon={<Boxes size={15} />} tint="sky" />
         <Explorer
           items={items}
           filters={filters}

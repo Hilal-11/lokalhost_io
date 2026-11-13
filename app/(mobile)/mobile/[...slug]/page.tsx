@@ -8,7 +8,8 @@ import { CATALOG, KIND_LABEL, KIND_SEGMENT, getItem, getSummaries } from "@/lib/
 import { getMobileNav } from "@/lib/mobile/nav";
 import { getItemDoc } from "@/lib/mobile/docs.server";
 import type { ItemKind } from "@/lib/mobile/types";
-import { Breadcrumb, PageFooter, PageHeader, PageLayout } from "@/components/mobile/page/chrome";
+import { PageFooter, PageHero, PageLayout } from "@/components/mobile/page/chrome";
+import type { Tone } from "@/components/lk/cover";
 import { FrameworkSwitch, ItemBody, ItemRail } from "@/components/mobile/page/item-doc";
 import { Explorer } from "@/components/mobile/overview/explorer";
 import { ShowcaseGrid, TemplateGrid } from "@/components/mobile/page/resources";
@@ -33,6 +34,9 @@ const KIND_INTRO: Record<ItemKind, string> = {
 };
 
 type Params = { slug: string[] };
+
+/** Each section gets its own cover colour so pages are recognisable at a glance. */
+const KIND_TONE: Record<ItemKind, Tone> = { component: "warm", screen: "violet", block: "mint" };
 
 function resolve(slug: string[]) {
   const kind = SEGMENT_TO_KIND[slug[0]];
@@ -62,9 +66,11 @@ export default async function MobilePage(props: { params: Promise<Params> }) {
     const { kind } = target;
     const label = KIND_LABEL[kind];
     return (
-      <PageLayout>
-        <Breadcrumb items={[{ title: "Mobile", href: "/mobile" }, { title: label }]} />
-        <PageHeader title={label} description={KIND_INTRO[kind]} />
+      <PageLayout
+        hero={
+          <PageHero tone={KIND_TONE[kind]} breadcrumb={[{ title: "Mobile", href: "/mobile" }, { title: label }]} title={label} description={KIND_INTRO[kind]} />
+        }
+      >
         <Explorer items={getSummaries()} kind={kind} />
         <PageFooter {...docNeighbours(`/mobile/${KIND_SEGMENT[kind]}`)} />
       </PageLayout>
@@ -76,22 +82,28 @@ export default async function MobilePage(props: { params: Promise<Params> }) {
     const { item } = target;
     const data = await getItemDoc(item);
     return (
-      <PageLayout rail={<ItemRail data={data} />}>
-        <Breadcrumb
-          items={[
-            { title: KIND_LABEL[item.kind], href: `/mobile/${KIND_SEGMENT[item.kind]}` },
-            { title: item.title },
-          ]}
-        />
-        <PageHeader title={item.title} description={item.description}>
-          <FrameworkSwitch />
-          <span className="flex items-center gap-2 text-[12.5px] text-lk-subtle">
-            {item.badge && <Badge kind={item.badge} />}
-            {item.category}
-            <span aria-hidden>·</span>
-            {item.flow ? `${item.flow.length}-screen flow` : `${item.variants} ${item.variants === 1 ? "variant" : "variants"}`}
-          </span>
-        </PageHeader>
+      <PageLayout
+        rail={<ItemRail data={data} />}
+        hero={
+          <PageHero
+            tone={KIND_TONE[item.kind]}
+            breadcrumb={[
+              { title: KIND_LABEL[item.kind], href: `/mobile/${KIND_SEGMENT[item.kind]}` },
+              { title: item.title },
+            ]}
+            title={item.title}
+            description={item.description}
+          >
+            <FrameworkSwitch />
+            <span className="flex items-center gap-2 text-[12.5px] text-lk-subtle">
+              {item.badge && <Badge kind={item.badge} />}
+              {item.category}
+              <span aria-hidden>·</span>
+              {item.flow ? `${item.flow.length}-screen flow` : `${item.variants} ${item.variants === 1 ? "variant" : "variants"}`}
+            </span>
+          </PageHero>
+        }
+      >
         <ItemBody data={data} />
         <PageFooter
           previous={data.neighbours.previous}
@@ -111,9 +123,10 @@ export default async function MobilePage(props: { params: Promise<Params> }) {
   return (
     <PageLayout
       rail={toc.length ? <DocsToc items={toc.map((t) => ({ title: t.title, url: t.url, depth: t.depth }))} /> : undefined}
+      hero={
+        <PageHero tone="sky" breadcrumb={[{ title: "Mobile", href: "/mobile" }, { title: page.data.title }]} title={page.data.title} description={page.data.description} />
+      }
     >
-      <Breadcrumb items={[{ title: "Mobile", href: "/mobile" }, { title: page.data.title }]} />
-      <PageHeader title={page.data.title} description={page.data.description} />
       <div className="prose lk-docs-body lk-mobile-prose max-w-none">
         <MDX components={getMDXComponents({ Tabs, Tab, Steps, Step, TemplateGrid, ShowcaseGrid })} />
       </div>

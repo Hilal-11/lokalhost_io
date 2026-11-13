@@ -143,7 +143,7 @@ export default function TemplatesShowcaseBento() {
         </div> 
         <div className='w-full flex items-center justify-center py-10 lg:py-16 border-b border-dashed relative lg:mask-x-from-60% mask-x-from-70% to-100%'>
           <StripedPattern />
-          <Link href="/templates" className='z-20 border-t-[2px] border-l-[2px] border-r-[2px] border-neutral-950 dark:border-neutral-800 relative cursor-pointer font-sans font-medium px-10 py-2 rounded-md bg-gradient-to-t from-[#262626] to-[#525252] text-neutral-200 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]'>Browse Templates</Link>
+          <Link href="/templates" className='z-20 relative cursor-pointer font-sans font-medium px-10 py-2 rounded-md lk-btn-primary transition-[filter,box-shadow,transform]'>Browse Templates</Link>
         </div>
     </div>
   )
