@@ -29,12 +29,14 @@ function nextFrom(formData?: FormData) {
 
 /**
  * Remember where to send the user after an OAuth / email round-trip.
- * A cookie survives the provider redirect even if the redirect allow-list strips query params.
+ * The destination travels in a cookie, NOT in the redirect URL: Supabase matches redirect URLs
+ * against its allow-list exactly, so adding "?next=…" makes an allowed ".../auth/callback" entry
+ * stop matching and Supabase silently falls back to the project's Site URL.
  */
 async function callbackUrl(next: string) {
   const store = await cookies();
   store.set(NEXT_COOKIE, next, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: 60 * 30 });
-  return `${await getURL()}/auth/callback?next=${encodeURIComponent(next)}`;
+  return `${await getURL()}/auth/callback`;
 }
 
 // ── Email + Password ───────────────────────────────────────────────────────

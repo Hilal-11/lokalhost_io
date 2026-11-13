@@ -3,6 +3,15 @@ import { NextResponse, type NextRequest } from "next/server";
 import { safeNext, withPlan } from "@/lib/safe-redirect";
 
 export async function middleware(request: NextRequest) {
+  // Safety net: when Supabase doesn't accept our redirect URL it sends the user to the project's
+  // Site URL instead (e.g. "/?code=…"). Hand that code to the real callback so sign-in still completes.
+  const { pathname, searchParams } = request.nextUrl;
+  if (request.method === "GET" && searchParams.has("code") && (pathname === "/" || pathname === "/login")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/callback";
+    return NextResponse.redirect(url);
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
