@@ -15,7 +15,7 @@ async function getURL() {
   if (origin && /^https?:\/\//.test(origin)) return origin;
   const host = h.get("x-forwarded-host") ?? h.get("host");
   if (host) return `${h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https")}://${host}`;
-  const url = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.NEXT_PUBLIC_VERCEL_URL ?? "http://localhost:3000";
+  const url = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
   return url.startsWith("http") ? url : `https://${url}`;
 }
 
