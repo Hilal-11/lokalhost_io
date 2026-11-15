@@ -45,9 +45,9 @@
         },
         {
           "question": "How do I install components into my project?",
-          "answer": "You have two options. First, copy-paste: every component has a clean copy button — paste directly into your codebase and it's yours. Second, CLI install via our shadcn-compatible registry: run `npx shadcn@latest add @lokalhost/components` in your Next.js project. We recommend the CLI for faster setup. Full documentation is available at https://lokalhost.io/docs.",
+          "answer": "You have two options. First, copy-paste: every component has a clean copy button — paste directly into your codebase and it's yours. Second, CLI install via our shadcn-compatible registry: run `npx shadcn@latest add https://localhostui.com/r/download-button.json` (swap in any component name) in your Next.js project. We recommend the CLI for faster setup. Full documentation is available at https://localhostui.com/docs.",
           "links": [
-            { "label": "CLI Documentation", "url": "https://lokalhost.io/docs" }
+            { "label": "CLI Documentation", "url": "https://localhostui.com/docs" }
           ]
         },
         {
@@ -88,7 +88,7 @@
           "question": "What types of templates does Lokalhost.io offer?",
           "answer": "We offer a wide range of templates including: SaaS landing pages, SaaS dashboard templates, business and agency websites, portfolio templates, AI product landing pages, waitlist pages, marketing sites, pricing pages, blog templates, and e-commerce storefronts — all built with Next.js and Tailwind CSS and ready to deploy on Vercel (https://vercel.com) or any hosting platform.",
           "links": [
-            { "label": "Browse Templates", "url": "https://lokalhost.io/templates" },
+            { "label": "Browse Templates", "url": "https://localhostui.com/templates" },
             { "label": "Vercel", "url": "https://vercel.com" }
           ]
         },
@@ -96,7 +96,7 @@
           "question": "What are boilerplates and what do they include?",
           "answer": "Boilerplates are full project starters that go beyond UI — they include project structure, authentication setup, database connection (with Prisma or Drizzle), API routes, environment variable setup, and deployment configuration. Our SaaS boilerplate for example includes Next.js 14 App Router, authentication, Stripe payments integration, user dashboard, and a full component library pre-installed — saving you 2–4 weeks of setup.",
           "links": [
-            { "label": "Auth Kits", "url": "https://lokalhost.io/authdocs" }
+            { "label": "Auth Kits", "url": "https://localhostui.com/authdocs" }
           ]
         },
         {
@@ -108,7 +108,7 @@
           "question": "Do templates include Figma design files?",
           "answer": "Selected premium templates include the original Figma design file so your design team can reference, extend, or handoff designs. Figma files are available for download immediately after purchase. Check individual template pages for Figma file availability.",
           "links": [
-            { "label": "Design Kits", "url": "https://lokalhost.io/designs" }
+            { "label": "Design Kits", "url": "https://localhostui.com/designs" }
           ]
         },
         {
@@ -132,7 +132,7 @@
           "links": [
             { "label": "Flutter", "url": "https://flutter.dev" },
             { "label": "React Native", "url": "https://reactnative.dev" },
-            { "label": "Mobile UI Kits", "url": "https://lokalhost.io/mobile" }
+            { "label": "Mobile UI Kits", "url": "https://localhostui.com/mobile" }
           ]
         },
         {
@@ -157,7 +157,7 @@
           "question": "Does Lokalhost.io offer custom development work?",
           "answer": "Yes. Custom development is one of our core services. Whether you need a custom SaaS product, a business website, a mobile app (Flutter or React Native), a full-stack web application, an AI-powered tool, or a complete design system built from scratch — our team is available to work with you from concept to deployment with unlimited revisions.",
           "links": [
-            { "label": "Contact Us", "url": "https://lokalhost.io/contact" }
+            { "label": "Contact Us", "url": "https://localhostui.com/contact" }
           ]
         },
         {
@@ -169,7 +169,7 @@
           "question": "How does the custom work process work?",
           "answer": "The process is simple: (1) You reach out via our contact form or email with your project requirements. (2) We schedule a discovery call to understand your needs, timeline, and budget. (3) We send a detailed proposal with scope, timeline, and pricing. (4) Once approved, development begins with regular progress updates. (5) You review, request changes (unlimited revisions), and we deploy. Full deployment support is included.",
           "links": [
-            { "label": "Start a Project", "url": "https://lokalhost.io/contact" }
+            { "label": "Start a Project", "url": "https://localhostui.com/contact" }
           ]
         },
         {
@@ -196,28 +196,28 @@
           "question": "How much does Lokalhost.io cost?",
           "answer": "We have a generous free tier that includes access to our core UI components with no credit card required. Premium plans unlock full template access, Figma kits, boilerplates, and priority support. Custom development is priced per project based on scope. Visit our pricing page for full details and to compare plans.",
           "links": [
-            { "label": "View Pricing", "url": "https://lokalhost.io/pricing" }
+            { "label": "View Pricing", "url": "https://localhostui.com/pricing" }
           ]
         },
         {
           "question": "Is there a free plan available?",
           "answer": "Yes. Our free plan gives you access to all core UI components, basic templates, and CLI installation — no credit card required. It's genuinely free and not a trial. Paid plans give you access to premium templates, full project boilerplates, Figma files, and dedicated support.",
           "links": [
-            { "label": "Get Started Free", "url": "https://lokalhost.io" }
+            { "label": "Get Started Free", "url": "https://localhostui.com" }
           ]
         },
         {
           "question": "Do you offer refunds?",
           "answer": "Yes. We offer a 7-day refund policy on all premium purchases. If you're not satisfied with what you received for any reason, contact us within 7 days of purchase and we'll process a full refund — no questions asked.",
           "links": [
-            { "label": "Contact Support", "url": "https://lokalhost.io/contact" }
+            { "label": "Contact Support", "url": "https://localhostui.com/contact" }
           ]
         },
         {
           "question": "Can I use premium templates for multiple client projects?",
           "answer": "Yes. Our premium license covers unlimited personal and commercial projects for a single user. If you are an agency building for multiple clients, our Agency plan covers all your team members and client projects under one license.",
           "links": [
-            { "label": "View Pricing", "url": "https://lokalhost.io/pricing" }
+            { "label": "View Pricing", "url": "https://localhostui.com/pricing" }
           ]
         }
       ]
@@ -230,7 +230,7 @@
           "question": "What are Auth Kits?",
           "answer": "Auth Kits are complete authentication UI and logic boilerplates — including sign in, sign up, forgot password, email verification, and OAuth social login screens. They are pre-integrated with popular auth providers like NextAuth.js (https://next-auth.js.org), Clerk (https://clerk.com), and Supabase Auth (https://supabase.com/auth), saving you days of authentication setup.",
           "links": [
-            { "label": "Auth Kits", "url": "https://lokalhost.io/authdocs" },
+            { "label": "Auth Kits", "url": "https://localhostui.com/authdocs" },
             { "label": "NextAuth.js", "url": "https://next-auth.js.org" },
             { "label": "Clerk", "url": "https://clerk.com" }
           ]
@@ -252,7 +252,7 @@
           "question": "How do I get support if I'm stuck?",
           "answer": "We offer multiple support channels. Free plan users can open issues on GitHub or reach us via email. Premium users get priority email support with faster response times. Custom project clients get dedicated support throughout and after the project. We aim to respond to all queries within 24 hours on business days.",
           "links": [
-            { "label": "Contact Support", "url": "https://lokalhost.io/contact" }
+            { "label": "Contact Support", "url": "https://localhostui.com/contact" }
           ]
         },
         {
@@ -264,7 +264,7 @@
           "question": "How do I report a bug or request a new component?",
           "answer": "Bug reports and feature requests are always welcome. You can open an issue on our GitHub repository, contact us via email, or use the in-app feedback button. We review every request and prioritize based on community demand. Popular requests make it into our regular release cycles.",
           "links": [
-            { "label": "Submit Feedback", "url": "https://lokalhost.io/contact" }
+            { "label": "Submit Feedback", "url": "https://localhostui.com/contact" }
           ]
         },
         {

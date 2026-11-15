@@ -9,7 +9,7 @@ export default function SettingsRoute() {
   // usage-start
   return (
     <SettingsScreen
-      user={{ name: "Hilal Ahmad", email: "hilal@lokalhost.io" }}
+      user={{ name: "Hilal Ahmad", email: "hilal@localhostui.com" }}
       version={Application.nativeApplicationVersion ?? "dev"}
       onNavigate={(route) => router.push(`/settings/${route}`)}
       onSignOut={() =>

@@ -7,7 +7,7 @@ import { ModelPicker , defaultModels } from "@/components/lokalhost_io/micro-ai-
 import { ModelPickerComponent } from "../../componentsAll.tsx"
 
 
-<Preview link="micro-ai-components/model-picker" registry={null} isBlock={true} language="tsx" code={`
+<Preview link="micro-ai-components/model-picker" registry="model-picker" isBlock={true} language="tsx" code={`
     <ModelPicker
         models={defaultModels}
         selectedModelId={selectedId}
@@ -21,7 +21,7 @@ import { ModelPickerComponent } from "../../componentsAll.tsx"
 import ManualInstallation from "@/components/mdx/manual-installation";
 
 <ManualInstallation
-  registry={null}
+  registry="model-picker"
   dependencies="motion lucide-react react-icons clsx tailwind-merge"
   utilsCode={`import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";

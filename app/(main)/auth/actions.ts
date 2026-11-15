@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { safeNext, withPlan } from "@/lib/safe-redirect";
 
 const NEXT_COOKIE = "lk_next";
-const DEFAULT_AFTER_LOGIN = "/templates";
+const DEFAULT_AFTER_LOGIN = "/docs";
 
 /** Origin of the current request, so OAuth returns to the site the user is actually on (prod or localhost). */
 async function getURL() {

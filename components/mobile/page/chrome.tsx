@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { ArrowLeft, ArrowRight, ChevronRight, Pencil, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Cover, type Tone } from "@/components/lk/cover";
+import { SUPPORT_EMAIL } from "@/components/legal/legal-page";
 
 /* ------------------------------------------------------------------ */
 /* Layout: content column + optional right rail (≥1280px).            */
@@ -165,7 +166,7 @@ export function PageFooter({
           {SPONSOR_SLOTS.map((s, i) => (
             <a
               key={i}
-              href="mailto:hello@lokalhost.io?subject=Sponsor%20lokalhost.io%20mobile"
+              href={`mailto:${SUPPORT_EMAIL}?subject=Sponsor%20lokalhost.io%20mobile`}
               className="lk-focus lk-transition inline-flex items-center gap-1.5 rounded text-lk-muted hover:text-lk-fg"
             >
               <span className="flex size-5 items-center justify-center rounded border border-dashed border-lk-border-strong">

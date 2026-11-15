@@ -17,6 +17,8 @@ const nextConfig = {
             { source: "/mobile/flutter-essentials", destination: "/mobile/components", permanent: false },
             { source: "/mobile/onboarding-rn", destination: "/mobile/screens/onboarding", permanent: false },
             { source: "/mobile/figma", destination: "/mobile", permanent: false },
+            // Registry item was renamed to lowercase — keep the old install URL working.
+            { source: "/r/Copy-page-markdown.json", destination: "/r/copy-page-markdown.json", permanent: true },
         ];
     },
     async headers() {
@@ -25,8 +27,10 @@ const nextConfig = {
                 source: "/r/:path*",
                 headers: [
                     {
+                        // Registry JSON changes whenever a component is updated, so it must not be
+                        // cached as "immutable" — otherwise the CLI keeps installing stale code.
                         key: "Cache-Control",
-                        value: "public, max-age=31536000, immutable",
+                        value: "public, max-age=300, must-revalidate",
                     },
                 ],
             },

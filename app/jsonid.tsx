@@ -1,6 +1,7 @@
-// components/JsonLd.tsx
-// Drop <JsonLd /> inside your page.tsx or layout.tsx <body>
-// This tells Google exactly what your site IS — enables rich results
+// Structured data (JSON-LD) rendered once in app/(main)/layout.tsx.
+// Tells Google what the site is; every URL derives from SITE_URL.
+
+import { SITE_URL } from "@/lib/site";
 
 export function JsonLd() {
   const structuredData = {
@@ -9,16 +10,16 @@ export function JsonLd() {
       // ── 1. Organization ──────────────────────────────────────────────
       {
         "@type": "Organization",
-        "@id": "https://lokalhost.io/#organization",
+        "@id": `${SITE_URL}/#organization`,
         "name": "Lokalhost.io",
-        "url": "https://lokalhost.io",
+        "url": SITE_URL,
         "logo": {
           "@type": "ImageObject",
-          "url": "https://lokalhost.io/icon.svg",
+          "url": `${SITE_URL}/icon.svg`,
         },
         "sameAs": [
           "https://twitter.com/lokalhostio",
-          "https://github.com/lokalhostio",
+          "https://github.com/Hilal-11",
           // add your socials
         ],
         "description":
@@ -28,17 +29,17 @@ export function JsonLd() {
       // ── 2. WebSite (enables Google Sitelinks Search Box) ─────────────
       {
         "@type": "WebSite",
-        "@id": "https://lokalhost.io/#website",
-        "url": "https://lokalhost.io",
+        "@id": `${SITE_URL}/#website`,
+        "url": SITE_URL,
         "name": "Lokalhost.io",
         "description":
           "UI Components, Templates & Design System for React & Next.js",
-        "publisher": { "@id": "https://lokalhost.io/#organization" },
+        "publisher": { "@id": `${SITE_URL}/#organization` },
         "potentialAction": {
           "@type": "SearchAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": "https://lokalhost.io/docs?q={search_term_string}",
+            "urlTemplate": `${SITE_URL}/docs?q={search_term_string}`,
           },
           "query-input": "required name=search_term_string",
         },
@@ -50,7 +51,7 @@ export function JsonLd() {
         "name": "Lokalhost.io",
         "operatingSystem": "Web",
         "applicationCategory": "DeveloperApplication",
-        "url": "https://lokalhost.io",
+        "url": SITE_URL,
         "offers": {
           "@type": "Offer",
           "price": "0",
@@ -73,7 +74,7 @@ export function JsonLd() {
             "@type": "ListItem",
             "position": 1,
             "name": "React UI Components",
-            "url": "https://lokalhost.io/docs",
+            "url": `${SITE_URL}/docs`,
             "description":
               "80+ production-ready React and Next.js UI components with Tailwind CSS",
           },
@@ -81,7 +82,7 @@ export function JsonLd() {
             "@type": "ListItem",
             "position": 2,
             "name": "Website Templates",
-            "url": "https://lokalhost.io/templates",
+            "url": `${SITE_URL}/templates`,
             "description":
               "Premium landing page, SaaS dashboard, and business website templates",
           },
@@ -89,7 +90,7 @@ export function JsonLd() {
             "@type": "ListItem",
             "position": 3,
             "name": "UI Kits & Design Systems",
-            "url": "https://lokalhost.io/designs",
+            "url": `${SITE_URL}/designs`,
             "description":
               "Figma UI kits and design systems for web and mobile",
           },
@@ -97,7 +98,7 @@ export function JsonLd() {
             "@type": "ListItem",
             "position": 4,
             "name": "Mobile UI — Flutter & React Native",
-            "url": "https://lokalhost.io/mobile",
+            "url": `${SITE_URL}/mobile`,
             "description":
               "Cross-platform mobile UI components for Flutter and React Native",
           },
@@ -105,7 +106,7 @@ export function JsonLd() {
             "@type": "ListItem",
             "position": 5,
             "name": "Auth UI Kits",
-            "url": "https://lokalhost.io/authdocs",
+            "url": `${SITE_URL}/authdocs`,
             "description":
               "Authentication UI components and complete auth flow templates",
           },
