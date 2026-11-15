@@ -6,7 +6,7 @@ description: A compact AI model dropdown with sizes, radius presets and optional
 import ModelsSelector from "@/components/lokalhost_io/micro-ai-components/models-selector";
 
 
-<Preview link="micro-ai-components/model-picker" registry={null} isBlock={true} language="tsx" code={`
+<Preview link="micro-ai-components/model-picker" registry="models-selector" isBlock={true} language="tsx" code={`
   <ModelsSelector size="sm" />
 <ModelsSelector size="md" />
 <ModelsSelector size="lg" />
@@ -105,7 +105,7 @@ import ModelsSelector from "@/components/lokalhost_io/micro-ai-components/models
 import ManualInstallation from "@/components/mdx/manual-installation";
 
 <ManualInstallation
-  registry={null}
+  registry="models-selector"
   dependencies="react-icons"
   utilsCode={`import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";

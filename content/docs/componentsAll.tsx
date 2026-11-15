@@ -79,10 +79,10 @@ const InstallCommandPreview = () => (
     <InstallCommand
       title="Terminal"
       commands={{
-        pnpm: "pnpm dlx shadcn@latest add https://lokalhost.io/r/install-command.json",
-        npm: "npx shadcn@latest add https://lokalhost.io/r/install-command.json",
-        yarn: "yarn dlx shadcn@latest add https://lokalhost.io/r/install-command.json",
-        bun: "bunx --bun shadcn@latest add https://lokalhost.io/r/install-command.json",
+        pnpm: "pnpm dlx shadcn@latest add https://localhostui.com/r/install-command.json",
+        npm: "npx shadcn@latest add https://localhostui.com/r/install-command.json",
+        yarn: "yarn dlx shadcn@latest add https://localhostui.com/r/install-command.json",
+        bun: "bunx --bun shadcn@latest add https://localhostui.com/r/install-command.json",
       }}
     />
   </div>

@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "./provider";
 import TopLoader from '@/components/TopLoader'
 import { Analytics } from '@vercel/analytics/next';
+import { SITE_URL } from "@/lib/site";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -102,7 +103,7 @@ export const metadata: Metadata = {
   ],
 
   // ── Canonical & Base ──────────────────────────────────────────────────
-  metadataBase: new URL("https://lokalhost.io"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
   },
@@ -110,7 +111,7 @@ export const metadata: Metadata = {
   // ── Open Graph ────────────────────────────────────────────────────────
   openGraph: {
     type: "website",
-    url: "https://lokalhost.io",
+    url: SITE_URL,
     siteName: "Lokalhost.io",
     locale: "en_US",
     title: "Lokalhost.io — React Components, Templates & UI Kits",
@@ -152,11 +153,8 @@ export const metadata: Metadata = {
   },
 
   // ── Icons ─────────────────────────────────────────────────────────────
-  icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/apple-touch-icon.png",    // create: 180×180px
-  },
+  // No `icons` entry on purpose: Next.js generates the <link> tags from the
+  // files app/favicon.ico, app/icon.svg and app/apple-icon.png.
 
   // ── Google Search Console verification ───────────────────────────────
   // Get token from: https://search.google.com/search-console
@@ -166,7 +164,7 @@ export const metadata: Metadata = {
 
   // ── App info ──────────────────────────────────────────────────────────
   applicationName: "Lokalhost.io",
-  authors: [{ name: "Lokalhost.io", url: "https://lokalhost.io" }],
+  authors: [{ name: "Lokalhost.io", url: SITE_URL }],
   creator: "Lokalhost.io",
   publisher: "Lokalhost.io",
   category: "Technology",

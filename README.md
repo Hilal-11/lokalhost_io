@@ -27,11 +27,11 @@
 
 <br />
 
-<a href="https://lokallhost.io">🌐 Website</a>&nbsp;&nbsp;•&nbsp;&nbsp;
-<a href="https://docs.lokallhost.io">📖 Docs</a>&nbsp;&nbsp;•&nbsp;&nbsp;
-<a href="https://lokallhost.io/components">🧩 Components</a>&nbsp;&nbsp;•&nbsp;&nbsp;
-<a href="https://lokallhost.io/templates">🎨 Templates</a>&nbsp;&nbsp;•&nbsp;&nbsp;
-<a href="https://lokallhost.io/pricing">💎 Pricing</a>&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="https://localhostui.com">🌐 Website</a>&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="https://localhostui.com/docs">📖 Docs</a>&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="https://localhostui.com/docs">🧩 Components</a>&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="https://localhostui.com/templates">🎨 Templates</a>&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="https://localhostui.com/pricing">💎 Pricing</a>&nbsp;&nbsp;•&nbsp;&nbsp;
 <a href="https://discord.gg/lokallhost">💬 Discord</a>&nbsp;&nbsp;•&nbsp;&nbsp;
 <a href="https://hila-11.com">👤 Creator</a>
 
@@ -213,7 +213,7 @@ Billing UI             →   Pricing pages · Subscription management (Stripe-re
 | 🏷️ White-Label Solutions | Rebrandable builds for agencies and resellers |
 | 🔍 Code Reviews & Consulting | Expert audits and technical direction |
 
-→ **[Start a project with us](https://lokallhost.io/contact)**
+→ **[Start a project with us](https://localhostui.com/contact)**
 
 <br />
 
@@ -238,8 +238,8 @@ Package    npm · yarn · pnpm · bun  (your choice)
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/lokallhost.git
-cd lokallhost
+git clone https://github.com/Hilal-11/lokalhost.io.git
+cd lokalhost.io
 
 # Install dependencies (pick your package manager)
 npm install
@@ -374,7 +374,7 @@ lokallhost.io/
 
 <br />
 
-→ See full plan details at **[lokallhost.io/pricing](https://lokallhost.io/pricing)**
+→ See full plan details at **[localhostui.com/pricing](https://localhostui.com/pricing)**
 
 <br />
 
@@ -390,12 +390,12 @@ lokallhost.io/
 
 | Channel | Link |
 |---|---|
-| 📖 Documentation | [docs.lokallhost.io](https://docs.lokallhost.io) |
+| 📖 Documentation | [localhostui.com/docs](https://localhostui.com/docs) |
 | 💬 Discord Community | [discord.gg/lokallhost](https://discord.gg/lokallhost) |
 | 🐦 Twitter / X | [@lokallhost](https://x.com/lokallhost) |
 | 🌐 Creator Website | [hila-11.com](https://hila-11.com) |
-| 📧 Email Support | [support@lokallhost.io](mailto:support@lokallhost.io) |
-| 🐛 Bug Reports | [GitHub Issues](https://github.com/your-org/lokallhost/issues) |
+| 📧 Email Support | [localhostui.com/contact](https://localhostui.com/contact) |
+| 🐛 Bug Reports | [GitHub Issues](https://github.com/Hilal-11/lokalhost.io/issues) |
 
 </div>
 
@@ -407,7 +407,7 @@ lokallhost.io/
 
 ## 📋 Contributing
 
-We welcome contributions to the open-source parts of the ecosystem. Please read the [Contributing Guide](./CONTRIBUTING.md) before opening a pull request. Check open [Issues](https://github.com/your-org/lokallhost/issues) for good first contributions.
+We welcome contributions to the open-source parts of the ecosystem. Please read the [Contributing Guide](./CONTRIBUTING.md) before opening a pull request. Check open [Issues](https://github.com/Hilal-11/lokalhost.io/issues) for good first contributions.
 
 <br />
 
@@ -433,7 +433,7 @@ All notable changes, new templates, components, and releases are documented in [
 ║            Built with passion by  Hilal                  ║
 ║            Creator of Lokallhost.io                      ║
 ║                                                          ║
-║            🌐  lokallhost.io                             ║
+║            🌐  localhostui.com                           ║
 ║            👤  hila-11.com                               ║
 ║                                                          ║
 ╚══════════════════════════════════════════════════════════╝
@@ -445,6 +445,6 @@ All notable changes, new templates, components, and releases are documented in [
 
 <br />
 
-[![Star on GitHub](https://img.shields.io/github/stars/your-org/lokallhost?style=for-the-badge&logo=github&label=Star%20this%20repo&color=0f0f0f)](https://github.com/your-org/lokallhost)
+[![Star on GitHub](https://img.shields.io/github/stars/Hilal-11/lokalhost.io?style=for-the-badge&logo=github&label=Star%20this%20repo&color=0f0f0f)](https://github.com/Hilal-11/lokalhost.io)
 
 </div>

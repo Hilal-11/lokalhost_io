@@ -2,6 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "download-button",
   "type": "registry:component",
+  "description": "Platform-aware download buttons for Mac, Windows and Linux with a smooth hover roll animation and fully swappable colors.",
   "dependencies": [],
   "registryDependencies": [],
   "files": [

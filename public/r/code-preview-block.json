@@ -2,7 +2,15 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "code-preview-block",
   "type": "registry:component",
-  "dependencies": [],
+  "description": "A Preview / Code tabbed container for showcasing live components next to their source.",
+  "dependencies": [
+    "shiki",
+    "next-themes",
+    "lucide-react",
+    "react-icons",
+    "clsx",
+    "tailwind-merge"
+  ],
   "registryDependencies": [],
   "files": [
     {

@@ -1,8 +1,12 @@
+import { SITE_URL } from "@/lib/site";
+
 /**
  * Helpers for building shadcn registry install commands shown in the docs.
- * NEXT_PUBLIC_BASE_URL may be set with or without a protocol — normalise it.
+ * Defaults to the production domain. NEXT_PUBLIC_BASE_URL overrides it (e.g.
+ * http://localhost:3000 while testing the registry locally) and may be set
+ * with or without a protocol — normalise it.
  */
-const RAW_BASE = process.env.NEXT_PUBLIC_BASE_URL ?? "lokalhost.io";
+const RAW_BASE = process.env.NEXT_PUBLIC_BASE_URL?.trim() || SITE_URL;
 
 export const REGISTRY_BASE = /^https?:\/\//.test(RAW_BASE)
   ? RAW_BASE.replace(/\/$/, "")

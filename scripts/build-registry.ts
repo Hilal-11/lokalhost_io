@@ -1,4 +1,5 @@
-import { registry } from "../registry"; // <-- adjust to your real path/export name
+import { registry } from "../registry";
+import { SITE_URL } from "../lib/site";
 import { promises as fs } from "fs";
 import type { z } from "zod";
 import type { registryItemFileSchema } from "@/registry/schema";
@@ -66,12 +67,20 @@ const getComponentFiles = async (files: File[], registryType: string) => {
     return Promise.all(filesArrayPromises);
 };
 
+/** The item name becomes the URL slug (/r/<name>.json) the CLI fetches — keep it URL-safe. */
+const VALID_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 const main = async () => {
     const names = new Set<string>();
 
     for (let i = 0; i < registry.length; i++) {
         const component = registry[i];
 
+        if (!VALID_NAME.test(component.name)) {
+            throw new Error(
+                `[build-registry] Invalid item name "${component.name}" — use lowercase kebab-case (e.g. "model-picker").`
+            );
+        }
         if (names.has(component.name)) {
             throw new Error(`[build-registry] Duplicate item name: "${component.name}"`);
         }
@@ -97,6 +106,28 @@ const main = async () => {
         const jsonPath = `${PUBLIC_FOLDER_BASE_PATH}/${component.name}.json`;
         await writeFileRecursive(jsonPath, json);
     }
+
+    // Registry index — https://localhostui.com/r/registry.json lists every item
+    // (without file contents) and declares the registry's homepage.
+    const index = JSON.stringify(
+        {
+            $schema: "https://ui.shadcn.com/schema/registry.json",
+            name: "lokalhost",
+            homepage: SITE_URL,
+            items: registry.map((item) => ({
+                ...item,
+                files: (item.files ?? []).map((file) => {
+                    const filePath = toRelative(typeof file === "string" ? file : file.path);
+                    const type = typeof file === "string" ? item.type : file.type || item.type;
+                    const target = typeof file === "string" || !file.target ? filePath : toRelative(file.target);
+                    return { path: filePath, type, target };
+                }),
+            })),
+        },
+        null,
+        2
+    );
+    await writeFileRecursive(`${PUBLIC_FOLDER_BASE_PATH}/registry.json`, index);
 };
 
 main()

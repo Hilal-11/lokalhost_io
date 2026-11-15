@@ -10,7 +10,7 @@ class SettingsRoute extends StatelessWidget {
     // usage-start
     return SettingsScreen(
       name: 'Hilal Ahmad',
-      email: 'hilal@lokalhost.io',
+      email: 'hilal@localhostui.com',
       onNavigate: (route) => Navigator.of(context).pushNamed('/settings/$route'),
       onSignOut: () async {
         final ok = await showLkDialog(context: context, title: 'Sign out?', confirmLabel: 'Sign out', destructive: true);

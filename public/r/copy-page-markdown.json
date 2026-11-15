@@ -1,8 +1,11 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "Copy-page-markdown",
+  "name": "copy-page-markdown",
   "type": "registry:component",
-  "dependencies": [],
+  "description": "A split button that copies the page as Markdown or opens it in ChatGPT, Claude, v0 and more.",
+  "dependencies": [
+    "react-icons"
+  ],
   "registryDependencies": [],
   "files": [
     {

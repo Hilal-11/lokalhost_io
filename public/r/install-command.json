@@ -2,7 +2,12 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "install-command",
   "type": "registry:component",
-  "dependencies": [],
+  "description": "A package-manager aware install command with tabs for npm, pnpm, yarn and bun and one-click copy.",
+  "dependencies": [
+    "shiki",
+    "lucide-react",
+    "react-icons"
+  ],
   "registryDependencies": [],
   "files": [
     {

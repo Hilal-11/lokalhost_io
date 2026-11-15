@@ -7,7 +7,7 @@ import CopyPageMarkdown from "@/components/lokalhost_io/micro-ai-components/copy
 import { RiGrokAiFill } from "react-icons/ri";
 import { FiCopy } from "react-icons/fi";
 
-<Preview link="micro-ai-components/copy-page-markdown" registry="Copy-page-markdown" isBlock={true} language="tsx" code={`
+<Preview link="micro-ai-components/copy-page-markdown" registry="copy-page-markdown" isBlock={true} language="tsx" code={`
 <CopyPageMarkdowns
     pageUrl={pageUrl}
     markdown={rawMarkdown}
@@ -26,23 +26,23 @@ import { FiCopy } from "react-icons/fi";
 <CopyPageMarkdown />
 
 {/* Explicit pageUrl only */}
-<CopyPageMarkdown pageUrl="https://lokalhost.io/docs/components/copy-page-markdown" />
+<CopyPageMarkdown pageUrl="https://localhostui.com/docs/components/micro-ai-components/copy-page-markdown" />
 
 {/* markdown + pageUrl together */}
 <CopyPageMarkdown
-  pageUrl="https://lokalhost.io/docs/components/copy-page-markdown"
+  pageUrl="https://localhostui.com/docs/components/micro-ai-components/copy-page-markdown"
   markdown={`# Copy Page Markdown\n\nA dropdown for copying/viewing this page as markdown.`}
 />
 
 {/* githubUrl adds an "Open in GitHub" item */}
 <CopyPageMarkdown
-  pageUrl="https://lokalhost.io/docs/components/copy-page-markdown"
-  githubUrl="https://github.com/your-org/lokalhost/blob/main/content/docs/components/copy-page-markdown.mdx"
+  pageUrl="https://localhostui.com/docs/components/micro-ai-components/copy-page-markdown"
+  githubUrl="https://github.com/Hilal-11/lokalhost.io/blob/main/content/docs/components/micro-ai-components/copy-page-markdown.mdx"
 />
 
 {/* extraItems — appended after the default set */}
 <CopyPageMarkdown
-  pageUrl="https://lokalhost.io/docs/components/copy-page-markdown"
+  pageUrl="https://localhostui.com/docs/components/micro-ai-components/copy-page-markdown"
   extraItems={[
     {
       id: "open-grok",
@@ -55,7 +55,7 @@ import { FiCopy } from "react-icons/fi";
 
 {/* items — full override, replaces the built-in default set entirely */}
 <CopyPageMarkdown
-  pageUrl="https://lokalhost.io/docs/components/copy-page-markdown"
+  pageUrl="https://localhostui.com/docs/components/micro-ai-components/copy-page-markdown"
   items={[
     {
       id: "copy-md",
@@ -77,7 +77,7 @@ import { FiCopy } from "react-icons/fi";
 import ManualInstallation from "@/components/mdx/manual-installation";
 
 <ManualInstallation
-  registry="Copy-page-markdown"
+  registry="copy-page-markdown"
   dependencies="clsx tailwind-merge react-icons"
   utilsCode={`import { ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -85,7 +85,7 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }`}
-  componentFileName="components/lokalhost_io/micro-ai-components/copy-page-markdowon.tsx"
+  componentFileName="components/lokalhost_io/micro-ai-components/copy-page-markdown.tsx"
   componentCode={`"use client"
 import React, { useEffect, useRef, useState } from "react"
 import { IoCopyOutline } from "react-icons/io5"

@@ -18,7 +18,7 @@ export default function ProfileRoute() {
       ]}
       media={[photos, photos.slice(0, 4), []]}
       onEdit={() => router.push("/edit-profile")}
-      onShare={() => Share.share({ message: "https://lokalhost.io/@hilal" })}
+      onShare={() => Share.share({ message: "https://localhostui.com/@hilal" })}
     />
   );
   // usage-end

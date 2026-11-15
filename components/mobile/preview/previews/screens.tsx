@@ -577,7 +577,7 @@ export function SettingsScreen() {
             <MAvatar name="Hilal Ahmad" size={56} />
             <div className="flex-1">
               <p className="text-[18px] font-semibold">Hilal Ahmad</p>
-              <p className="text-[14px] text-[var(--m-fg-muted)]">hilal@lokalhost.io</p>
+              <p className="text-[14px] text-[var(--m-fg-muted)]">hilal@localhostui.com</p>
             </div>
             <span className="text-[var(--m-fg-muted)]">›</span>
           </div>

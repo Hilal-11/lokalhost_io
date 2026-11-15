@@ -208,7 +208,7 @@ const BOILERPLATES_DATA: BoilerplateItem[] = [
     stack: ['Next.js', 'Supabase', 'Stripe', 'Clerk'],
     price: '$149',
     href: '/boilerplates/launchpad',
-    demoHref: 'https://demo.lokalhost.io/launchpad',
+    demoHref: 'https://demo.localhostui.com/launchpad',
     accent: 'from-fuchsia-400 to-fuchsia-600',
   },
   {
@@ -216,7 +216,7 @@ const BOILERPLATES_DATA: BoilerplateItem[] = [
     stack: ['Next.js', 'Postgres', 'Stripe Connect'],
     price: '$199',
     href: '/boilerplates/marketplace',
-    demoHref: 'https://demo.lokalhost.io/marketplace',
+    demoHref: 'https://demo.localhostui.com/marketplace',
     accent: 'from-orange-400 to-orange-600',
   },
 ]
@@ -735,7 +735,7 @@ function BottomActionBar({ activeTab }: { activeTab: TabType }) {
 function CLICommandRow({ activeTab }: { activeTab: 'components' | 'mobile' }) {
   const command =
     activeTab === 'components'
-      ? 'https://lokalhost.io/registry/[component].json'
+      ? 'https://localhostui.com/r/[component].json'
       : '[react-native|flutter] [component]'
 
   return (
@@ -752,7 +752,7 @@ function CLICommandRow({ activeTab }: { activeTab: 'components' | 'mobile' }) {
       <CopyCommandButton
         registryUrl={
           activeTab === 'components'
-            ? 'https://lokalhost.io/registry/bento-grid.json'
+            ? 'https://localhostui.com/r/download-button.json'
             : 'button'
         }
         isMobile={activeTab === 'mobile'}

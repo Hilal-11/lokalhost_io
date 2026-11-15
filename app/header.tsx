@@ -131,26 +131,6 @@ function Header() {
                           </Link>
                       ))
                     }
-                    <DropdownMenu>
-                      <DropdownMenuTrigger>
-                        <h1 className="cursor-pointer flex gap-1 bg-transparent hover:bg-transparent font-sans font-medium text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors items-center">more<span className="text-sm"><FaAngleDown /></span></h1>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-[160px] flex-col space-y-1 px-1 pt-2 pb-2 mt-2" align="start">
-                        {
-                          headerPagesConfig.dropdown_pages.map((page , index) => (
-                            <div key={index} className="w-full hover:bg-neutral-200 hover:dark:bg-neutral-800 cursor-pointer rounded-sm py-1 pl-1 ">
-                              <Link                                href={page.link}
-                              onClick={handleLinkClick}
-                                className="font-sans font-medium text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors flex gap-2 items-center"
-                                prefetch={true}
-                              >
-                                <span className="text-sm"><HiArrowNarrowRight /></span>{page.page}
-                              </Link>
-                            </div>
-                          ))
-                        }
-                      </DropdownMenuContent>
-                    </DropdownMenu>
                   </div>
                 </div>
                 {/* Right side items */}
@@ -166,7 +146,6 @@ function Header() {
                   </div>
                 </div>
 
-                  <Link href="/pricing" prefetch={true} onClick={handleLinkClick} className="lk-btn lk-btn-sm lk-btn-secondary ml-[4px] font-sans text-xs">Pricing</Link>
                   {
                     !user && (
                       <Link href="/login" prefetch={true} onClick={handleLinkClick} className="lk-btn lk-btn-sm lk-btn-primary ml-[4px] font-sans text-xs">Login</Link>)
