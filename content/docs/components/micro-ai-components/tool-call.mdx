@@ -1,0 +1,126 @@
+---
+title: Tool Call
+description: Shows an agent calling a tool — morphing status icon, live duration, expandable JSON input and output, and an approval mode for risky actions.
+---
+import ToolCallDemo from "@/components/lokalhost_io/micro-ai-components/tool-call/demo";
+import { toolCallProps, toolCallGroupProps, jsonViewerProps } from "./tool-call-props";
+
+## Preview
+
+<Preview link="micro-ai-components/tool-call" registry="tool-call" language="tsx" code={`<ToolCallGroup>
+  <ToolCall name="search_web" title="Searching the web" icon={Globe} status="success"
+    input={{ query: "next.js fetch cache" }} output={results} startedAt={t0} endedAt={t1}
+    renderOutput={(o) => <SearchResults output={o} />} />
+  <ToolCall name="read_file" title="Reading page.tsx" status="error" error="ENOENT" onRetry={retry} />
+  <ToolCall name="send_email" title="Send summary" status="awaiting-approval"
+    approvalDescription="Sends one email to the team." onApprove={approve} onDeny={deny} />
+</ToolCallGroup>`}>
+  <ToolCallDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="tool-call"
+  dependencies="motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/tool-call/tool-call.tsx"
+/>
+
+Also copy `json-viewer.tsx` from the same folder and `shimmer-text/shimmer-text.tsx` (the CLI installs both).
+
+## Status reference
+
+| Status | Icon | Card |
+| --- | --- | --- |
+| `pending` | Hollow circle | Queued, no duration |
+| `running` | Spinning arc | Title shimmers, duration ticks live |
+| `awaiting-approval` | Ring with pulsing dot | Highlighted, breathing border, Deny / Approve |
+| `success` | Circle fills, check draws in | Duration freezes |
+| `error` | X draws in | Card shakes once, error banner with Retry |
+| `cancelled` | Dashed circle with a dash | Muted |
+
+## Examples
+
+### Approval flow
+
+```tsx
+<ToolCall
+  name="send_email"
+  title="Send summary to the team"
+  status={status}
+  input={args}
+  approvalDescription="Sends one email to team@example.com. This can't be undone."
+  onApprove={async () => {
+    setStatus("running");
+    await runTool(args);
+    setStatus("success");
+  }}
+  onDeny={() => setStatus("cancelled")}
+/>
+```
+
+When the card is focused, `Enter` approves and `Esc` denies.
+
+### Custom output renderer
+
+```tsx
+<ToolCall
+  name="search_web"
+  status="success"
+  output={{ results }}
+  renderOutput={(output) => (
+    <ul>
+      {(output as { results: Result[] }).results.map((r) => (
+        <li key={r.url}>{r.title}</li>
+      ))}
+    </ul>
+  )}
+/>
+```
+
+### With the Vercel AI SDK
+
+Map tool parts to cards. Approval maps onto tools that return `needsApproval`, or onto your own confirmation step before you call `addToolResult`.
+
+```tsx
+const STATE: Record<string, ToolCallStatus> = {
+  "input-streaming": "pending",
+  "input-available": "running",
+  "output-available": "success",
+  "output-error": "error",
+};
+
+<ToolCallGroup>
+  {message.parts
+    .filter((p) => p.type.startsWith("tool-"))
+    .map((p) => (
+      <ToolCall
+        key={p.toolCallId}
+        name={p.type.replace("tool-", "")}
+        status={STATE[p.state] ?? "pending"}
+        input={p.input}
+        output={p.output}
+        error={p.errorText}
+      />
+    ))}
+</ToolCallGroup>
+```
+
+## Props
+
+<PropsTable title="ToolCall" rows={toolCallProps} />
+<PropsTable title="ToolCallGroup" rows={toolCallGroupProps} />
+<PropsTable title="JsonViewer" rows={jsonViewerProps} />
+
+## Accessibility
+
+- The card header is a button with `aria-expanded`; collapsed content is `inert`.
+- Status changes are announced politely, e.g. “search_web succeeded in 1.4 seconds”.
+- Approve / Deny buttons include the tool name in their labels.
+- With reduced motion the spinner becomes a pulsing opacity and the error shake is skipped.

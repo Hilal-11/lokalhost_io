@@ -1,223 +1,218 @@
-"use client"
+"use client";
 
-import React, { useEffect, useRef, useState } from "react"
-import { IoCopyOutline } from "react-icons/io5"
-import { IoIosArrowDown } from "react-icons/io"
-import { MdOutlineDone } from "react-icons/md"
-import { HiArrowTopRightOnSquare } from "react-icons/hi2"
-
-import { VscOpenai } from "react-icons/vsc"
-import { BsAnthropic } from "react-icons/bs"
-import { ImGithub } from "react-icons/im"
-import { SiV0 } from "react-icons/si"
-import { PiMarkdownLogo } from "react-icons/pi"
-import { RiGrokAiFill } from 'react-icons/ri';
+import React, { useEffect, useId, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { IoCopyOutline } from "react-icons/io5";
+import { IoIosArrowDown } from "react-icons/io";
+import { MdOutlineDone } from "react-icons/md";
+import { HiArrowUpRight } from "react-icons/hi2";
+import { VscOpenai } from "react-icons/vsc";
+import { BsAnthropic } from "react-icons/bs";
+import { ImGithub } from "react-icons/im";
+import { SiV0 } from "react-icons/si";
+import { PiMarkdownLogo } from "react-icons/pi";
+import { RiGrokAiFill } from "react-icons/ri";
 
 interface MenuItem {
-  id: string
-  label: string
-  icon: React.ReactNode
-  external: boolean
-  onSelect: () => void
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  /** Shows the external-link arrow. */
+  external: boolean;
+  /** Click handler. If omitted, `href` is opened in a new tab. */
+  onSelect?: () => void;
+  /** Link opened in a new tab when `onSelect` is not provided. */
+  href?: string;
 }
 
 interface CopyPageMarkdownsProps {
-  /** Raw markdown for the current page, used for the copy + "View as markdown" actions */
-  markdown?: string
-  /** Canonical URL of the current page, used to build the "open in ..." links */
-  pageUrl?: string
-  /** Optional GitHub source link for this page. If omitted, the "Open in GitHub" item is not shown. */
-  githubUrl?: string
-  /**
-   * Extra dropdown items to append after the default ones (View as markdown, V0, Claude, ChatGPT, GitHub).
-   * Each item needs an id, label, icon, whether it's an external link (shows the arrow icon), and an onSelect handler.
-   */
-  extraItems?: MenuItem[]
-  /**
-   * Full override for the dropdown items. If provided, this replaces the default list entirely
-   * (extraItems is ignored when this is set). Use this if you want to reorder, remove, or fully
-   * customize the built-in options instead of just appending to them.
-   */
-  items?: MenuItem[]
+  /** Raw markdown for the current page, used for the copy + "View as markdown" actions. */
+  markdown?: string;
+  /** Canonical URL of the current page, used to build the "Open in …" links. */
+  pageUrl?: string;
+  /** Optional GitHub source link. If omitted, "Open in GitHub" is hidden. */
+  githubUrl?: string;
+  /** Extra items appended after the defaults. */
+  extraItems?: MenuItem[];
+  /** Full override for the menu items (extraItems is ignored when set). */
+  items?: MenuItem[];
+  /** Button label. Defaults to "Copy page". */
+  label?: string;
+  className?: string;
 }
 
-function 
-CopyPageMarkdown({
-  markdown = "",
-  pageUrl = typeof window !== "undefined" ? window.location.href : "",
-  githubUrl,
-  extraItems = [],
-  items,
-}: CopyPageMarkdownsProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+const EASE = [0.22, 1, 0.36, 1] as const;
+const ring = "outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600";
+
+function CopyPageMarkdown({ markdown = "", pageUrl, githubUrl, extraItems = [], items, label = "Copy page", className = "" }: CopyPageMarkdownsProps) {
+  const reduce = useReducedMotion();
+  const [isOpen, setIsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [active, setActive] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const menuId = useId();
+  const [url, setUrl] = useState(pageUrl ?? "");
+  useEffect(() => {
+    if (!pageUrl) setUrl(window.location.href);
+    else setUrl(pageUrl);
+  }, [pageUrl]);
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(markdown || pageUrl)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error("Failed to copy:", err)
+      await navigator.clipboard.writeText(markdown || url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable */
     }
-  }
+  };
 
-  const openExternal = (url: string) => {
-    window.open(url, "_blank", "noopener,noreferrer")
-  }
+  const openExternal = (href: string) => window.open(href, "_blank", "noopener,noreferrer");
+  const q = encodeURIComponent(`Read ${url} so I can ask questions about it.`);
 
   const defaultItems: MenuItem[] = [
-    {
-      id: "view-markdown",
-      label: "View as markdown",
-      icon: <PiMarkdownLogo size={18} />,
-      external: true,
-      onSelect: () => openExternal(`${pageUrl}.md`),
-    },
-    {
-      id: "open-v0",
-      label: "Open in V0",
-      icon: <SiV0 size={18} />,
-      external: true,
-      onSelect: () =>
-        openExternal(`https://v0.dev/chat?url=${encodeURIComponent(pageUrl)}`),
-    },
-    {
-      id: "open-claude",
-      label: "Open in Claude",
-      icon: <BsAnthropic size={18} />,
-      external: true,
-      onSelect: () =>
-        openExternal(`https://claude.ai/new?q=${encodeURIComponent(pageUrl)}`),
-    },
-    {
-      id: "open-chatgpt",
-      label: "Open in ChatGPT",
-      icon: <VscOpenai size={18} />,
-      external: true,
-      onSelect: () =>
-        openExternal(`https://chat.openai.com/?q=${encodeURIComponent(pageUrl)}`),
-    },
-    {
-      id: "open-grok",
-      label: "Open in Grok",
-      icon: <RiGrokAiFill size={18} />,
-      external: true,
-      onSelect: () =>
-        openExternal(`https://grok/chat?url=${encodeURIComponent(pageUrl)}`),
-    },
-    // Only include the GitHub item when a githubUrl is actually provided
-    ...(githubUrl
-      ? [
-          {
-            id: "open-github",
-            label: "Open in GitHub",
-            icon: <ImGithub size={18} />,
-            external: true,
-            onSelect: () => openExternal(githubUrl),
-          } as MenuItem,
-        ]
-      : []),
-  ]
+    { id: "view-markdown", label: "View as Markdown", icon: <PiMarkdownLogo size={17} />, external: true, onSelect: () => openExternal(`${url}.md`) },
+    { id: "open-v0", label: "Open in v0", icon: <SiV0 size={17} />, external: true, onSelect: () => openExternal(`https://v0.dev/chat?q=${q}`) },
+    { id: "open-claude", label: "Open in Claude", icon: <BsAnthropic size={15} />, external: true, onSelect: () => openExternal(`https://claude.ai/new?q=${q}`) },
+    { id: "open-chatgpt", label: "Open in ChatGPT", icon: <VscOpenai size={16} />, external: true, onSelect: () => openExternal(`https://chatgpt.com/?q=${q}`) },
+    { id: "open-grok", label: "Open in Grok", icon: <RiGrokAiFill size={16} />, external: true, onSelect: () => openExternal(`https://grok.com/?q=${q}`) },
+    ...(githubUrl ? [{ id: "open-github", label: "Open in GitHub", icon: <ImGithub size={15} />, external: true, onSelect: () => openExternal(githubUrl) }] : []),
+  ];
 
-  // `items` fully overrides the list; otherwise use defaults + any extraItems appended
-  const menuItems: MenuItem[] = items ?? [...defaultItems, ...extraItems]
+  const menuItems: MenuItem[] = items ?? [...defaultItems, ...extraItems];
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false)
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    document.addEventListener("keydown", handleEscape)
+    if (!isOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setIsOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    setActive(0);
+    requestAnimationFrame(() => itemRefs.current[0]?.focus());
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-      document.removeEventListener("keydown", handleEscape)
-    }
-  }, [])
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [isOpen]);
+
+  const select = (item: MenuItem) => {
+    if (item.onSelect) item.onSelect();
+    else if (item.href) openExternal(item.href);
+    setIsOpen(false);
+  };
 
   return (
-    <div ref={containerRef} className="relative inline-flex w-fit">
-      <div className="flex items-center justify-between rounded-sm h-7.5 pl-1 pr-1 bg-neutral-200/50 dark:bg-neutral-800/60 border border-neutral-300/60 dark:border-neutral-700/60 overflow-hidden px-3">
-        {/* Copy button */}
-        <button
+    <div ref={containerRef} className={`relative inline-flex w-fit font-sans ${className}`}>
+      <div className="flex h-8 items-center overflow-hidden rounded-lg border border-neutral-200 bg-white p-0.5 shadow-[0_1px_2px_rgba(0,0,0,0.04)] dark:border-neutral-800 dark:bg-neutral-900 dark:shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
+        <motion.button
           type="button"
+          whileTap={{ scale: 0.97 }}
           onClick={handleCopy}
-          className="flex items-center gap-1.5 text-sm font-sans font-bold pl-2 pr-2.5 h-full text-neutral-800 dark:text-neutral-200 rounded-[7px] transition-colors duration-150"
+          aria-label={copied ? "Copied page" : label}
+          className={`flex h-full items-center gap-1.5 rounded-md pl-2 pr-2.5 text-[13px] font-medium text-neutral-800 transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800 ${ring}`}
         >
-          <span className="text-neutral-600 dark:text-neutral-400">
-            {copied ? (
-              <MdOutlineDone size={16} className="text-neutral-600 dark:text-neutral-400" />
-            ) : (
-              <IoCopyOutline size={16} />
-            )}
+          <span className="relative flex size-4 items-center justify-center text-neutral-500 dark:text-neutral-400">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span
+                key={copied ? "done" : "copy"}
+                initial={{ scale: 0.5, rotate: copied ? -15 : 0, opacity: 0 }}
+                animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                transition={{ duration: 0.16, ease: EASE }}
+                className="flex"
+              >
+                {copied ? <MdOutlineDone size={16} className="text-neutral-900 dark:text-neutral-100" /> : <IoCopyOutline size={15} />}
+              </motion.span>
+            </AnimatePresence>
           </span>
-            Copy Page
-        </button>
+          <span className="relative inline-flex overflow-hidden">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span key={copied ? "c" : "l"} initial={{ y: reduce ? 0 : 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: reduce ? 0 : -10, opacity: 0 }} transition={{ duration: 0.18, ease: EASE }}>
+                {copied ? "Copied" : label}
+              </motion.span>
+            </AnimatePresence>
+          </span>
+          <span className="sr-only" aria-live="polite">
+            {copied ? "Page copied to clipboard" : ""}
+          </span>
+        </motion.button>
 
-        <div className="w-px h-4.5 bg-neutral-300/70 dark:bg-neutral-700/70 mx-0.5" />
+        <div className="mx-0.5 h-4 w-px bg-neutral-200 dark:bg-neutral-800" />
 
-        {/* Dropdown trigger */}
-        <button
+        <motion.button
           type="button"
+          whileTap={{ scale: 0.92 }}
           aria-label="More options"
+          aria-haspopup="menu"
           aria-expanded={isOpen}
-          onClick={() => setIsOpen((prev) => !prev)}
-          className="bg-white dark:bg-neutral-950/40 border border-neutral-300/60 dark:border-neutral-700/60 w-6 h-6 rounded-[7px] flex items-center justify-center hover:bg-neutral-200/50 dark:hover:bg-neutral-800/60 transition-colors duration-150"
+          aria-controls={menuId}
+          onClick={() => setIsOpen((p) => !p)}
+          className={`flex h-full w-7 items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 ${isOpen ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100" : ""} ${ring}`}
         >
-          <IoIosArrowDown
-            size={16}
-            className={`text-neutral-600 dark:text-neutral-400 transition-transform duration-200 ease-out ${
-              isOpen ? "rotate-180" : "rotate-0"
-            }`}
-          />
-        </button>
+          <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={{ type: "spring", stiffness: 400, damping: 30 }} className="flex">
+            <IoIosArrowDown size={14} />
+          </motion.span>
+        </motion.button>
       </div>
 
-      {/* Dropdown panel */}
-      <div
-        role="menu"
-        className={`absolute top-[calc(100%+6px)] right-0 w-58 origin-top-right rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-lg shadow-neutral-900/[0.06] dark:shadow-black/30 py-1.5 z-50 overflow-hidden transition-all duration-150 ease-out ${
-          isOpen
-            ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 scale-95 -translate-y-1 pointer-events-none"
-        }`}
-      >
-        <div className="relative z-10 px-[3px]">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              role="menuitem"
-              onClick={() => {
-                item.onSelect()
-                setIsOpen(false)
-              }}
-              className="w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm font-sans text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800/50 hover:text-neutral-950 dark:hover:text-white transition-colors duration-100 rounded-sm"
-            >
-              <span className="flex items-center gap-2.5">
-                <span className="text-neutral-500 dark:text-neutral-400">{item.icon}</span>
-                {item.label}
-              </span>
-              {item.external && (
-                <span className="flex items-center justify-center bg-white dark:bg-neutral-900 w-6 h-6 rounded-sm transition-colors duration-150">
-                  <HiArrowTopRightOnSquare
-                    size={16}
-                    className="text-neutral-500 dark:text-neutral-600"
-                  />
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id={menuId}
+            role="menu"
+            aria-label="Page actions"
+            initial={{ opacity: 0, scale: reduce ? 1 : 0.96, y: reduce ? 0 : -4 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: reduce ? 1 : 0.96, transition: { duration: 0.12 } }}
+            transition={{ duration: 0.18, ease: EASE }}
+            style={{ transformOrigin: "top right" }}
+            onKeyDown={(e) => {
+              if (e.key !== "ArrowDown" && e.key !== "ArrowUp" && e.key !== "Home" && e.key !== "End") return;
+              e.preventDefault();
+              const n = menuItems.length;
+              const next = e.key === "Home" ? 0 : e.key === "End" ? n - 1 : (active + (e.key === "ArrowDown" ? 1 : -1) + n) % n;
+              setActive(next);
+              itemRefs.current[next]?.focus();
+            }}
+            className="absolute right-0 top-[calc(100%+6px)] z-50 w-60 overflow-hidden rounded-xl border border-neutral-200 bg-white p-1 shadow-[0_12px_32px_-12px_rgba(0,0,0,0.18)] dark:border-neutral-800 dark:bg-neutral-900 dark:shadow-[0_12px_32px_-12px_rgba(0,0,0,0.7)]"
+          >
+            <motion.div initial="hidden" animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.02 } } }}>
+              {menuItems.map((item, i) => (
+                <motion.button
+                  key={item.id}
+                  ref={(el) => {
+                    itemRefs.current[i] = el;
+                  }}
+                  type="button"
+                  role="menuitem"
+                  tabIndex={i === active ? 0 : -1}
+                  variants={{ hidden: { opacity: 0, y: reduce ? 0 : -2 }, show: { opacity: 1, y: 0 } }}
+                  transition={{ duration: 0.16 }}
+                  onMouseEnter={() => setActive(i)}
+                  onClick={() => select(item)}
+                  className={`group flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-[13px] text-neutral-700 outline-none transition-colors dark:text-neutral-300 ${
+                    i === active ? "bg-neutral-100 text-neutral-950 dark:bg-neutral-800 dark:text-white" : ""
+                  }`}
+                >
+                  <span className="flex items-center gap-2.5">
+                    <span className="flex size-5 items-center justify-center text-neutral-500 dark:text-neutral-400">{item.icon}</span>
+                    {item.label}
+                  </span>
+                  {item.external && (
+                    <HiArrowUpRight size={13} className="text-neutral-400 transition-transform duration-150 group-hover:-translate-y-px group-hover:translate-x-px dark:text-neutral-500" />
+                  )}
+                </motion.button>
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  )
+  );
 }
 
-export default CopyPageMarkdown
-export type { MenuItem, CopyPageMarkdownsProps }
+export default CopyPageMarkdown;
+export type { MenuItem, CopyPageMarkdownsProps };

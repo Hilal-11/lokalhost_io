@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { source } from "@/lib/source";
+import { BLOCK_CATEGORIES, BLOCKS_BASE, categoryHref, getBlocksByCategory } from "@/lib/blocks/catalog";
 
 /* ------------------------------------------------------------------ */
 /* Serializable navigation model for the docs sidebar / overview.     */
@@ -134,7 +135,26 @@ export function getDocsNav() {
     { id: "components", title: "Components", icon: "components", href: "/docs#components", groups: treeGroups },
     { id: "templates", title: "Templates", icon: "templates", href: "/templates", groups: [], dynamic: "templates" },
     { id: "landings", title: "Landing Pages", icon: "landings", groups: [], soon: true },
-    { id: "blocks", title: "Blocks", icon: "blocks", groups: [], soon: true },
+    {
+      id: "blocks",
+      title: "Blocks",
+      icon: "blocks",
+      href: BLOCKS_BASE,
+      groups: [
+        {
+          items: [
+            { title: "All blocks", url: BLOCKS_BASE },
+            ...BLOCK_CATEGORIES.map((c) => ({
+              title: c.title,
+              url: categoryHref(c.slug),
+              description: c.description,
+              group: "Blocks",
+              badge: getBlocksByCategory(c.slug).some((b) => b.isNew) ? ("new" as const) : undefined,
+            })),
+          ],
+        },
+      ],
+    },
     { id: "designs", title: "Designs", icon: "designs", href: "/designs", groups: [] },
     { id: "mobile", title: "Mobile UI", icon: "mobile", href: "/mobile", groups: [] },
     { id: "custom", title: "Custom Work", icon: "custom", href: "/custom-work", groups: [] },

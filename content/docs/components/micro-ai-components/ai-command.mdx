@@ -1,0 +1,121 @@
+---
+title: AI Command
+description: A ⌘K palette that doubles as “Ask AI”, plus a Notion-style inline toolbar that rewrites selected text with a streamed word diff.
+---
+import { CommandPaletteDemo, InlineAIDemo } from "@/components/lokalhost_io/micro-ai-components/ai-command/demo";
+import { paletteProps, inlineProps } from "./ai-command-props";
+
+## Preview
+
+### Command palette
+
+<Preview link="micro-ai-components/ai-command" registry="ai-command" compact language="tsx" code={`<AICommandPalette
+  commands={commands}
+  onAsk={(query) => streamAnswer(query)}
+  onInsert={(text) => editor.insert(text)}
+/>`}>
+  <CommandPaletteDemo />
+</Preview>
+
+### Inline Ask AI
+
+<Preview link="micro-ai-components/ai-command" registry="ai-command" language="tsx" code={`const ref = useRef<HTMLTextAreaElement>(null);
+
+<textarea ref={ref} />
+<InlineAI targetRef={ref} onRun={(action, text, instruction) => streamRewrite(action, text, instruction)} />`}>
+  <InlineAIDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="ai-command"
+  dependencies="@radix-ui/react-dialog cmdk react-markdown remark-gfm shiki motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/ai-command/command-palette.tsx"
+/>
+
+Also copy `ai-command.tsx`, `inline-ai.tsx` and `word-diff.ts` from the same folder. The answer view reuses the markdown renderer from [Streaming Message](/docs/components/micro-ai-components/streaming-message), and the diff uses the `success` token (see [Agent Plan](/docs/components/micro-ai-components/agent-plan)).
+
+## Command palette
+
+Typing filters commands by group. When nothing matches — or you press `Tab` — the first row becomes **Ask AI: “your question”**. Choosing it switches the palette to answer mode: the query morphs into the header and the answer streams below, with Copy, Insert and Ask follow-up in the footer. `Backspace` on the empty follow-up input returns to commands.
+
+### Connecting `onAsk` to an API route
+
+```ts
+// app/api/ask/route.ts
+export async function POST(req: Request) {
+  const { query } = await req.json();
+  const stream = await model.stream(query); // any SDK that yields text
+  return new Response(stream.toReadableStream());
+}
+```
+
+```ts
+async function* streamAnswer(query: string) {
+  const res = await fetch("/api/ask", { method: "POST", body: JSON.stringify({ query }) });
+  const reader = res.body!.pipeThrough(new TextDecoderStream()).getReader();
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) return;
+    yield value;
+  }
+}
+```
+
+## Inline Ask AI
+
+Select text in the target and a small **Ask AI** pill pops up above the selection (or below, near the top of the screen). It expands into a menu of rewrite actions plus a custom instruction field. The result panel shows a live word diff — removed words struck through, added words underlined. **Accept** replaces the selection with `document.execCommand("insertText")` so `Ctrl+Z` still works, and the new text flashes briefly in place.
+
+### Using it with Tiptap
+
+Tiptap's DOM is a contenteditable, so `InlineAI` can position itself from the native selection. Writing into it directly would bypass ProseMirror, so pass `onReplace` — it replaces the built-in insertion — and apply the change through the editor's command chain:
+
+```tsx
+function TiptapInlineAI({ editor }: { editor: Editor }) {
+  const targetRef = useMemo(() => ({ current: editor.view.dom as HTMLElement }), [editor]);
+  return (
+    <InlineAI
+      targetRef={targetRef}
+      onRun={(action, text, instruction) => streamRewrite(action, text, instruction)}
+      onReplace={(result) => {
+        const { from, to } = editor.state.selection;
+        editor.chain().focus().insertContentAt({ from, to }, result).run();
+      }}
+    />
+  );
+}
+```
+
+ProseMirror records the change in its own history, so undo keeps working.
+
+## Props
+
+<PropsTable title="AICommandPalette" rows={paletteProps} />
+<PropsTable title="InlineAI" rows={inlineProps} />
+
+## Keyboard
+
+| Key | Action |
+| --- | --- |
+| `⌘` / `Ctrl` + `K` | Open or close the palette |
+| `↑` / `↓`, `Enter` | Move and select |
+| `Tab` | Promote “Ask AI” to the top |
+| `Backspace` (empty, answer mode) | Back to commands |
+| `Esc` | Close |
+| `⌘` / `Ctrl` + `J` | Open inline AI for the current selection |
+| `Enter` / `Esc` | Accept / discard the inline suggestion |
+
+The `kbd` chips in the palette press down while you actually hold the key.
+
+## Accessibility
+
+- The palette is built on cmdk and Radix Dialog: combobox/listbox semantics, `aria-activedescendant`, focus trapped while open.
+- Inline actions are a keyboard-navigable menu; “Suggestion ready” is announced when the rewrite completes.
+- With reduced motion the highlight and query morph become simple fades.

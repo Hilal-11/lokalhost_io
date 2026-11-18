@@ -13,6 +13,7 @@ export const downloadButtonProps: PropRow[] = [
   { name: "rel", type: "string", description: "Anchor rel. Defaults to \"noopener noreferrer\" when target=\"_blank\"." },
   { name: "borderRadius", type: '"none" | "sm" | "md" | "lg" | "full"', description: "Controls height, min-width, font size and icon size. Padding stays fixed across sizes. Defaults to \"md\"." },
   { name: "size", type: '"sm" | "md" | "lg" | "xl"', description: "Controls height, min-width, font size and icon size. Padding stays fixed across sizes. Defaults to \"md\"." },
+  { name: "variant", type: '"primary" | "secondary"', description: "Monochrome style: solid inverted primary, or quiet secondary. Ignored when colorClassName is set. Defaults to \"primary\"." },
   { name: "isLoading", type: "boolean", description: "Shows the loading label/icon and disables interaction." },
   { name: "loadingText", type: "React.ReactNode", description: "Label shown while isLoading is true." },
   { name: "loadingIcon", type: "React.ReactNode", description: "Icon shown while isLoading is true." },

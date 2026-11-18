@@ -1,0 +1,119 @@
+---
+title: Streaming Message
+description: Renders an AI response token by token with full markdown — without the jitter most chat UIs have.
+---
+import StreamingMessageDemo from "@/components/lokalhost_io/micro-ai-components/streaming-message/demo";
+import { messageProps, messageContentProps, messageErrorProps, messageListProps, useStreamingTextProps } from "./streaming-message-props";
+
+## Preview
+
+<Preview link="micro-ai-components/streaming-message" registry="streaming-message" isBlock language="tsx" code={`<MessageList className="h-[480px]">
+  <Message role="user">
+    <Message.Content content={question} />
+  </Message>
+  <Message status={status} name="Assistant" timestamp="Just now">
+    <Message.Content content={text} animation="blur" />
+    <Message.Error onRetry={retry} />
+  </Message>
+</MessageList>`}>
+  <StreamingMessageDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="streaming-message"
+  dependencies="react-markdown remark-gfm shiki motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/streaming-message/streaming-message.tsx"
+/>
+
+Also copy `markdown.tsx` from the same folder — it holds the renderer, the incomplete-markdown repair and the code block.
+
+## Usage
+
+```tsx
+import { Message, MessageList, useStreamingText } from "@/components/lokalhost_io/micro-ai-components/streaming-message/streaming-message";
+
+const { text, status } = useStreamingText(stream);
+
+<Message status={status === "idle" ? "pending" : status}>
+  <Message.Content content={text} />
+</Message>
+```
+
+## How it stays smooth
+
+**Block memoization.** The content is split into top-level blocks on blank lines (never inside a code fence). Every finished block is a `React.memo` component whose only prop is its own string, so it is parsed once and never touched again. Only the last, still-growing block re-parses on each token. A 2,000-word answer costs the same per token as a 20-word one.
+
+**Incomplete markdown repair.** Before the active block is parsed, `repairMarkdown` closes an unterminated code fence (so it renders as an open code block), closes dangling `**`, `*`, `` ` `` and `~~`, and drops a trailing half-typed marker — raw asterisks never flash.
+
+**Only new words animate.** A tiny rehype plugin wraps each word in a span. React keeps the existing spans in place, so the CSS fade or blur only runs on spans that are newly mounted — no per-word state, no re-animation of old text.
+
+**The caret travels.** A second plugin appends the ▍ caret to the deepest last element, so it sits at the end of a list item or inside an open code block. Code is syntax-highlighted with Shiki (lazy-loaded) only after its fence closes.
+
+## Examples
+
+### With fetch + ReadableStream
+
+```tsx
+async function* readText(res: Response) {
+  const reader = res.body!.pipeThrough(new TextDecoderStream()).getReader();
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) return;
+    yield value;
+  }
+}
+
+const [stream, setStream] = useState<AsyncIterable<string> | null>(null);
+const { text, status, stop } = useStreamingText(stream);
+
+const ask = async (prompt: string) => {
+  const res = await fetch("/api/chat", { method: "POST", body: JSON.stringify({ prompt }) });
+  setStream(readText(res));
+};
+```
+
+### With the Vercel AI SDK `useChat`
+
+`useChat` already accumulates text, so pass it straight to `Message.Content`:
+
+```tsx
+const { messages, status } = useChat();
+
+<MessageList>
+  {messages.map((m, i) => {
+    const last = i === messages.length - 1 && m.role === "assistant";
+    const text = m.parts.filter((p) => p.type === "text").map((p) => p.text).join("");
+    return (
+      <Message key={m.id} role={m.role === "user" ? "user" : "assistant"} status={last && status === "streaming" ? "streaming" : last && status === "submitted" ? "pending" : "done"}>
+        <Message.Content content={text} />
+      </Message>
+    );
+  })}
+</MessageList>
+```
+
+### Sticky auto-scroll
+
+`MessageList` sticks to the bottom while content grows. Scroll up and it stops following; a **New messages** pill scales in to jump back down.
+
+## Props
+
+<PropsTable title="Message" rows={messageProps} />
+<PropsTable title="Message.Content" rows={messageContentProps} />
+<PropsTable title="Message.Error" rows={messageErrorProps} />
+<PropsTable title="MessageList" rows={messageListProps} />
+<PropsTable title="useStreamingText(stream)" rows={useStreamingTextProps} />
+
+## Accessibility
+
+- The content container sets `aria-busy` while streaming. The finished text is announced once through a visually hidden polite live region, so screen readers aren't spammed per token.
+- The typing dots have `role="status"` and a label.
+- With reduced motion, words appear without fades and the caret doesn't blink.

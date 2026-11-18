@@ -1,0 +1,50 @@
+---
+title: Composer Actions
+description: The “+” menu next to a chat input — import, upload, toggles and submenus, with smooth motion and full keyboard support.
+---
+import ComposerActions from "@/components/lokalhost_io/micro-ai-components/ComposerActions";
+import { composerActionsProps, composerActionProps } from "./composer-actions-props";
+
+## Preview
+
+<Preview link="micro-ai-components/ComposerActions" registry="composer-actions" language="tsx" code={`<ComposerActions
+  defaultOpen
+  onSelect={(id) => console.log(id)}
+  onGenerateImagesChange={(on) => setImages(on)}
+/>`}>
+  <div className="flex h-[440px] w-full items-start justify-center pt-8">
+    <ComposerActions defaultOpen />
+  </div>
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="composer-actions"
+  dependencies="motion react-icons"
+  componentFileName="components/lokalhost_io/micro-ai-components/ComposerActions.tsx"
+/>
+
+## Usage
+
+```tsx
+import ComposerActions, { type ComposerAction } from "@/components/lokalhost_io/micro-ai-components/ComposerActions";
+import { FaGithub } from "react-icons/fa";
+
+const primary: ComposerAction[] = [{ id: "github", label: "Import from GitHub", icon: FaGithub }];
+
+<ComposerActions primary={primary} onSelect={(id) => openFlow(id)} />
+```
+
+## Props
+
+<PropsTable title="ComposerActions" rows={composerActionsProps} />
+<PropsTable title="ComposerAction" rows={composerActionProps} />
+
+## Keyboard
+
+| Key | Action |
+| --- | --- |
+| `Enter` / `Space` on the trigger | Open the menu and focus the first row |
+| `↑` / `↓`, `Home` / `End` | Move between rows |
+| `Esc` | Close and return focus to the trigger |

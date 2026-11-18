@@ -1,82 +1,46 @@
-import { GrCubes } from "react-icons/gr";
-import { IconType } from "react-icons";
-import { MdViewQuilt } from "react-icons/md";
-import { IoPhonePortraitOutline } from "react-icons/io5";
-import { LiaIconsSolid } from "react-icons/lia";
-import { TbBrandAuth0 } from "react-icons/tb";
-import { LuFigma } from "react-icons/lu";
-import { TbBackground } from "react-icons/tb";
-import { PiCubeDuotone } from "react-icons/pi";
-import { RiTeamFill } from "react-icons/ri";
-interface Services {
-    id: string | number
-    service: string
-    about: string
-    icon: IconType,
-    link: string
-    comingSoon: boolean
+import type { LucideIcon } from "lucide-react";
+import {
+  Blocks,
+  Boxes,
+  Crown,
+  Handshake,
+  LayoutTemplate,
+  LockKeyhole,
+  PanelsTopLeft,
+  Smartphone,
+  Sparkles,
+} from "lucide-react";
 
+export interface Service {
+  id: string;
+  /** Menu title. */
+  service: string;
+  /** One-line description (shown in the menu footer on hover and in the mobile list). */
+  about: string;
+  icon: LucideIcon;
+  link: string;
+  /** Small monochrome tag next to the title. */
+  badge?: "new" | "pro";
 }
-export const services: Services[]  = [
-   {
-    id: 1,
-    service: "Components",
-    about: "Plug-and-play components for faster, cleaner development.",
-    icon: GrCubes,
-    link: "/docs",
-    comingSoon: false
-  },
-  {
-    id: 2,
-    service: "Web Templates",
-    about: "Production-ready templates with modern, top-tier code.",
-    icon: MdViewQuilt,
-    link: "/templates",
-    comingSoon: false,
-  },
-  {
-    id: 3,
-    service: "Mobile Apps | Designs | UI Screens",
-    about: "Full-scale app starters built with industry best practices.",
-    icon: IoPhonePortraitOutline,
-    link: "/mobile",
-    comingSoon: true,
 
-  },
-  {
-    id: 7,
-    service: "Backgrounds",
-    about: "Modern patterns and sections, ready to plug in.",
-    icon: TbBackground,
-    link: "/backgrounds",
-    comingSoon: false,
+/** Products in the header "Products" menu — 3×3 grid on desktop, list on mobile. */
+export const services: Service[] = [
+  { id: "components", service: "Components", about: "Copy-paste React components with micro-interactions.", icon: Boxes, link: "/docs" },
+  { id: "ai", service: "AI Components", about: "Composer, streaming, reasoning, tool calls and voice UI.", icon: Sparkles, link: "/docs/components/micro-ai-components/prompt-composer" },
+  { id: "blocks", service: "Blocks", about: "Full sections — heroes, pricing, FAQs and more.", icon: Blocks, link: "/docs/blocks", badge: "new" },
+  { id: "landings", service: "Landing Pages", about: "Complete single-page landings, ready to ship.", icon: PanelsTopLeft, link: "/docs/blocks/landing-pages", badge: "new" },
+  { id: "auth", service: "Auth Screens", about: "Login, signup, magic link and OTP screens.", icon: LockKeyhole, link: "/docs/blocks/login-and-signup" },
+  { id: "templates", service: "Web Templates", about: "Production-ready Next.js templates you can launch today.", icon: LayoutTemplate, link: "/templates" },
+  { id: "mobile", service: "Mobile Apps & UI", about: "React Native and Flutter components, screens and starters.", icon: Smartphone, link: "/mobile" },
+  { id: "custom", service: "Custom Work", about: "Got a unique idea? We design and build it with you.", icon: Handshake, link: "/custom-work" },
+  { id: "pro", service: "Pro Access", about: "Every Pro block, landing page and template in one plan.", icon: Crown, link: "/pricing", badge: "pro" },
+];
 
-  },
-  {
-    id: 9,
-    service: "Figma Kits",
-    about: "Complete design systems for fast UI/UX creation.",
-    icon: LuFigma,
-    link: "/designs",
-    comingSoon: true,
-
-  },
-  {
-    id: 6,
-    service: "SASS Starter Kits",
-    about: "Complete backend, APIs, and scalable architecture included.",
-    icon: LiaIconsSolid,
-    link: "/",
-    comingSoon: true,
-
-  },
-  {
-    id: 11,
-    service: "Custom Request",
-    about: "Got a unique idea? Let's build it together.",
-    icon: RiTeamFill,
-    link: "/custom-work",
-    comingSoon: false,
-
-  }
+/** Plain text links in the menu's right column. */
+export const featuredLinks: { label: string; href: string }[] = [
+  { label: "Installation & CLI", href: "/docs/installation" },
+  { label: "Prompt Composer", href: "/docs/components/micro-ai-components/prompt-composer" },
+  { label: "Streaming Message", href: "/docs/components/micro-ai-components/streaming-message" },
+  { label: "Mobile CLI", href: "/mobile/cli" },
+  { label: "Request a component", href: "/contact" },
 ];

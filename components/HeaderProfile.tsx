@@ -44,9 +44,6 @@ const handleLogout = async () => {
         {/* ── Avatar trigger ── */}
         <DropdownMenuTrigger asChild>
           <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.93 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
             className="group relative cursor-pointer flex items-center justify-center w-[28px] h-[28px] lg:w-[32px] lg:h-[32px] rounded-md overflow-hidden bg-gradient-to-t from-neutral-900 to-neutral-600 dark:from-neutral-100 dark:to-neutral-300 shadow-[0px_0px_0px_1px_rgba(0,0,0,0.08),0px_2px_4px_rgba(0,0,0,0.12)] outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600"
           >
             <motion.span
