@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mock-stream",
+  "type": "registry:lib",
+  "description": "mockStream(text, { wpm, jitter }) — an async generator yielding realistic tokens for demos.",
+  "dependencies": [],
+  "files": [
+    {
+      "type": "registry:lib",
+      "content": "/**\n * Mock streaming helpers for Micro AI UI demos.\n * No API keys, no network — just believable token timing.\n */\n\nexport interface MockStreamOptions {\n  /** Words per minute. ~600 feels like a fast model. Defaults to 600. */\n  wpm?: number;\n  /** 0..1 — random variance applied to each token delay. Defaults to 0.4. */\n  jitter?: number;\n  /** Delay before the first token, in ms (time-to-first-token). Defaults to 0. */\n  initialDelay?: number;\n  /** Abort the stream early. */\n  signal?: AbortSignal;\n}\n\nexport function sleep(ms: number, signal?: AbortSignal): Promise<void> {\n  return new Promise((resolve, reject) => {\n    if (signal?.aborted) {\n      reject(new DOMException(\"Aborted\", \"AbortError\"));\n      return;\n    }\n    const t = setTimeout(() => {\n      signal?.removeEventListener(\"abort\", onAbort);\n      resolve();\n    }, ms);\n    const onAbort = () => {\n      clearTimeout(t);\n      reject(new DOMException(\"Aborted\", \"AbortError\"));\n    };\n    signal?.addEventListener(\"abort\", onAbort, { once: true });\n  });\n}\n\n/** Splits text into word-ish tokens, keeping whitespace attached to the following word. */\nexport function tokenize(text: string): string[] {\n  return text.match(/\\s*\\S+|\\s+$/g) ?? [];\n}\n\n/**\n * Async generator yielding tokens of `text` at a realistic pace.\n *\n * ```ts\n * for await (const token of mockStream(\"Hello world\", { wpm: 600 })) {\n *   setText((t) => t + token);\n * }\n * ```\n */\nexport async function* mockStream(\n  text: string,\n  { wpm = 600, jitter = 0.4, initialDelay = 0, signal }: MockStreamOptions = {}\n): AsyncGenerator<string, void, unknown> {\n  const base = 60_000 / Math.max(1, wpm);\n  if (initialDelay > 0) await sleep(initialDelay, signal);\n  for (const token of tokenize(text)) {\n    const variance = 1 + (Math.random() * 2 - 1) * Math.min(1, Math.max(0, jitter));\n    // punctuation & newlines get a tiny natural pause\n    const pause = /[.!?:]\\s*$|\\n/.test(token) ? base * 0.6 : 0;\n    await sleep(Math.max(4, base * variance + pause), signal);\n    yield token;\n  }\n}\n\n/** Wraps an async iterable so it can be cancelled with an AbortSignal. */\nexport async function* withAbort<T>(source: AsyncIterable<T>, signal: AbortSignal): AsyncGenerator<T> {\n  for await (const chunk of source) {\n    if (signal.aborted) return;\n    yield chunk;\n  }\n}\n",
+      "path": "lib/mock-stream.ts",
+      "target": "lib/mock-stream.ts"
+    }
+  ]
+}

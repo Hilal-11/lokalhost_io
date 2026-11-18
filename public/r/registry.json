@@ -6,8 +6,11 @@
     {
       "name": "download-button",
       "type": "registry:component",
-      "description": "Platform-aware download buttons for Mac, Windows and Linux with a smooth hover roll animation and fully swappable colors.",
-      "dependencies": [],
+      "description": "Platform-aware download buttons for Mac, Windows and Linux with a spring text-roll hover, monochrome primary/secondary variants and OS detection.",
+      "dependencies": [
+        "motion",
+        "react-icons"
+      ],
       "registryDependencies": [],
       "files": [
         {
@@ -24,12 +27,15 @@
       "dependencies": [
         "shiki",
         "next-themes",
+        "motion",
         "lucide-react",
         "react-icons",
         "clsx",
         "tailwind-merge"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "components/lokalhost_io/code-blocks/component-preview.tsx",
@@ -41,15 +47,18 @@
     {
       "name": "code-block",
       "type": "registry:component",
-      "description": "A syntax-highlighted code block with file header, copy button, optional line numbers and light/dark Shiki themes.",
+      "description": "A syntax-highlighted code block with file header, language chip, animated copy button, optional line numbers and light/dark Shiki themes.",
       "dependencies": [
         "shiki",
         "next-themes",
+        "motion",
         "react-icons",
         "clsx",
         "tailwind-merge"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "components/lokalhost_io/code-blocks/code-block.tsx",
@@ -61,9 +70,10 @@
     {
       "name": "install-command",
       "type": "registry:component",
-      "description": "A package-manager aware install command with tabs for npm, pnpm, yarn and bun and one-click copy.",
+      "description": "A package-manager aware install command with an animated npm/pnpm/yarn/bun switcher and one-click copy.",
       "dependencies": [
         "shiki",
+        "motion",
         "lucide-react",
         "react-icons"
       ],
@@ -81,6 +91,7 @@
       "type": "registry:component",
       "description": "A split button that copies the page as Markdown or opens it in ChatGPT, Claude, v0 and more.",
       "dependencies": [
+        "motion",
         "react-icons"
       ],
       "registryDependencies": [],
@@ -95,7 +106,7 @@
     {
       "name": "model-picker",
       "type": "registry:component",
-      "description": "A searchable AI model picker with provider icons, smooth motion and full keyboard navigation.",
+      "description": "A searchable AI model picker with provider icons, a sliding highlight and full keyboard navigation.",
       "dependencies": [
         "motion",
         "lucide-react",
@@ -113,8 +124,9 @@
     {
       "name": "models-selector",
       "type": "registry:component",
-      "description": "A compact AI model dropdown with sizes, radius presets and optional search.",
+      "description": "A compact AI model dropdown with sizes, radius presets, alignment and optional search.",
       "dependencies": [
+        "motion",
         "react-icons"
       ],
       "registryDependencies": [],
@@ -123,6 +135,352 @@
           "path": "components/lokalhost_io/micro-ai-components/models-selector.tsx",
           "type": "registry:component",
           "target": "components/lokalhost_io/micro-ai-components/models-selector.tsx"
+        }
+      ]
+    },
+    {
+      "name": "composer-actions",
+      "type": "registry:component",
+      "description": "The “+” menu next to a chat input: import, upload, toggles and submenus with keyboard navigation.",
+      "dependencies": [
+        "motion",
+        "react-icons"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/ComposerActions.tsx",
+          "type": "registry:component",
+          "target": "components/lokalhost_io/micro-ai-components/ComposerActions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "shimmer-text",
+      "type": "registry:ui",
+      "description": "A light band that sweeps across text — the “thinking” label used across Micro AI UI.",
+      "dependencies": [
+        "motion",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/shimmer-text/shimmer-text.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/shimmer-text/shimmer-text.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mock-stream",
+      "type": "registry:lib",
+      "description": "mockStream(text, { wpm, jitter }) — an async generator yielding realistic tokens for demos.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "lib/mock-stream.ts",
+          "type": "registry:lib",
+          "target": "lib/mock-stream.ts"
+        }
+      ]
+    },
+    {
+      "name": "reasoning-panel",
+      "type": "registry:ui",
+      "description": "A collapsible “Thinking…” block with a shimmer label, live timer and auto-collapse when the answer starts.",
+      "dependencies": [
+        "@radix-ui/react-collapsible",
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json",
+        "https://localhostui.com/r/shimmer-text.json"
+      ],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/reasoning-panel/reasoning-panel.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/reasoning-panel/reasoning-panel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "streaming-message",
+      "type": "registry:ui",
+      "description": "Streams AI markdown token by token without flicker: memoized blocks, word fade/blur, caret, code blocks and sticky auto-scroll.",
+      "dependencies": [
+        "react-markdown",
+        "remark-gfm",
+        "shiki",
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/streaming-message/streaming-message.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/streaming-message/streaming-message.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/streaming-message/markdown.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/streaming-message/markdown.tsx"
+        }
+      ]
+    },
+    {
+      "name": "prompt-composer",
+      "type": "registry:ui",
+      "description": "A chat input with auto-grow, attachments, drag & drop, a model chip, suggestions and a Send → Stop morph.",
+      "dependencies": [
+        "@radix-ui/react-popover",
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/prompt-composer/prompt-composer.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/prompt-composer/prompt-composer.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/prompt-composer/parts.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/prompt-composer/parts.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/prompt-composer/context.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/prompt-composer/context.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-actions",
+      "type": "registry:ui",
+      "description": "The toolbar under every AI answer — copy, regenerate, feedback, speak, share — plus a ‹ 2/3 › branch switcher.",
+      "dependencies": [
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-popover",
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/message-actions/message-actions.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/message-actions/message-actions.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/message-actions/branch-switcher.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/message-actions/branch-switcher.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tool-call",
+      "type": "registry:ui",
+      "description": "Shows an agent calling a tool: morphing status icon, live duration, JSON input/output and an approval mode.",
+      "dependencies": [
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json",
+        "https://localhostui.com/r/shimmer-text.json"
+      ],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/tool-call/tool-call.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/tool-call/tool-call.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/tool-call/json-viewer.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/tool-call/json-viewer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-plan",
+      "type": "registry:ui",
+      "description": "A vertical plan timeline with a filling progress rail, substeps, re-planning and a compact dot variant.",
+      "dependencies": [
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json",
+        "https://localhostui.com/r/shimmer-text.json"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.137 150.069)"
+        },
+        "dark": {
+          "success": "oklch(0.765 0.177 163.223)"
+        }
+      },
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/agent-plan/agent-plan.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/agent-plan/agent-plan.tsx"
+        }
+      ]
+    },
+    {
+      "name": "voice-orb",
+      "type": "registry:ui",
+      "description": "An audio-reactive orb (blob, rings or bars) for voice mode, a control bar and a useMicLevel hook.",
+      "dependencies": [
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/voice-orb/voice-orb.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/voice-orb/voice-orb.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/voice-orb/voice-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/voice-orb/voice-bar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "citations",
+      "type": "registry:ui",
+      "description": "Inline numbered source chips with spring hover cards, a sources strip and a remark plugin for [1] markers.",
+      "dependencies": [
+        "@radix-ui/react-hover-card",
+        "@radix-ui/react-dialog",
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/citations/citations.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/citations/citations.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/citations/remark-citations.ts",
+          "type": "registry:lib",
+          "target": "components/lokalhost_io/micro-ai-components/citations/remark-citations.ts"
+        }
+      ]
+    },
+    {
+      "name": "ai-command",
+      "type": "registry:ui",
+      "description": "A ⌘K palette that streams AI answers, plus an inline “Ask AI” toolbar over selected text with a live word diff.",
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "cmdk",
+        "react-markdown",
+        "remark-gfm",
+        "shiki",
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json",
+        "https://localhostui.com/r/streaming-message.json"
+      ],
+      "cssVars": {
+        "light": {
+          "success": "oklch(0.527 0.137 150.069)"
+        },
+        "dark": {
+          "success": "oklch(0.765 0.177 163.223)"
+        }
+      },
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/ai-command/ai-command.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/ai-command/ai-command.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/ai-command/command-palette.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/ai-command/command-palette.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/ai-command/inline-ai.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/ai-command/inline-ai.tsx"
+        },
+        {
+          "path": "components/lokalhost_io/micro-ai-components/ai-command/word-diff.ts",
+          "type": "registry:lib",
+          "target": "components/lokalhost_io/micro-ai-components/ai-command/word-diff.ts"
+        }
+      ]
+    },
+    {
+      "name": "image-gen",
+      "type": "registry:ui",
+      "description": "Placeholder and result frame for AI images: live grain, progressive blur-to-sharp reveal, actions, lightbox and a variations grid.",
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "motion",
+        "lucide-react",
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [
+        "https://localhostui.com/r/utils.json",
+        "https://localhostui.com/r/shimmer-text.json"
+      ],
+      "files": [
+        {
+          "path": "components/lokalhost_io/micro-ai-components/image-gen/image-gen.tsx",
+          "type": "registry:ui",
+          "target": "components/lokalhost_io/micro-ai-components/image-gen/image-gen.tsx"
         }
       ]
     },

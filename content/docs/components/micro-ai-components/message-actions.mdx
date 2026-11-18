@@ -1,0 +1,109 @@
+---
+title: Message Actions
+description: The toolbar under every AI answer — copy, regenerate, feedback, speak, share — plus a ‹ 2/3 › branch switcher for regenerated versions.
+---
+import MessageActionsDemo from "@/components/lokalhost_io/micro-ai-components/message-actions/demo";
+import { messageActionsProps, copyProps, regenerateProps, feedbackProps, otherActionProps, branchSwitcherProps, branchContentProps } from "./message-actions-props";
+
+## Preview
+
+<Preview link="micro-ai-components/message-actions" registry="message-actions" language="tsx" code={`<MessageActions visibility="hover">
+  <MessageActions.Copy text={markdown} />
+  <MessageActions.Regenerate onRegenerate={regenerate} models={models} />
+  <MessageActions.Feedback onFeedback={(value, reason, comment) => save(value, reason, comment)} />
+  <MessageActions.Speak text={markdown} />
+  <MessageActions.Share />
+  <MessageActions.More items={items} />
+</MessageActions>
+<BranchSwitcher current={version} total={versions.length} onChange={setVersion} />`}>
+  <MessageActionsDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="message-actions"
+  dependencies="@radix-ui/react-tooltip @radix-ui/react-popover motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/message-actions/message-actions.tsx"
+/>
+
+Also copy `branch-switcher.tsx` from the same folder.
+
+## Usage
+
+```tsx
+import { MessageActions, BranchSwitcher, BranchContent } from "@/components/lokalhost_io/micro-ai-components/message-actions/message-actions";
+
+<Message>
+  <BranchContent current={version}>
+    <Message.Content content={versions[version - 1]} />
+  </BranchContent>
+  <div className="flex items-center gap-1">
+    <BranchSwitcher current={version} total={versions.length} onChange={setVersion} />
+    <MessageActions visibility={isLatest ? "always" : "hover"}>
+      <MessageActions.Copy text={versions[version - 1]} />
+      <MessageActions.Feedback onFeedback={onFeedback} />
+    </MessageActions>
+  </div>
+</Message>
+```
+
+`visibility="hover"` relies on an ancestor with Tailwind's `group/message` class — `<Message>` adds it for you. If you use your own wrapper, add `className="group/message"` to it.
+
+### Persisting feedback
+
+```ts
+const onFeedback = async (value: "up" | "down" | null, reason?: string, comment?: string) => {
+  await fetch(`/api/messages/${messageId}/feedback`, {
+    method: "POST",
+    body: JSON.stringify({ value, reason, comment }),
+  });
+};
+```
+
+### Branch data model
+
+Keep every version of a message and the index the user is looking at:
+
+```ts
+type MessageBranch = {
+  messageId: string;
+  current: number; // 1-based
+  versions: { id: string; content: string; model: string; createdAt: string }[];
+};
+```
+
+Regenerating pushes a new version and moves `current` to it; editing a user message creates a new branch for everything after it.
+
+## Props
+
+<PropsTable title="MessageActions" rows={messageActionsProps} />
+<PropsTable title="MessageActions.Copy" rows={copyProps} />
+<PropsTable title="MessageActions.Regenerate" rows={regenerateProps} />
+<PropsTable title="MessageActions.Feedback" rows={feedbackProps} />
+<PropsTable title="Share, Speak, More" rows={otherActionProps} />
+<PropsTable title="BranchSwitcher" rows={branchSwitcherProps} />
+<PropsTable title="BranchContent" rows={branchContentProps} />
+
+## Keyboard
+
+| Key | Action |
+| --- | --- |
+| `←` / `→` | Move between toolbar buttons (roving focus) |
+| `Home` / `End` | First / last button |
+| `Shift` + click Copy | Copy plain text instead of markdown |
+| `←` / `→` on the branch switcher | Previous / next version |
+| `↑` / `↓` in menus | Move between items |
+
+## Accessibility
+
+- The bar is a `role="toolbar"` with one tab stop and arrow-key roving focus.
+- Feedback buttons expose `aria-pressed`; copy success is announced through a live region.
+- Every icon button has a label and a tooltip after 300ms.
+- With reduced motion: no particles, no spinning, icons swap with a simple fade.

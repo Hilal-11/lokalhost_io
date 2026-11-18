@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shimmer-text",
+  "type": "registry:ui",
+  "description": "A light band that sweeps across text — the “thinking” label used across Micro AI UI.",
+  "dependencies": [
+    "motion",
+    "clsx",
+    "tailwind-merge"
+  ],
+  "registryDependencies": [
+    "https://localhostui.com/r/utils.json"
+  ],
+  "files": [
+    {
+      "type": "registry:ui",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { useReducedMotion } from \"motion/react\";\nimport { cn } from \"@/lib/utils\";\n\n/* ------------------------------------------------------------------ */\n/* ShimmerText — a light band sweeping across text.                   */\n/* Pure CSS (background-clip + background-position), GPU-cheap.       */\n/* ------------------------------------------------------------------ */\n\nconst SHIMMER_CSS = `\n@keyframes lk-shimmer-sweep {\n  0% { background-position: 100% 0; }\n  100% { background-position: -100% 0; }\n}\n.lk-shimmer {\n  --lk-shimmer-base: var(--muted-foreground);\n  --lk-shimmer-highlight: var(--foreground);\n  color: transparent;\n  background-image: linear-gradient(\n    90deg,\n    var(--lk-shimmer-base) 0%,\n    var(--lk-shimmer-base) 40%,\n    var(--lk-shimmer-highlight) 50%,\n    var(--lk-shimmer-base) 60%,\n    var(--lk-shimmer-base) 100%\n  );\n  background-size: 200% 100%;\n  background-repeat: no-repeat;\n  -webkit-background-clip: text;\n  background-clip: text;\n  animation: lk-shimmer-sweep var(--lk-shimmer-duration, 1.8s) linear infinite;\n}\n@media (prefers-reduced-motion: reduce) {\n  .lk-shimmer { animation: none; color: var(--lk-shimmer-base); background: none; }\n}\n`;\n\n/** Renders the shimmer keyframes once. React 19 hoists + dedupes styles with the same href. */\nexport function ShimmerStyles() {\n  return (\n    <style href=\"lk-shimmer\" precedence=\"default\">\n      {SHIMMER_CSS}\n    </style>\n  );\n}\n\nexport interface ShimmerTextProps extends React.HTMLAttributes<HTMLSpanElement> {\n  /** Turn the sweep on/off. When false the text renders in plain `currentColor`. Defaults to true. */\n  active?: boolean;\n  /** One sweep duration in seconds. Defaults to 1.8. */\n  duration?: number;\n  /** Render as a different element. Defaults to \"span\". */\n  as?: \"span\" | \"p\" | \"div\";\n}\n\nexport const ShimmerText = React.forwardRef<HTMLSpanElement, ShimmerTextProps>(\n  ({ active = true, duration = 1.8, as = \"span\", className, style, children, ...props }, ref) => {\n    const reduce = useReducedMotion();\n    const Comp = as as \"span\";\n    const on = active && !reduce;\n    return (\n      <>\n        <ShimmerStyles />\n        <Comp\n          ref={ref}\n          data-shimmer={on || undefined}\n          className={cn(on && \"lk-shimmer\", \"inline-block\", className)}\n          style={on ? ({ \"--lk-shimmer-duration\": `${duration}s`, ...style } as React.CSSProperties) : style}\n          {...props}\n        >\n          {children}\n        </Comp>\n      </>\n    );\n  }\n);\nShimmerText.displayName = \"ShimmerText\";\n\nexport default ShimmerText;\n",
+      "path": "components/lokalhost_io/micro-ai-components/shimmer-text/shimmer-text.tsx",
+      "target": "components/lokalhost_io/micro-ai-components/shimmer-text/shimmer-text.tsx"
+    }
+  ]
+}

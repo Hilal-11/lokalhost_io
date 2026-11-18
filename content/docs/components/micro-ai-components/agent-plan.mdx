@@ -1,0 +1,87 @@
+---
+title: Agent Plan
+description: A vertical checklist of what an agent plans to do and how far it has got — with substeps, re-planning and a progress rail that fills as steps complete.
+---
+import AgentPlanDemo from "@/components/lokalhost_io/micro-ai-components/agent-plan/demo";
+import { agentPlanProps, planStepProps } from "./agent-plan-props";
+
+## Preview
+
+<Preview link="micro-ai-components/agent-plan" registry="agent-plan" language="tsx" code={`<AgentPlan
+  title="Building your landing page"
+  steps={[
+    { id: "research", title: "Research competitors", status: "done", substeps: [...] },
+    { id: "copy", title: "Draft hero copy", status: "active", startedAt: Date.now() },
+    { id: "build", title: "Build components", status: "todo" },
+  ]}
+/>`}>
+  <AgentPlanDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="agent-plan"
+  dependencies="motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/agent-plan/agent-plan.tsx"
+/>
+
+The finished-plan badge uses a `success` color token. The CLI adds it for you; for a manual install add `--success` to your theme (see `app/globals.css`) and `--color-success: var(--success);` to `@theme inline`.
+
+## Examples
+
+### Re-planning
+
+Agents change their mind. Insert a step with a new `id` and it slides in while the rail extends:
+
+```tsx
+setSteps((steps) => {
+  const i = steps.findIndex((s) => s.id === "deploy");
+  return [...steps.slice(0, i), { id: "a11y", title: "Accessibility pass", status: "todo" }, ...steps.slice(i)];
+});
+```
+
+### Compact variant
+
+```tsx
+<AgentPlan title="Exporting" steps={steps} variant="compact" collapsible={false} />
+```
+
+### Pairing with ToolCall
+
+```tsx
+{
+  id: "search",
+  title: "Research competitors",
+  status: "active",
+  meta: <ToolCall name="search_web" title="Searching the web" status="running" startedAt={t0} />,
+}
+```
+
+### Failed step with retry
+
+```tsx
+{
+  id: "images",
+  title: "Create illustrations",
+  status: "failed",
+  meta: <button onClick={retryFromImages}>Retry from here</button>,
+}
+```
+
+## Props
+
+<PropsTable title="AgentPlan" rows={agentPlanProps} />
+<PropsTable title="PlanStep" rows={planStepProps} />
+
+## Accessibility
+
+- The plan is a list; the active step has `aria-current="step"` and every step has a visually hidden status (“completed”, “in progress”).
+- The header bar is a `role="progressbar"` with `aria-valuenow`.
+- With reduced motion: no ripple, no rail fill animation, no shake.

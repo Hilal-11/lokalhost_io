@@ -2,10 +2,20 @@
 
 import React, { useState, type ComponentType } from "react";
 import Image from "next/image";
-import { FaApple } from "react-icons/fa";
-import { DiWindows } from "react-icons/di";
-import { FcLinux } from "react-icons/fc";
-import DownloadButtonGroup from "@/components/lokalhost_io/buttons/download-button";
+import { DownloadButton } from "@/components/lokalhost_io/buttons/download-button";
+import ComposerActions from "@/components/lokalhost_io/micro-ai-components/ComposerActions";
+import {
+  MiniAgentPlan,
+  MiniAICommand,
+  MiniCitations,
+  MiniComposer,
+  MiniImageGen,
+  MiniMessageActions,
+  MiniReasoning,
+  MiniStreaming,
+  MiniToolCall,
+  MiniVoiceOrb,
+} from "@/components/lokalhost_io/micro-ai-components/_demo/mini-previews";
 import InstallCommand from "@/components/lokalhost_io/micro-ai-components/install-command";
 import CopyPageMarkdown from "@/components/lokalhost_io/micro-ai-components/copy-page-markdown";
 import { ModelPicker, defaultModels } from "@/components/lokalhost_io/micro-ai-components/model-picker";
@@ -18,28 +28,16 @@ import ModelsSelector from "@/components/lokalhost_io/micro-ai-components/models
 
 const DownloadButtonPreview = () => (
   <div className="flex flex-col items-center gap-2.5">
-    <DownloadButtonGroup
-      config={{ windows: { downloadUrl: "" } }}
-      buttonProps={{ label: "Download for Windows", icon: <DiWindows size={18} />, iconPosition: "right" }}
-      size="md"
-      platforms={["windows"]}
-    />
-    <DownloadButtonGroup
-      config={{ linux: { downloadUrl: "" } }}
-      buttonProps={{ label: "Download for Linux", icon: <FcLinux size={18} />, iconPosition: "right" }}
-      wrapperColorClassName="bg-blue-400"
-      colorClassName="bg-blue-500"
-      size="md"
-      platforms={["linux"]}
-    />
-    <DownloadButtonGroup
-      config={{ mac: { downloadUrl: "" } }}
-      buttonProps={{ label: "Download for Mac", icon: <FaApple size={18} />, iconPosition: "right" }}
-      wrapperColorClassName="bg-yellow-400"
-      colorClassName="bg-yellow-500"
-      size="md"
-      platforms={["mac"]}
-    />
+    <DownloadButton platform="mac" iconPosition="right" />
+    <DownloadButton platform="windows" variant="secondary" iconPosition="right" />
+    <DownloadButton platform="linux" variant="secondary" iconPosition="right" />
+  </div>
+);
+
+/** Shrinks a live preview to fit the 230px overview card. */
+const Fit = ({ children, scale = 0.82, width = 420 }: { children: React.ReactNode; scale?: number; width?: number }) => (
+  <div className="flex items-center justify-center" style={{ width, transform: `scale(${scale})` }}>
+    {children}
   </div>
 );
 
@@ -98,6 +96,7 @@ export const ModelPickerComponent = () => {
       models={defaultModels}
       selectedModelId={selectedId}
       onSelectModel={(model) => setSelectedId(model.id)}
+      autoFocus={false}
     />
   );
 };
@@ -124,6 +123,53 @@ export const componentPreviews: Record<string, ComponentType> = {
     <SingleShot src="/components-images/model-picker.png" alt="Model picker" />
   ),
   "/docs/components/micro-ai-components/models-selector": () => <ModelsSelector />,
+  "/docs/components/micro-ai-components/prompt-composer": () => (
+    <Fit scale={0.78} width={440}>
+      <MiniComposer />
+    </Fit>
+  ),
+  "/docs/components/micro-ai-components/streaming-message": () => (
+    <Fit scale={0.72} width={440}>
+      <MiniStreaming />
+    </Fit>
+  ),
+  "/docs/components/micro-ai-components/reasoning-panel": () => (
+    <Fit width={320}>
+      <MiniReasoning />
+    </Fit>
+  ),
+  "/docs/components/micro-ai-components/message-actions": () => (
+    <Fit width={380}>
+      <MiniMessageActions />
+    </Fit>
+  ),
+  "/docs/components/micro-ai-components/tool-call": () => (
+    <Fit scale={0.72} width={420}>
+      <MiniToolCall />
+    </Fit>
+  ),
+  "/docs/components/micro-ai-components/agent-plan": () => (
+    <Fit scale={0.8} width={380}>
+      <MiniAgentPlan variant="compact" />
+    </Fit>
+  ),
+  "/docs/components/micro-ai-components/citations": () => (
+    <Fit scale={0.86} width={400}>
+      <MiniCitations />
+    </Fit>
+  ),
+  "/docs/components/micro-ai-components/voice-orb": () => <MiniVoiceOrb size={140} />,
+  "/docs/components/micro-ai-components/ai-command": () => <MiniAICommand />,
+  "/docs/components/micro-ai-components/image-gen": () => (
+    <Fit scale={0.72} width={260}>
+      <MiniImageGen />
+    </Fit>
+  ),
+  "/docs/components/micro-ai-components/composer-actions": () => (
+    <div className="flex h-full w-full items-start justify-center pt-3" style={{ transform: "scale(0.72)", transformOrigin: "top center" }}>
+      <ComposerActions open />
+    </div>
+  ),
 };
 
 export default componentPreviews;

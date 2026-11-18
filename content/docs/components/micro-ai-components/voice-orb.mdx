@@ -1,0 +1,110 @@
+---
+title: Voice Orb
+description: An audio-reactive orb for voice mode that listens, thinks and speaks — with a control bar, live transcript and a useMicLevel hook.
+---
+import VoiceOrbDemo from "@/components/lokalhost_io/micro-ai-components/voice-orb/demo";
+import { voiceOrbProps, voiceBarProps, useMicLevelProps } from "./voice-orb-props";
+
+## Preview
+
+<Preview link="micro-ai-components/voice-orb" registry="voice-orb" language="tsx" code={`const mic = useMicLevel();
+
+<VoiceOrb state={state} analyser={mic.analyser} variant="blob" size={168} />
+<VoiceBar
+  state={state}
+  elapsed={seconds}
+  transcript={transcript}
+  permission={mic.permission}
+  onRequestPermission={mic.start}
+  onMicToggle={toggleMute}
+  onEnd={endSession}
+/>`}>
+  <VoiceOrbDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="voice-orb"
+  dependencies="motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/voice-orb/voice-orb.tsx"
+/>
+
+Also copy `voice-bar.tsx` from the same folder.
+
+## States
+
+| State | What you see |
+| --- | --- |
+| `idle` | Slow breathing (scale 1 → 1.03 over 4s) |
+| `listening` | Follows mic volume, smoothed with a 0.15 lerp so it never jitters |
+| `thinking` | Shrinks to 0.85, deformation stops, a thin arc orbits |
+| `speaking` | Follows output volume with stronger deformation, so you can feel who is talking |
+| `muted` | 60% opacity, a mic-off badge pops in |
+| `error` | One shake and a destructive tint for 600ms, then idle |
+
+## Variants
+
+- **blob** — a canvas circle deformed by three layered sine waves, drawn at `devicePixelRatio` with a monochrome gradient and soft inner glow.
+- **rings** — three concentric rings that scale with volume at different lags.
+- **bars** — five rounded bars in a pill, for compact UIs.
+
+## Connecting real audio
+
+### Your microphone
+
+```tsx
+const mic = useMicLevel();
+
+<VoiceOrb state="listening" analyser={mic.analyser} />
+<button onClick={mic.start}>Start</button>
+```
+
+### OpenAI Realtime or any WebRTC track
+
+Create an `AnalyserNode` from the remote audio track and pass it in while the assistant speaks:
+
+```ts
+pc.ontrack = (e) => {
+  const ctx = new AudioContext();
+  const analyser = ctx.createAnalyser();
+  analyser.fftSize = 512;
+  ctx.createMediaStreamSource(e.streams[0]).connect(analyser);
+  setOutputAnalyser(analyser);
+};
+
+<VoiceOrb state={speaking ? "speaking" : "listening"} analyser={speaking ? outputAnalyser : mic.analyser} />
+```
+
+### Any other level source
+
+If you already compute a level (e.g. from an audio worklet), keep it in a ref and use `getVolume` so React never re-renders per frame:
+
+```tsx
+const level = useRef(0);
+<VoiceOrb state="speaking" getVolume={() => level.current} />
+```
+
+## Performance
+
+- One `requestAnimationFrame` loop per orb; all per-frame values live in refs, never React state.
+- The loop skips work while the orb is off-screen (`IntersectionObserver`) or the tab is hidden.
+- The canvas is sized once per `size` change and capped at 2× DPR.
+
+## Props
+
+<PropsTable title="VoiceOrb" rows={voiceOrbProps} />
+<PropsTable title="VoiceBar" rows={voiceBarProps} />
+<PropsTable title="useMicLevel()" rows={useMicLevelProps} />
+
+## Accessibility
+
+- The orb is decorative (`aria-hidden`); a visually hidden status reads “Listening”, “Speaking”… through a live region.
+- `Space` toggles mute when the bar is focused. All controls have labels; mute exposes `aria-pressed`.
+- With reduced motion the orb becomes a static circle that only changes opacity with volume.

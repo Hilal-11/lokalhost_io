@@ -1,0 +1,106 @@
+---
+title: Image Generation
+description: The placeholder and result frame for AI images — live grain while waiting, a progressive blur-to-sharp reveal, hover actions, a lightbox and a variations grid.
+---
+import ImageGenDemo from "@/components/lokalhost_io/micro-ai-components/image-gen/demo";
+import { imageGenProps, imageGenGridProps } from "./image-gen-props";
+
+## Preview
+
+<Preview link="micro-ai-components/image-gen" registry="image-gen" language="tsx" code={`<ImageGen
+  status={job.status}
+  progress={job.progress}
+  previewSrc={job.preview}
+  src={job.url}
+  eta={job.eta}
+  prompt={prompt}
+  aspectRatio="4:3"
+  reveal="radial"
+  onRegenerate={regenerate}
+  onVariation={vary}
+  onRetry={retry}
+/>`}>
+  <ImageGenDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="image-gen"
+  dependencies="@radix-ui/react-dialog motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/image-gen/image-gen.tsx"
+/>
+
+## Status lifecycle
+
+1. **queued** — fixed-ratio frame, grain, and an “In queue…” pill.
+2. **generating** — animated grain at ~24fps with a slow diagonal light sweep, a progress bar on the bottom edge, a percentage chip and ETA. `previewSrc` frames crossfade in, getting sharper as progress rises.
+3. **done** — the image is decoded first, then resolves from `blur(20px) scale(1.04)` to sharp over 700ms while the radial, wipe or fade reveal plays and the grain fades out.
+4. **error** — grain freezes and desaturates, the frame shakes once, and a Retry button appears.
+
+## Reveal modes
+
+| Mode | Effect |
+| --- | --- |
+| `radial` | A circle expands from the center (`clip-path: circle()`) |
+| `wipe` | Top-to-bottom wipe (`clip-path: inset()`) |
+| `fade` | Opacity only — also used with reduced motion |
+
+## Examples
+
+### Polling an API (Replicate, fal)
+
+```tsx
+const [job, setJob] = useState<{ status: ImageGenStatus; progress?: number; url?: string }>({ status: "queued" });
+
+useEffect(() => {
+  const id = setInterval(async () => {
+    const res = await fetch(`/api/predictions/${predictionId}`).then((r) => r.json());
+    if (res.status === "starting") setJob({ status: "queued" });
+    if (res.status === "processing") setJob({ status: "generating", progress: res.progress * 100 });
+    if (res.status === "succeeded") setJob({ status: "done", url: res.output[0] });
+    if (res.status === "failed") setJob({ status: "error" });
+    if (res.status === "succeeded" || res.status === "failed") clearInterval(id);
+  }, 1000);
+  return () => clearInterval(id);
+}, [predictionId]);
+
+<ImageGen {...job} src={job.url} prompt={prompt} />
+```
+
+### Streaming partial images
+
+APIs that stream partial frames (base64 or URLs) map straight onto `previewSrc`:
+
+```tsx
+for await (const event of stream) {
+  if (event.type === "partial_image") setPreview(`data:image/png;base64,${event.b64}`);
+  if (event.type === "completed") setSrc(event.url);
+}
+
+<ImageGen status={src ? "done" : "generating"} previewSrc={preview} src={src} prompt={prompt} />
+```
+
+### Variations grid
+
+```tsx
+<ImageGenGrid columns={2} items={variations.map((v) => ({ ...v, prompt }))} onSelect={setPicked} />
+```
+
+## Props
+
+<PropsTable title="ImageGen" rows={imageGenProps} />
+<PropsTable title="ImageGenGrid" rows={imageGenGridProps} />
+
+## Accessibility
+
+- While waiting, the frame is `role="img"` with a live label like “Generating image: a mountain lake, 45%”; when done it's a real `<img alt={prompt}>`.
+- Progress uses `role="progressbar"`.
+- Overlay actions also appear on keyboard focus, not only on hover.
+- With reduced motion: static grain, a plain fade reveal and no lightbox morph.

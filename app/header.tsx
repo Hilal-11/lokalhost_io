@@ -6,14 +6,10 @@ import { PiTerminalFill } from "react-icons/pi";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { IoMenu } from "react-icons/io5";
 import { RiCloseFill } from "react-icons/ri";
-import { useEffect, useState , useRef} from "react";
-import { FaAngleDown } from "react-icons/fa6";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Fragment, useEffect, useState , useRef} from "react";
+import { BlocksNavMenu } from "@/components/blocks/blocks-nav-menu";
 import { services } from "@/config/servicesConfig"
+import { ProductsNavMenu } from "@/components/layout/products-nav-menu";
 import { FaChevronDown } from "react-icons/fa6";
 import { FaChevronUp } from "react-icons/fa";
 import HeaderProfile from "@/components/HeaderProfile";
@@ -23,7 +19,6 @@ import Feedback from "@/components/landing/MicroComponents/Feedback";
 import { SearchingMain } from '../components/landing/MicroComponents/Searching';
 import headerPagesConfig from "@/public/config/HeaderPages.json"
 import { HiArrowNarrowRight } from "react-icons/hi";
-import {  SoonV3 } from "@/components/landing/MicroComponents/ComingSoon";
 import { useUser } from '@/hooks/useUser'
 import Image from "next/image";
 
@@ -88,40 +83,11 @@ function Header() {
                   <span className="text-zinc-300 dark:text-zinc-700"></span>
                   {/* Desktop Navigation Links */}
                   <div className="hidden md:hidden lg:flex items-center gap-4">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger>
-                        <h1 className="cursor-pointer flex gap-1 bg-transparent hover:bg-transparent font-sans font-medium text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors items-center">Solution<span className="text-sm"><FaAngleDown /></span></h1>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="lg:w-[720px] pt-3 pb-4 h-auto my-5.5" align="start">
-                        <div className="w-full flex justify-between px-6 py-2 items-center border-b-1">
-                          <div><h2 className="text-ms font-sans font-medium">Browse Products</h2></div>
-                          <div><button className="relative cursor-pointer font-sans font-medium px-10 py-2 rounded-md text-sm lk-btn-primary transition-[filter,box-shadow,transform]">Start Building</button></div>
-                        </div>
-
-                        
-                        <div className="grid grid-cols-3 gap-3 w-full h-auto justify-evenly py-4 px-4">
-                         {
-                          services.map(({ id, service, icon: Icon, link, about, comingSoon }) => (
-                            <Link onClick={handleLinkClick} key={id} href={link} prefetch={true}>
-                              <div className="h-auto py-2 cursor-pointer flex items-center hover:bg-neutral-100 hover:dark:bg-neutral-950 hover:rounded-sm">
-                                <div className="flex justify-center items-center px-5 h-full overflow-hidden relative">
-                                  <span className="text-xl z-30"><Icon/></span>
-                                </div>
-                                <div className="space-y-0 relative">
-                                  <h1 className="text-sm font-sans font-medium">{service}</h1>
-                                  <p className="text-[10px] font-sans font-medium text-neutral-500">{about}</p>
-                                  { comingSoon && <div className="absolute right-2 -top-2"><SoonV3 /></div>}
-                                </div>
-                              </div>
-                            </Link>
-                          ))
-                         }
-                        </div>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <ProductsNavMenu onNavigate={handleLinkClick} />
                     {
                       headerPagesConfig.header_pages.map((page , index) => (
-                         <Link                            key={index}
+                        <Fragment key={index}>
+                         <Link
                             href={page.link}
                             className="font-sans font-medium text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors flex items-center gap-2"
                             prefetch={true}
@@ -129,6 +95,8 @@ function Header() {
                           >
                             {page.page}
                           </Link>
+                          {index === 0 && <BlocksNavMenu onNavigate={handleLinkClick} />}
+                        </Fragment>
                       ))
                     }
                   </div>
@@ -170,10 +138,6 @@ function Header() {
                   </div>
                    
                   {!isMobileMenuOpen ? <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="flex md:flex lg:hidden bg-neutral-100 dark:bg-neutral-900 rounded-sm p-1 text-2xl text-neutral-700 dark:text-neutral-300"><IoMenu /></button> : <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="flex md:flex lg:hidden text-2xl text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-900 rounded-sm p-1"><RiCloseFill /></button>}
-                  {/* {
-                    isLoggedIn ? (<HeaderProfile user={user} userEmail={userEmail} />) : (<Link href="/signup" className="w-full whitespace-nowrap relative cursor-pointer font-sans font-medium py-2 rounded-md text-xs px-4 flex items-center justify-center gap-2 lk-btn-primary transition-[filter,box-shadow,transform]">Signup</Link>)
-                   } */}
-                   
                 </div>
                 
                 
@@ -225,6 +189,14 @@ function Header() {
                         <div className="flex justify-between w-full px-2">
                           <div className="grid grid-cols-2 justify-between w-full">
                             <Link
+                              onClick={() => { handleLinkClick(); setIsMobileMenuOpen(false); }}
+                              href="/docs/blocks"
+                              className="block pb-3 font-sans font-medium text-md text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+                              prefetch
+                            >
+                              Blocks
+                            </Link>
+                            <Link
                             onClick={handleLinkClick}                              href="/pricing"
                               className="block pb-3 font-sans font-medium text-md text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
                               prefetch
@@ -254,9 +226,6 @@ function Header() {
                             >
                               Blogs
                             </Link>
-                          </div>
-                          <div className="flex flex-col gap-1 items-center ">
-                              <span className="p-1.5 rounded-sm bg-neutral-300 dark:bg-neutral-900"><ThemeToggle /></span>
                           </div>
                         </div>
                         <div className="flex justify-between items-center gap-3 px-2">

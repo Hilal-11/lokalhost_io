@@ -1,0 +1,120 @@
+---
+title: Reasoning Panel
+description: A collapsible “Thinking…” block for reasoning models with a shimmering label, live timer and auto-collapse when the answer starts.
+---
+import ReasoningPanelDemo from "@/components/lokalhost_io/micro-ai-components/reasoning-panel/demo";
+import { reasoningProps, reasoningTriggerProps, reasoningContentProps, shimmerTextProps } from "./reasoning-panel-props";
+
+## Preview
+
+<Preview link="micro-ai-components/reasoning-panel" registry="reasoning-panel" language="tsx" code={`<Reasoning isStreaming={isThinking}>
+  <Reasoning.Trigger />
+  <Reasoning.Content>{reasoningText}</Reasoning.Content>
+</Reasoning>`}>
+  <ReasoningPanelDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="reasoning-panel"
+  dependencies="@radix-ui/react-collapsible motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/reasoning-panel/reasoning-panel.tsx"
+/>
+
+The panel uses `ShimmerText` from `components/lokalhost_io/micro-ai-components/shimmer-text/shimmer-text.tsx` (installed automatically with the CLI).
+
+## Usage
+
+```tsx
+import { Reasoning } from "@/components/lokalhost_io/micro-ai-components/reasoning-panel/reasoning-panel";
+
+<Reasoning isStreaming={isThinking} autoCollapse>
+  <Reasoning.Trigger />
+  <Reasoning.Content>{reasoning}</Reasoning.Content>
+</Reasoning>
+```
+
+While `isStreaming` is true the trigger reads **Thinking… 3s** with a live timer and the panel is open. When it flips to false the label becomes **Thought for 12s** and, if `autoCollapse` is on, the panel closes 600ms later. If the user toggles the panel themselves, auto-collapse is switched off for that instance.
+
+### Steps mode
+
+```tsx
+<Reasoning
+  isStreaming
+  steps={[
+    { title: "Searching docs", status: "done" },
+    { title: "Comparing options", status: "active" },
+    { title: "Drafting answer", status: "pending" },
+  ]}
+>
+  <Reasoning.Trigger />
+  <Reasoning.Content />
+</Reasoning>
+```
+
+### With the Vercel AI SDK
+
+Reasoning models stream `reasoning` parts before the `text` parts. Render the panel from the message parts and treat it as streaming until the first text part arrives.
+
+```tsx
+const reasoning = message.parts.filter((p) => p.type === "reasoning").map((p) => p.text).join("");
+const answerStarted = message.parts.some((p) => p.type === "text" && p.text.length > 0);
+
+<Reasoning isStreaming={status === "streaming" && !answerStarted}>
+  <Reasoning.Trigger />
+  <Reasoning.Content>{reasoning}</Reasoning.Content>
+</Reasoning>
+```
+
+### With OpenAI / Anthropic streaming events
+
+Append thinking deltas to a `reasoning` string and flip `isStreaming` off on the first answer delta.
+
+```ts
+for await (const event of stream) {
+  if (event.type === "content_block_delta" && event.delta.type === "thinking_delta") {
+    setReasoning((r) => r + event.delta.thinking);
+  }
+  if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+    setThinking(false);
+    setAnswer((a) => a + event.delta.text);
+  }
+}
+```
+
+### ShimmerText on its own
+
+```tsx
+import { ShimmerText } from "@/components/lokalhost_io/micro-ai-components/shimmer-text/shimmer-text";
+
+<ShimmerText>Searching the web…</ShimmerText>
+```
+
+It sweeps a light band across the text with `background-clip: text` and an animated `background-position` — pure CSS, no JavaScript per frame.
+
+## Props
+
+<PropsTable title="Reasoning" rows={reasoningProps} />
+<PropsTable title="Reasoning.Trigger" rows={reasoningTriggerProps} />
+<PropsTable title="Reasoning.Content" rows={reasoningContentProps} />
+<PropsTable title="ShimmerText" rows={shimmerTextProps} />
+
+## Accessibility
+
+- Built on Radix Collapsible: the trigger is a button with `aria-expanded` and `aria-controls`.
+- The timer is visual only; “Finished thinking” is announced once through a polite live region.
+- With reduced motion there is no shimmer, no icon rotation and collapse is instant.
+
+## Keyboard
+
+| Key | Action |
+| --- | --- |
+| `Enter` / `Space` | Toggle the panel when the trigger is focused |
+| `Tab` | Moves into the scrollable content while open |

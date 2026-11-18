@@ -11,6 +11,8 @@ import { useTemplates } from "@/lib/templates-query";
 import { componentPreviews } from "@/content/docs/componentsAll";
 import { docsIcons } from "./docs-icons";
 import { Cover } from "@/components/lk/cover";
+import { BLOCK_CATEGORIES } from "@/lib/blocks/catalog";
+import { CategoryCard } from "@/components/blocks/block-cards";
 
 /* ------------------------------------------------------------------ */
 /* Building blocks                                                    */
@@ -319,6 +321,24 @@ export function DocsOverview({ categories }: { categories: DocsNavCategory[] }) 
           <EmptyState title={`No components match “${query}”`} body="Try a different keyword, like “button” or “model”." />
         )}
       </section>
+
+      {/* ── Blocks ── */}
+      {!q && (
+        <section className="mb-20">
+          <SectionHeader
+            id="blocks"
+            icon="blocks"
+            title="Blocks"
+            description="Full sections and landing pages — preview at any size, then copy or download."
+            href="/docs/blocks"
+          />
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            {BLOCK_CATEGORIES.slice(0, 6).map((c) => (
+              <CategoryCard key={c.slug} category={c} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── Templates ── */}
       <section className="mb-20">

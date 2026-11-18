@@ -1,0 +1,99 @@
+---
+title: Citations
+description: Inline numbered source chips inside AI answers, with spring hover cards, a sources strip and a remark plugin for [1] markers.
+---
+import CitationsDemo from "@/components/lokalhost_io/micro-ai-components/citations/demo";
+import { providerProps, sourceProps, citationProps, stripProps } from "./citations-props";
+
+## Preview
+
+<Preview link="micro-ai-components/citations" registry="citations" language="tsx" code={`<CitationProvider sources={sources} display="number">
+  <Markdown
+    content={answer}
+    streaming={isStreaming}
+    remarkPlugins={[remarkCitations]}
+    components={{ citation: MarkdownCitation }}
+  />
+  <SourcesStrip show={!isStreaming} />
+</CitationProvider>`}>
+  <CitationsDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="citations"
+  dependencies="@radix-ui/react-hover-card @radix-ui/react-dialog motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/citations/citations.tsx"
+/>
+
+Also copy `remark-citations.ts` from the same folder.
+
+## Usage
+
+### Inline, by hand
+
+```tsx
+<CitationProvider sources={sources}>
+  <p>
+    Bees communicate with the waggle dance <Citation ids={["s2"]} /> and navigate by polarised light{" "}
+    <Citation ids={["s3", "s1"]} />.
+  </p>
+  <SourcesStrip />
+</CitationProvider>
+```
+
+Numbers are assigned in order of first appearance, not by array position.
+
+### From markdown with `remarkCitations`
+
+`remarkCitations` turns `[1]` and `[1, 3]` markers into chips. The numbers are 1-based positions in `sources`. Markers in code and links are ignored, and a half-typed `[1` is hidden while streaming.
+
+```tsx
+import { remarkCitations, MarkdownCitation } from "@/components/lokalhost_io/micro-ai-components/citations/citations";
+
+const remarkPlugins = [remarkCitations];
+const components = { citation: MarkdownCitation };
+
+<Message.Content content={answer} remarkPlugins={remarkPlugins} components={components} />
+```
+
+### Mapping search API results
+
+```ts
+const sources: CitationSource[] = results.map((r, i) => ({
+  id: `s${i + 1}`,
+  url: r.url,
+  title: r.title,
+  snippet: r.content,
+  publishedAt: r.published_date,
+}));
+```
+
+Ask the model to cite with `[n]` markers that match the order you sent the results in.
+
+### Theming the chip
+
+The chip uses `bg-muted`, `border-border` and `text-muted-foreground` and inverts to `bg-foreground` on hover. Pass `className` to `<Citation>`, or change the tokens to restyle every chip at once.
+
+## Props
+
+<PropsTable title="CitationProvider" rows={providerProps} />
+<PropsTable title="CitationSource" rows={sourceProps} />
+<PropsTable title="Citation" rows={citationProps} />
+<PropsTable title="SourcesStrip" rows={stripProps} />
+
+## Accessibility
+
+- Each chip is a button labelled `Source 1: <title>`. Focus opens the card, `Esc` closes it; on touch, tap opens and tapping outside closes.
+- Links open in a new tab with `rel="noopener noreferrer"` and a visually hidden “(opens in new tab)”.
+- Hovering a chip highlights its card in the strip and vice versa — a visual aid only; nothing depends on it.
+- With reduced motion, cards and chips fade instead of springing.
+
+Favicons load from `google.com/s2/favicons` by default, so each visitor's browser requests them from Google. Pass `getFavicon` to serve them yourself.

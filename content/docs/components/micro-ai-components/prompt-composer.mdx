@@ -1,0 +1,139 @@
+---
+title: Prompt Composer
+description: The chat input every AI app needs — auto-growing textarea, attachments, a model chip, suggestions and a Send button that morphs into Stop.
+---
+import { ComposerHeroDemo, ComposerChatDemo } from "@/components/lokalhost_io/micro-ai-components/prompt-composer/demo";
+import { composerProps, composerInputProps, composerAttachButtonProps, composerModelChipProps, composerCounterProps, composerSuggestionsProps } from "./prompt-composer-props";
+
+## Preview
+
+<Preview link="micro-ai-components/prompt-composer" registry="prompt-composer" language="tsx" code={`<Composer status={status} onSubmit={send} onStop={stop} maxLength={4000}>
+  <Composer.Attachments />
+  <Composer.Input placeholder="Ask anything…" />
+  <Composer.Toolbar>
+    <Composer.AttachButton accept="image/*,.pdf" />
+    <Composer.ModelChip models={models} value={model} onChange={setModel} />
+    <Composer.Spacer />
+    <Composer.Counter />
+    <Composer.Submit />
+  </Composer.Toolbar>
+  <Composer.Suggestions items={suggestions} />
+</Composer>`}>
+  <ComposerHeroDemo />
+</Preview>
+
+Pinned to the bottom of a chat:
+
+<Preview link="micro-ai-components/prompt-composer" registry="prompt-composer" isBlock language="tsx" code={`<MessageList className="flex-1">{messages}</MessageList>
+<Composer status={status} onSubmit={send} onStop={() => abort.current?.abort()}>
+  <Composer.Input placeholder="Reply…" />
+  <Composer.Toolbar>
+    <Composer.AttachButton />
+    <Composer.Spacer />
+    <Composer.Submit />
+  </Composer.Toolbar>
+</Composer>`}>
+  <ComposerChatDemo />
+</Preview>
+
+## Installation
+
+<ManualInstallation
+  registry="prompt-composer"
+  dependencies="@radix-ui/react-popover motion lucide-react clsx tailwind-merge"
+  utilsCode={`import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`}
+  componentFileName="components/lokalhost_io/micro-ai-components/prompt-composer/prompt-composer.tsx"
+/>
+
+Also copy `parts.tsx` and `context.tsx` from the same folder.
+
+## Usage
+
+### Basic
+
+```tsx
+import PromptComposer from "@/components/lokalhost_io/micro-ai-components/prompt-composer/prompt-composer";
+
+<PromptComposer onSubmit={(text) => send(text)} status={status} onStop={stop} />
+```
+
+### With attachments
+
+Paste an image, drag files anywhere onto the composer, or use the paperclip. Pass `onUpload` to show progress rings and errors:
+
+```tsx
+<Composer
+  onSubmit={(text, files) => send(text, files)}
+  onUpload={async (file, onProgress) => {
+    await uploadWithProgress(file, onProgress); // throw to show the error + Retry state
+  }}
+>
+  <Composer.Attachments />
+  <Composer.Input />
+  <Composer.Toolbar>
+    <Composer.AttachButton accept="image/*,.pdf" />
+    <Composer.Spacer />
+    <Composer.Submit />
+  </Composer.Toolbar>
+</Composer>
+```
+
+### With a model picker
+
+```tsx
+const models = [
+  { id: "fast", label: "Fast", description: "Quick answers" },
+  { id: "smart", label: "Smart", description: "Balanced" },
+  { id: "reasoning", label: "Reasoning", description: "Thinks longer" },
+];
+
+<Composer.ModelChip models={models} value={model} onChange={setModel} />
+```
+
+### Controlled
+
+```tsx
+const [value, setValue] = useState("");
+
+<Composer value={value} onValueChange={setValue} onSubmit={send}>
+  <Composer.Input />
+  <Composer.Toolbar>
+    <Composer.Spacer />
+    <Composer.Submit />
+  </Composer.Toolbar>
+</Composer>
+```
+
+## Props
+
+<PropsTable title="Composer" rows={composerProps} />
+<PropsTable title="Composer.Input" rows={composerInputProps} />
+<PropsTable title="Composer.AttachButton" rows={composerAttachButtonProps} />
+<PropsTable title="Composer.ModelChip" rows={composerModelChipProps} />
+<PropsTable title="Composer.Counter" rows={composerCounterProps} />
+<PropsTable title="Composer.Suggestions" rows={composerSuggestionsProps} />
+
+`Composer.Attachments`, `Composer.Toolbar`, `Composer.Spacer` and `Composer.Submit` take a `className` and read everything else from context.
+
+## Keyboard
+
+| Key | Action |
+| --- | --- |
+| `Enter` | Send (never while an IME is composing — safe for Hindi, Japanese, Chinese input) |
+| `Shift` + `Enter` | New line |
+| `⌘` / `Ctrl` + `Enter` | Send |
+| `Esc` | Stop generating while streaming |
+| `↑` (empty input) | Recall the last sent message (needs `history`) |
+| `↑` / `↓` | Move through models when the model popover is open |
+
+## Accessibility
+
+- The textarea has an `aria-label`; the submit button switches between “Send message” and “Stop generating”.
+- Attachments are a `role="list"`; each remove button is labelled with the file name.
+- Dragging files over the composer is announced through a polite live region.
+- With reduced motion the button morph, chip pops and typewriter fill become instant.
